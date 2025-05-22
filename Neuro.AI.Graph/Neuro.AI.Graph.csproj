@@ -34,6 +34,8 @@
     <ProjectReference Include="../Neuro.AI.Graph.Repository/Neuro.AI.Graph.Repository.csproj" />
     <ProjectReference Include="../neuro.ai.graph.shield/neuro.ai.graph.shield.csproj" />
     <ProjectReference Include="../neuro.ai.graph.QL/neuro.ai.graph.QL.csproj" />
+    <ProjectReference Include="..\Neuro.AI.Graph.Connectors\Neuro.AI.Graph.Connectors.csproj" />
+    <ProjectReference Include="..\Neuro.AI.Graph.Models\Neuro.AI.Graph.Models.csproj" />
   </ItemGroup>
 
 <ItemGroup>
