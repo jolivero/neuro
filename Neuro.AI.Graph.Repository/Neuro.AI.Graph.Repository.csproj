@@ -11,4 +11,9 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Neuro.AI.Graph.Connectors\Neuro.AI.Graph.Connectors.csproj" />
+    <ProjectReference Include="..\Neuro.AI.Graph.Models\Neuro.AI.Graph.Models.csproj" />
+  </ItemGroup>
+
 </Project>
