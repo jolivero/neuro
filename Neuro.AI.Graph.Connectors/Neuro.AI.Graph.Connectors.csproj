@@ -7,13 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Neuro.AI.Graph.Connectors\Neuro.AI.Graph.Connectors.csproj" />
-    <ProjectReference Include="..\Neuro.AI.Graph.Models\Neuro.AI.Graph.Models.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.4" />
   </ItemGroup>
 
 </Project>

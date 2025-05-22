@@ -6,6 +6,7 @@ using Neuro.AI.Graph.Shield;
 using TropigasMobile.Backend.Data;
 using Neuro.AI.Graph.Repository;
 using Neuro.AI.Graph.Shield.Solutions;
+using Neuro.AI.Graph.Connectors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Connectos
+builder.Services.AddTransient<ManufacturingConnector>();
+
+//Repositories
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<ManufacturingRepository>();
 
 builder.Services
     .AddGraphQLServer()
