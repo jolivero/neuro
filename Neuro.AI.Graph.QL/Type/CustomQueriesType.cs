@@ -1,10 +1,9 @@
-using HotChocolate.Types;
 using GraphQL.Attributes;
 using Data.Entities.Telered;
 using Neuro.AI.Graph.QL.Queries;
 using GraphQL.Middleware;
-using Microsoft.EntityFrameworkCore;
 using Neuro.AI.Graph.Repository;
+using Neuro.AI.Graph.Models.Manufacturing;
 
 public class CustomQueriesType : ObjectType<CustomQueries>
 {
@@ -20,5 +19,10 @@ public class CustomQueriesType : ObjectType<CustomQueries>
 			.AddFilterSortingPagination<UserDto>()
 			.UseCustomQueryable<UserDto>()
 			.Type<CustomType<UserDto>>();
+
+		descriptor.Field(t => t.GetAllGroupsAsync(default!))
+			.AddFilterSortingPagination<Group>()
+			.UseCustomQueryable<Group>()
+			.Type<CustomType<Group>>();
     }
 }
