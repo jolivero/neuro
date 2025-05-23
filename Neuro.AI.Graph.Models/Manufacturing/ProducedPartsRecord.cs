@@ -14,4 +14,8 @@ public partial class ProducedPartsRecord
     public Guid? ProductionId { get; set; }
 
     public Guid? PartId { get; set; }
+
+    public virtual Part? Part { get; set; }
+
+    public virtual ProductionRecord? Production { get; set; }
 }

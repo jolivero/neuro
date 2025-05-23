@@ -10,4 +10,6 @@ public partial class ChangesRequest
     public string Name { get; set; } = null!;
 
     public string? Descripcion { get; set; }
+
+    public virtual ICollection<ProductionChangeRequest> ProductionChangeRequests { get; set; } = new List<ProductionChangeRequest>();
 }

@@ -22,4 +22,10 @@ public partial class MonthlySchedule
     public Guid? TurnId { get; set; }
 
     public Guid? PlannedBy { get; set; }
+
+    public virtual ICollection<DailySchedule> DailySchedules { get; set; } = new List<DailySchedule>();
+
+    public virtual ProductionLine? Line { get; set; }
+
+    public virtual User? PlannedByNavigation { get; set; }
 }

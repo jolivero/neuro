@@ -14,4 +14,18 @@ public partial class Station
     public Guid? GroupId { get; set; }
 
     public Guid? CreatedBy { get; set; }
+
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetails { get; set; } = new List<ChangeRequestDetail>();
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual ICollection<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();
+
+    public virtual Group? Group { get; set; }
+
+    public virtual ICollection<MachineReport> MachineReports { get; set; } = new List<MachineReport>();
+
+    public virtual ICollection<Machine> Machines { get; set; } = new List<Machine>();
+
+    public virtual ICollection<Part> Parts { get; set; } = new List<Part>();
 }

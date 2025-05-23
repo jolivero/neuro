@@ -26,4 +26,16 @@ public partial class ProductionChangeRequest
     public Guid? ApprovalUserId { get; set; }
 
     public Guid? NcPartId { get; set; }
+
+    public virtual User? ApprovalUser { get; set; }
+
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetails { get; set; } = new List<ChangeRequestDetail>();
+
+    public virtual ChangesRequest? ChangesRequest { get; set; }
+
+    public virtual NonCompliantPartsRecord? NcPart { get; set; }
+
+    public virtual User? RequestingUser { get; set; }
+
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }
