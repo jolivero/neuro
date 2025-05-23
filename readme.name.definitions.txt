@@ -1,0 +1,13 @@
+SELECT, VIEWS
+repo_select_machines
+repo_select_machines_with_materials(machineId,materialId)
+repo_select_machines_with_reports(reportId)
+repo_select_machines_with_tickets
+
+
+MUTATIONS
+repo_create_machines
+repo_remove_machines_with_materials(machineId,materialId)
+repo_update_machines_with_reports(reportId)
+
+
