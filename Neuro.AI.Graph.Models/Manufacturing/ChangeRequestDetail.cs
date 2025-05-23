@@ -20,4 +20,12 @@ public partial class ChangeRequestDetail
     public Guid? MachineId { get; set; }
 
     public Guid? PartId { get; set; }
+
+    public virtual Machine? Machine { get; set; }
+
+    public virtual Part? Part { get; set; }
+
+    public virtual ProductionChangeRequest? Request { get; set; }
+
+    public virtual Station? Station { get; set; }
 }

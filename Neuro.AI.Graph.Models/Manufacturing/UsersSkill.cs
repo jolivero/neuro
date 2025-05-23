@@ -5,13 +5,15 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class UsersSkill
 {
-    public Guid SkillId { get; set; }
-
     public Guid UserId { get; set; }
+
+    public Guid SkillId { get; set; }
 
     public string? SkillLevel { get; set; }
 
     public DateTime? CreatedAt { get; set; }
+
+    public virtual Skill Skill { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
 }

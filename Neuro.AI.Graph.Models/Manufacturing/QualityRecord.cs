@@ -16,4 +16,8 @@ public partial class QualityRecord
     public Guid? NcPartId { get; set; }
 
     public Guid? CreatedBy { get; set; }
+
+    public virtual NonCompliantPartsRecord? NcPart { get; set; }
+
+    public virtual ICollection<QualityClasification> QualityClasifications { get; set; } = new List<QualityClasification>();
 }

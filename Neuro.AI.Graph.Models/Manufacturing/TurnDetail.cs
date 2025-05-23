@@ -20,4 +20,6 @@ public partial class TurnDetail
     public DateTime? UpdatedAt { get; set; }
 
     public Guid? TurnId { get; set; }
+
+    public virtual Turn? Turn { get; set; }
 }

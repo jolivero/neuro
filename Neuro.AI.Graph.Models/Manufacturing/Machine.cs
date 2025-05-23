@@ -30,4 +30,14 @@ public partial class Machine
     public Guid? StationId { get; set; }
 
     public Guid? CreatedBy { get; set; }
+
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetails { get; set; } = new List<ChangeRequestDetail>();
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual ICollection<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();
+
+    public virtual ICollection<MachineReport> MachineReports { get; set; } = new List<MachineReport>();
+
+    public virtual Station? Station { get; set; }
 }

@@ -14,4 +14,6 @@ public partial class Inventory
     public DateTime? CreatedAt { get; set; }
 
     public Guid? PartId { get; set; }
+
+    public virtual Part? Part { get; set; }
 }

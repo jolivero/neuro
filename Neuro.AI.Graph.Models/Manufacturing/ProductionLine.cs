@@ -18,4 +18,12 @@ public partial class ProductionLine
     public Guid? CompanyId { get; set; }
 
     public Guid? CreatedBy { get; set; }
+
+    public virtual Company? Company { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
+
+    public virtual ICollection<MonthlySchedule> MonthlySchedules { get; set; } = new List<MonthlySchedule>();
 }

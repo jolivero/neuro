@@ -14,4 +14,10 @@ public partial class Group
     public Guid? LineId { get; set; }
 
     public Guid? CreatedBy { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual ProductionLine? Line { get; set; }
+
+    public virtual ICollection<Station> Stations { get; set; } = new List<Station>();
 }

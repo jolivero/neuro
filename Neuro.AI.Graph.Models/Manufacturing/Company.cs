@@ -31,5 +31,9 @@ public partial class Company
 
     public Guid? CreatedBy { get; set; }
 
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual ICollection<ProductionLine> ProductionLines { get; set; } = new List<ProductionLine>();
+
     public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

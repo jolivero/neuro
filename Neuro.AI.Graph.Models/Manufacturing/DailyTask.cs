@@ -26,4 +26,14 @@ public partial class DailyTask
     public Guid? MachineId { get; set; }
 
     public Guid? UserId { get; set; }
+
+    public virtual DailySchedule? Day { get; set; }
+
+    public virtual Machine? Machine { get; set; }
+
+    public virtual ICollection<ProductionRecord> ProductionRecords { get; set; } = new List<ProductionRecord>();
+
+    public virtual Station? Station { get; set; }
+
+    public virtual User? User { get; set; }
 }

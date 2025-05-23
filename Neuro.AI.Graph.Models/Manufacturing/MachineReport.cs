@@ -20,4 +20,12 @@ public partial class MachineReport
     public Guid? OperatorId { get; set; }
 
     public Guid? TechnicalId { get; set; }
+
+    public virtual Machine? Machine { get; set; }
+
+    public virtual User? Operator { get; set; }
+
+    public virtual Station? Station { get; set; }
+
+    public virtual User? Technical { get; set; }
 }

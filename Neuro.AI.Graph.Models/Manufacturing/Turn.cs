@@ -20,4 +20,8 @@ public partial class Turn
     public DateTime? UpdatedAt { get; set; }
 
     public Guid? CreatedBy { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual ICollection<TurnDetail> TurnDetails { get; set; } = new List<TurnDetail>();
 }
