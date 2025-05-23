@@ -61,11 +61,12 @@ builder.Services
 var app = builder.Build();
 
 
+app.UseSwagger();
+app.UseSwaggerUI();
+	
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseCors("EnableCORS");
+	app.UseCors("EnableCORS");
 }
 
 app.UseHttpsRedirection();

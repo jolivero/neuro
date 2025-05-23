@@ -1,0 +1,56 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "1 - build-publish",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "publish",
+        "${workspaceFolder}/Neuro.AI.Graph/Neuro.AI.Graph.csproj",
+        "-c",
+        "Release",
+        "-o",
+        "publish"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "2 - zip-publish",
+      "type": "shell",
+      "command": "zip",
+      "args": [
+        "-r",
+        "publish.zip",
+        "publish"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "dependsOn": ["1 - build-publish"]
+    },
+    {
+      "label": "3 - deploy-azure",
+      "type": "shell",
+      "command": "az",
+      "args": [
+        "webapp",
+        "deploy",
+        "--resource-group",
+        "blast.zone.manufacturing",
+        "--name",
+        "quickmake-trenco-backend",
+        "--src-path",
+        "publish.zip",
+        "--type",
+        "zip"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "dependsOn": ["2 - zip-publish"]
+    }
+  ]
+}
