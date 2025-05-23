@@ -1,0 +1,23 @@
+NAME REPOSITORY -> MACHINES
+select_machines
+select_machines_with_materials(machineId,materialId)
+select_machines_with_reports(reportId)
+select_machines_with_tickets
+create_machines
+remove_machines_with_materials(machineId,materialId)
+update_machines_with_reports(reportId)
+
+
+SELECT, VIEWS
+repo_machines
+repo_machines_with_materials(machineId,materialId)
+repo_machines_with_reports(reportId)
+repo_machines_with_tickets
+
+
+MUTATIONS
+repo_create_machines
+repo_remove_machines_with_materials(machineId,materialId)
+repo_update_machines_with_reports(reportId)
+
+
