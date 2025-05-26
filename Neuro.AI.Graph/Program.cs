@@ -34,7 +34,12 @@ builder.Services.AddTransient<ManufacturingConnector>();
 
 //Repositories
 builder.Services.AddScoped<UserRepository>();
-builder.Services.AddScoped<ManufacturingRepository>();
+builder.Services.AddScoped<CompanyRepository>();
+builder.Services.AddScoped<ProductionLineRepository>();
+builder.Services.AddScoped<GroupRepository>();
+builder.Services.AddScoped<StationRepository>();
+builder.Services.AddScoped<MachineRepository>();
+builder.Services.AddScoped<PartRepository>();
 
 builder.Services
     .AddGraphQLServer()
