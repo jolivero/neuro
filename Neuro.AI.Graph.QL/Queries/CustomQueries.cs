@@ -18,9 +18,9 @@ public class CustomQueries
 		return users.AsQueryable(); 
 	}
 
-	public async Task<IQueryable<Group>> GetAllGroupsAsync(ManufacturingRepository repository)
+	public async Task<IQueryable<Group>> GetAllGroupsAsync(GroupRepository repository)
 	{
-		var groups = await repository.GetGroups();
+		var groups = await repository.Select_groups();
 
 		return groups.AsQueryable();
 	}
