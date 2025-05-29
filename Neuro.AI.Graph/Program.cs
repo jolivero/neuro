@@ -7,6 +7,7 @@ using TropigasMobile.Backend.Data;
 using Neuro.AI.Graph.Repository;
 using Neuro.AI.Graph.Shield.Solutions;
 using Neuro.AI.Graph.Connectors;
+using Neuro.AI.Graph.QL.Mutations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +49,8 @@ builder.Services
     .AddProjections()
     .AddFiltering()
     .AddSorting()
-	.AddQueryType<Queries>() 
+	.AddQueryType<Queries>()
+	.AddMutationType<Mutations>()
 	.AddType<CustomQueriesType>() 
 	.AddInMemorySubscriptions();
 
