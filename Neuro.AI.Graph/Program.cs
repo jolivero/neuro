@@ -42,37 +42,38 @@ builder.Services.AddScoped<MachineRepository>();
 builder.Services.AddScoped<PartRepository>();
 
 builder.Services
-    .AddGraphQLServer()
+	.AddGraphQLServer()
 	.AddAuthorization()
-    .RegisterDbContextFactory<ApplicationDbContext>()
-    .AddProjections()
-    .AddFiltering()
-    .AddSorting()
-	.AddQueryType<Queries>() 
-	.AddType<CustomQueriesType>() 
+	.RegisterDbContextFactory<ApplicationDbContext>()
+	.AddProjections()
+	.AddFiltering()
+	.AddSorting()
+	.AddQueryType<Queries>()
+	.AddType<CustomQueriesType>()
 	.AddInMemorySubscriptions();
 
-	builder.Services.AddCors(options =>
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("EnableCORS", build =>
 	{
-		options.AddPolicy("EnableCORS", build =>
-		{
-			build
-				.AllowAnyOrigin()
-				.AllowAnyMethod()
-				.AllowAnyHeader();
-		});
+		build
+			.AllowAnyOrigin()
+			.AllowAnyMethod()
+			.AllowAnyHeader();
 	});
+});
 
 var app = builder.Build();
 
 
 app.UseSwagger();
 app.UseSwaggerUI();
-	
+
 if (app.Environment.IsDevelopment())
 {
-	app.UseCors("EnableCORS");
 }
+
+app.UseCors("EnableCORS");
 
 app.UseHttpsRedirection();
 app.UseKeycloakLoginAPI();
