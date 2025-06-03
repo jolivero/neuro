@@ -6,10 +6,15 @@ namespace Neuro.AI.Graph.QL.Queries
     public class EntitiesManufacturing
     {
         #region Compañias
-        #endregion
+
         public async Task<IQueryable<Company>> repo_companies(CompanyRepository repository)
         {
             return (await repository.Select_companies()).AsQueryable();
+        }
+
+        public async Task<Company?> repo_companies_with_companyId(CompanyRepository repository, string companyId)
+        {
+            return await repository.Select_companies(companyId);
         }
 
         public async Task<IQueryable<Company>> repo_companies_with_users_roles(CompanyRepository repository)
@@ -22,9 +27,10 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_companies_whith_productionLines()).AsQueryable();
         }
 
+        #endregion
+
         #region Línea de producción
 
-        #endregion
         public async Task<IQueryable<ProductionLine>> repo_productionLines(ProductionLineRepository repository)
         {
             return (await repository.Select_productionLines()).AsQueryable();
@@ -40,24 +46,33 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_productionLines_With_Details(lineId)).AsQueryable();
         }
 
-        #region Grupos[Líneas de producción]
-
         #endregion
+
+        #region Grupos [Líneas de producción]
+
         public async Task<IQueryable<Group>> repo_groups(GroupRepository repository)
         {
             return (await repository.Select_groups()).AsQueryable();
         }
 
-        #region Estaciones[Asignadas a grupos]
+        public async Task<Group?> repo_groups_with_groupId(GroupRepository repository, string groupId)
+        {
+            return await repository.Select_groups(groupId);
+        }
+
         #endregion
+
+        #region Estaciones [Asignadas a grupos]
+
         public async Task<IQueryable<Station>> repo_stations(StationRepository repository)
         {
             return (await repository.Select_stations()).AsQueryable();
         }
 
+        #endregion
+
         #region Máquinas
 
-        #endregion
         public async Task<IQueryable<Machine>> repo_machines(MachineRepository repository)
         {
             return (await repository.Select_machines()).AsQueryable();
@@ -73,12 +88,21 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_machine_with_reports(machineId)).AsQueryable();
         }
 
+        #endregion
+
         #region Piezas
 
-        #endregion
         public async Task<IQueryable<Part>> repo_parts(PartRepository repository)
         {
             return (await repository.Select_parts()).AsQueryable();
         }
+
+        public async Task<Part?> repo_parts_with_partId(PartRepository repository, string partId)
+        {
+            return await repository.Select_parts(partId);
+        }
+
+        #endregion
+
     }
 }
