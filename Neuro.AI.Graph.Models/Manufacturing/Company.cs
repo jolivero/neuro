@@ -27,7 +27,11 @@ public partial class Company
 
     public string? ContactEmail { get; set; }
 
+    public int? Available { get; set; }
+
     public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
 
     public Guid? CreatedBy { get; set; }
 

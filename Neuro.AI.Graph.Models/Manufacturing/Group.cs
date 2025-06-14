@@ -11,6 +11,10 @@ public partial class Group
 
     public DateTime? CreatedAt { get; set; }
 
+    public DateTime? UpdatedAt { get; set; }
+
+    public int? Available { get; set; }
+
     public Guid? LineId { get; set; }
 
     public Guid? CreatedBy { get; set; }

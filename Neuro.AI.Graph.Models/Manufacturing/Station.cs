@@ -11,6 +11,8 @@ public partial class Station
 
     public DateTime? CreatedAt { get; set; }
 
+    public DateTime? UpdatedAt { get; set; }
+
     public Guid? GroupId { get; set; }
 
     public Guid? CreatedBy { get; set; }
@@ -25,7 +27,7 @@ public partial class Station
 
     public virtual ICollection<MachineReport> MachineReports { get; set; } = new List<MachineReport>();
 
-    public virtual ICollection<Machine> Machines { get; set; } = new List<Machine>();
-
     public virtual ICollection<Part> Parts { get; set; } = new List<Part>();
+
+    public virtual ICollection<Machine> Machines { get; set; } = new List<Machine>();
 }

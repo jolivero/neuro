@@ -13,6 +13,10 @@ public partial class Part
 
     public DateTime? CreatedAt { get; set; }
 
+    public DateTime? UpdatedAt { get; set; }
+
+    public int? Available { get; set; }
+
     public Guid? StationId { get; set; }
 
     public Guid? CreatedBy { get; set; }
@@ -21,7 +25,7 @@ public partial class Part
 
     public virtual User? CreatedByNavigation { get; set; }
 
-    public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
+    public virtual Inventory? Inventory { get; set; }
 
     public virtual ICollection<NonCompliantPartsRecord> NonCompliantPartsRecords { get; set; } = new List<NonCompliantPartsRecord>();
 

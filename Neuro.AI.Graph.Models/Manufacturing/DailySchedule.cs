@@ -13,6 +13,8 @@ public partial class DailySchedule
 
     public DateTime? UpdatedAt { get; set; }
 
+    public int? Available { get; set; }
+
     public Guid? MonthId { get; set; }
 
     public virtual ICollection<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();

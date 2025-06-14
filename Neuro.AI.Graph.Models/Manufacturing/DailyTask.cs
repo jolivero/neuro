@@ -17,7 +17,7 @@ public partial class DailyTask
 
     public DateTime? CreatedAt { get; set; }
 
-    public DateTime? UpdateAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public Guid? DayId { get; set; }
 

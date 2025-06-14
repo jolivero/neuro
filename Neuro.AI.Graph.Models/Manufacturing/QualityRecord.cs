@@ -13,6 +13,8 @@ public partial class QualityRecord
 
     public DateTime? CreatedAt { get; set; }
 
+    public DateTime? UpdatedAt { get; set; }
+
     public Guid? NcPartId { get; set; }
 
     public Guid? CreatedBy { get; set; }

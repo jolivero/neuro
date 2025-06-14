@@ -13,6 +13,10 @@ public partial class MachineReport
 
     public string? Status { get; set; }
 
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
     public Guid? StationId { get; set; }
 
     public Guid? MachineId { get; set; }

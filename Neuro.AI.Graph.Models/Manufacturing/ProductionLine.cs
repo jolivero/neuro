@@ -15,6 +15,8 @@ public partial class ProductionLine
 
     public DateTime? UpdatedAt { get; set; }
 
+    public int? Available { get; set; }
+
     public Guid? CompanyId { get; set; }
 
     public Guid? CreatedBy { get; set; }

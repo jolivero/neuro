@@ -27,7 +27,9 @@ public partial class Machine
 
     public DateTime? CreatedAt { get; set; }
 
-    public Guid? StationId { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+
+    public int? Available { get; set; }
 
     public Guid? CreatedBy { get; set; }
 
@@ -39,5 +41,5 @@ public partial class Machine
 
     public virtual ICollection<MachineReport> MachineReports { get; set; } = new List<MachineReport>();
 
-    public virtual Station? Station { get; set; }
+    public virtual ICollection<Station> Stations { get; set; } = new List<Station>();
 }

@@ -13,6 +13,10 @@ public partial class ChangeRequestDetail
 
     public int? HoursQuantity { get; set; }
 
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
     public Guid? RequestId { get; set; }
 
     public Guid? StationId { get; set; }
