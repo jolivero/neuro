@@ -1,15 +1,19 @@
 using Data.Entities;
 using Data.Entities.Telered;
 using HotChocolate.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Neuro.AI.Graph.Models.Manufacturing;
 using TropigasMobile.Backend.Data;
 using TropigasMobile.Backend.Data.Entities;
 
 
 namespace Neuro.AI.Graph.QL.Queries;
 
-[Authorize]
+//[Authorize]
 public class EntitiesQueries
 {
+    #region AppDbContext
+
     [UseProjection]
     [UseFiltering]
     [UseSorting]
@@ -115,5 +119,46 @@ public class EntitiesQueries
     [UseFiltering]
     [UseSorting]
     public IQueryable<UserAddress> GetUserAddresses(ApplicationDbContext context) => context.UserAddresses;
+
+    #endregion
+
+    #region ManufacturingDbContext
+
+    // [UsePaging]
+    // [UseProjection]
+    // [UseFiltering]
+    // [UseSorting]
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Company> GetCompanies(ManufacturingDbContext context) => context.Companies.Include(c => c.Users).Include(c => c.ProductionLines);
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<ProductionLine> GetProductionLines(ManufacturingDbContext context) => context.ProductionLines;
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Group> GetGroups(ManufacturingDbContext context) => context.Groups;
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Station> GetStations(ManufacturingDbContext context) => context.Stations;
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Machine> GetMachines(ManufacturingDbContext context) => context.Machines.Include(m => m.MachineReports);
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Part> GetParts(ManufacturingDbContext context) => context.Parts.Include(p => p.Inventory);
+
+    #endregion
 
 }

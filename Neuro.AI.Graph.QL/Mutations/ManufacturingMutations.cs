@@ -3,7 +3,7 @@ using Neuro.AI.Graph.Repository;
 
 namespace Neuro.AI.Graph.QL.Mutations
 {
-    public class EntitiesManufacturingMutations
+    public class ManufacturingMutations
     {
         #region Compañias
 
@@ -17,6 +17,20 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Update_companies(companyId, companyDto);
         }
 
+        #endregion
+
+        #region Línea de producción
+
+        public async Task<string> repo_create_productionLine(ProductionLineRepository repository, ProductionLineDto plDto)
+        {
+            return await repository.Create_productionLine(plDto);
+        }
+
+        public async Task<string> repo_update_productionLine(ProductionLineRepository repository, string lineId, ProductionLineDto plDto)
+        {
+            return await repository.Update_productionLine(lineId, plDto);
+        }
+            
         #endregion
 
         #region Grupos
