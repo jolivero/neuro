@@ -15,18 +15,6 @@ namespace Neuro.AI.Graph.Repository
         }
         #region Queries
 
-        public async Task<IEnumerable<Group>> Select_groups()
-        {
-            var query = "SELECT * FROM Groups;";
-            return await _db.QueryAsync<Group>(query);
-        }
-
-        public async Task<Group?> Select_groups(string groupId)
-        {
-            var query = $"SELECT * FROM Groups WHERE GroupId = '{groupId}';";
-            return await _db.QueryFirstOrDefaultAsync<Group>(query);
-        }
-
         #endregion
 
         #region Mutations
@@ -34,30 +22,39 @@ namespace Neuro.AI.Graph.Repository
         public async Task<string> Create_groups(GroupDto groupDTo)
         {
             var p = new DynamicParameters();
+            p.Add("@FieldType", "Grupo");
             p.Add("@Name", groupDTo.Name);
             p.Add("@CreatedBy", groupDTo.CreatedBy);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            var query = $"INSERT INTO Groups" +
-                $"(Name, CreatedBy) " +
-                $"VALUES(@Name, @CreatedBy);";
+            var sp = "sp_create_update_fields";
 
-            await _db.ExecuteAsync(query, p);
+            await _db.ExecuteAsync(
+                sp,
+                p,
+                commandType: CommandType.StoredProcedure
+            );
 
-            return $"Group {groupDTo.Name} added";
+            return p.Get<string>("@Message");
         }
 
         public async Task<string> Update_groups(string groupId, GroupDto groupDTo)
         {
-            if (await Select_groups(groupId) == null) return "Group not found";
-
             var p = new DynamicParameters();
+            p.Add("@Id", groupId);
+            p.Add("@FieldType", "Grupo");
             p.Add("@Name", groupDTo.Name);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            var query = $"UPDATE Groups SET Name = @Name WHERE GroupId = '{groupId}';";
+            var sp = "sp_create_update_fields";
 
-            await _db.ExecuteAsync(query, p);
+            await _db.ExecuteAsync(
+                sp,
+                p,
+                commandType: CommandType.StoredProcedure
+            );
 
-            return $"Group {groupId} Updated";
+            return p.Get<string>("@Message");
         }
 
         #endregion

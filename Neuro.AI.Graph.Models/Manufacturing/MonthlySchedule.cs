@@ -17,6 +17,12 @@ public partial class MonthlySchedule
 
     public int ExtraDays { get; set; }
 
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
+    public int? Available { get; set; }
+
     public Guid? LineId { get; set; }
 
     public Guid? TurnId { get; set; }

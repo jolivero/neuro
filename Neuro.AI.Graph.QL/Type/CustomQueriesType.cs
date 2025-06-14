@@ -19,10 +19,5 @@ public class CustomQueriesType : ObjectType<CustomQueries>
 			.AddFilterSortingPagination<UserDto>()
 			.UseCustomQueryable<UserDto>()
 			.Type<CustomType<UserDto>>();
-
-		descriptor.Field(t => t.GetAllGroupsAsync(default!))
-			.AddFilterSortingPagination<Group>()
-			.UseCustomQueryable<Group>()
-			.Type<CustomType<Group>>();
     }
 }

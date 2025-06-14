@@ -29,6 +29,10 @@ public partial class User
 
     public DateTime? CreatedAt { get; set; }
 
+    public DateTime? UpdatedAt { get; set; }
+
+    public int? Available { get; set; }
+
     public Guid? CompanyId { get; set; }
 
     public Guid? RolId { get; set; }

@@ -19,6 +19,8 @@ public partial class Turn
 
     public DateTime? UpdatedAt { get; set; }
 
+    public int? Available { get; set; }
+
     public Guid? CreatedBy { get; set; }
 
     public virtual User? CreatedByNavigation { get; set; }

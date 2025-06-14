@@ -4,5 +4,5 @@ public class Queries
     public AuthQueries Auth => new();
     public CustomQueries Custom => new();
     public EntitiesQueries Entities => new();
-    public EntitiesManufacturing Entitties_Manufacturing => new();
+    public ManufacturingQueries ManufacturingQueries => new();
 }

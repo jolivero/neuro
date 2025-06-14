@@ -13,6 +13,8 @@ public partial class Inventory
 
     public DateTime? CreatedAt { get; set; }
 
+    public DateTime? UpdatedAt { get; set; }
+
     public Guid? PartId { get; set; }
 
     public virtual Part? Part { get; set; }

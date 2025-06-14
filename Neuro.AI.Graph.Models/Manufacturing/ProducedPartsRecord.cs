@@ -11,6 +11,8 @@ public partial class ProducedPartsRecord
 
     public DateTime? CreatedAt { get; set; }
 
+    public DateTime? UpdatedAt { get; set; }
+
     public Guid? ProductionId { get; set; }
 
     public Guid? PartId { get; set; }

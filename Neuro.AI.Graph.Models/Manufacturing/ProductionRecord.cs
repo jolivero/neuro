@@ -19,6 +19,8 @@ public partial class ProductionRecord
 
     public DateTime? CreatedAt { get; set; }
 
+    public DateTime? UpdatedAt { get; set; }
+
     public Guid? TaskId { get; set; }
 
     public Guid? CreatedBy { get; set; }

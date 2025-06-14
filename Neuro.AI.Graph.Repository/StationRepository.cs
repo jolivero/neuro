@@ -17,18 +17,6 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<IEnumerable<Station>> Select_stations()
-        {
-            var query = "SELECT * FROM Stations";
-            return await _db.QueryAsync<Station>(query);
-        }
-
-        public async Task<Station?> Select_stations(string stationId)
-        {
-            var query = $"SELECT * FROM Stations WHERE StationId = '{stationId}';";
-            return await _db.QueryFirstOrDefaultAsync<Station>(query);
-        }
-
         #endregion
 
         #region Mutations
@@ -36,30 +24,39 @@ namespace Neuro.AI.Graph.Repository
         public async Task<string> Create_stations(StationDto stationDto)
         {
             var p = new DynamicParameters();
+            p.Add("@FieldType", "Estación");
             p.Add("@Name", stationDto.Name);
             p.Add("@CreatedBy", stationDto.CreatedBy);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            var query = "INSERT INTO Stations" +
-                "(Name, CreatedBy) " +
-                "VALUES (@Name, @CreatedBy);";
+            var sp = "sp_create_update_fields";
 
-            await _db.ExecuteAsync(query, p);
+            await _db.ExecuteAsync(
+                sp,
+                p,
+                commandType: CommandType.StoredProcedure
+            );
 
-            return "New station added";
+            return p.Get<string>("@Message");
         }
 
         public async Task<string> Update_stations(string stationId, StationDto stationDto)
         {
-            if (await Select_stations(stationId) == null) return "Station not found";
-
             var p = new DynamicParameters();
+            p.Add("@Id", stationId);
+            p.Add("@FieldType", "Estación");
             p.Add("@Name", stationDto.Name);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            var query = $"UPDATE Stations SET Name = @Name WHERE StationId = '{stationId}';";
+            var sp = "sp_create_update_fields";
 
-            await _db.ExecuteAsync(query, p);
+            await _db.ExecuteAsync(
+                sp,
+                p,
+                commandType: CommandType.StoredProcedure
+            );
 
-            return $"Station {stationDto.Name} updated";
+            return p.Get<string>("@Message");
         }
 
         #endregion
