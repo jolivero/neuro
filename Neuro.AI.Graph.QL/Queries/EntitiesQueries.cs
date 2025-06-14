@@ -124,11 +124,6 @@ public class EntitiesQueries
 
     #region ManufacturingDbContext
 
-    // [UsePaging]
-    // [UseProjection]
-    // [UseFiltering]
-    // [UseSorting]
-
     [UseProjection]
     [UseFiltering]
     [UseSorting]

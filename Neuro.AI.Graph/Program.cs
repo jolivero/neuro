@@ -54,29 +54,29 @@ builder.Services
     .AddSorting()
 	.AddQueryType<Queries>()
 	.AddMutationType<Mutations>()
-	.AddType<CustomQueriesType>() 
+	.AddType<CustomQueriesType>()
 	.AddInMemorySubscriptions();
 
-	builder.Services.AddCors(options =>
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("EnableCORS", build =>
 	{
-		options.AddPolicy("EnableCORS", build =>
-		{
-			build
-				.AllowAnyOrigin()
-				.AllowAnyMethod()
-				.AllowAnyHeader();
-		});
+		build
+			.AllowAnyOrigin()
+			.AllowAnyMethod()
+			.AllowAnyHeader();
 	});
+});
 
 var app = builder.Build();
 
 
 app.UseSwagger();
 app.UseSwaggerUI();
-	
+
 if (app.Environment.IsDevelopment())
 {
-	app.UseCors("EnableCORS");
+  app.UseCors("EnableCORS");
 }
 
 app.UseHttpsRedirection();
