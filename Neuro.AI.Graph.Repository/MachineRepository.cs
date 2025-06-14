@@ -17,44 +17,6 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<IEnumerable<Machine>> Select_machines()
-        {
-            var query = "SELECT * FROM Machines";
-            var machines = await _db.QueryAsync<Machine>(query);
-            return machines;
-        }
-
-        public async Task<IEnumerable<Machine>> Select_machines(string machineId)
-        {
-            var query = $"SELECT * FROM Machines WHERE MachineId = '{machineId}'";
-            return await _db.QueryAsync<Machine>(query);
-        }
-
-        public async Task<IEnumerable<Machine>> Select_machine_with_reports(string machineId)
-        {
-            var query = $"SELECT * FROM Machines AS m " +
-                $"JOIN MachineReports mr ON mr.MachineId = m.MachineId " +
-                $"WHERE m.MachineId = '{machineId}'";
-
-            var machineDict = new Dictionary<string, Machine>();
-
-            await _db.QueryAsync<Machine, MachineReport, Machine>(query, (machine, machineReport) =>
-            {
-                if (!machineDict.TryGetValue(machine.MachineId.ToString(), out var machineData))
-                {
-                    machineData = machine;
-                    machineData.MachineReports = new List<MachineReport>();
-                    machineDict.Add(machine.MachineId.ToString(), machineData);
-                }
-
-                if (machineReport != null) machineData.MachineReports.Add(machineReport);
-
-                return machineData;
-            }, splitOn: "ReportId");
-
-            return machineDict.Values;
-        }
-
         #endregion
 
         #region Mutations
@@ -72,23 +34,23 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@HoursPerCut", machineDto.HoursPerCut);
             p.Add("@Status", machineDto.Status);
             p.Add("@CreatedBy", machineDto.CreatedBy);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            var query = @"INSERT INTO Machines
-                (Name, Type, EnergyConsumption, MaintenancePeriod, Velocity, 
-                MinOperator, MaxOperator, HoursPerCut, Status, CreatedBy) 
-                VALUES (@Name, @Type, @EnergyConsumption, @MaintenancePeriod, 
-                @Velocity, @MinOperator, @MaxOperator, @HoursPerCut, @Status, @CreatedBy);";
+            var sp = "sp_create_update_machine";
 
-            await _db.ExecuteAsync(query, p);
+            await _db.ExecuteAsync(
+                sp,
+                p,
+                commandType: CommandType.StoredProcedure
+            );
 
-            return "New machine added";
+            return p.Get<string>("@Message");
         }
 
         public async Task<string> Update_machines(string machineId, MachineDto machineDto)
         {
-            if (await Select_machines(machineId) == null) return "Machine not found";
-
             var p = new DynamicParameters();
+            p.Add("@MachineId", machineId);
             p.Add("@Name", machineDto.Name);
             p.Add("@Type", machineDto.Type);
             p.Add("@EnergyConsumption", machineDto.EnergyConsumption);
@@ -98,14 +60,17 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@MaxOperator", machineDto.MaxOperator);
             p.Add("@HoursPerCut", machineDto.HoursPerCut);
             p.Add("@Status", machineDto.Status);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            var query = @$"UPDATE Machines
-                SET Name = @Name, Type = @Type, EnergyConsumption = @EnergyConsumption, MaintenancePeriod = @MaintenancePeriod, 
-                Velocity = @Velocity, MinOperator = @MinOperator, MaxOperator = @MaxOperator, HoursPerCut = @HoursPerCut, 
-                Status = @Status WHERE MachineId = '{machineId}';";
+            var sp = "sp_create_update_machine";
 
-            await _db.ExecuteAsync(query, p);
-            return $"Machine {machineId} updated";
+            await _db.ExecuteAsync(
+                sp,
+                p,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return p.Get<string>("@Message");
         }
 
         #endregion
