@@ -8,6 +8,7 @@ using Neuro.AI.Graph.Repository;
 using Neuro.AI.Graph.Shield.Solutions;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.QL.Mutations;
+using Neuro.AI.Graph.Models.Manufacturing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ var c = builder.Configuration;
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(c.GetConnectionString("Cnn_TropigasMobile")));
+builder.Services.AddPooledDbContextFactory<ManufacturingDbContext>(options => options.UseSqlServer(c.GetConnectionString("Cnn_Manufacturing")));
 
 builder.Services.AddKeycloakWebApiAuthentication(c.GetSection("KeycloakSettings"));
 builder.Services.AddSingleton(c.ConfigureSection<KeycloakSettings>());
@@ -43,9 +45,10 @@ builder.Services.AddScoped<MachineRepository>();
 builder.Services.AddScoped<PartRepository>();
 
 builder.Services
-    .AddGraphQLServer()
+	.AddGraphQLServer()
 	.AddAuthorization()
-    .RegisterDbContextFactory<ApplicationDbContext>()
+	.RegisterDbContextFactory<ApplicationDbContext>()
+	.RegisterDbContextFactory<ManufacturingDbContext>()
     .AddProjections()
     .AddFiltering()
     .AddSorting()
