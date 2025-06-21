@@ -19,6 +19,15 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #endregion
 
+        #region Usuarios
+
+        public async Task<string> repo_create_update_user(UserRepository repository, UserIpcDto userIpcDto)
+        {
+            return await repository.Create_Update_user(userIpcDto);
+        }
+
+        #endregion
+
         #region Línea de producción
 
         public async Task<string> repo_create_productionLine(ProductionLineRepository repository, ProductionLineDto plDto)
@@ -29,6 +38,11 @@ namespace Neuro.AI.Graph.QL.Mutations
         public async Task<string> repo_update_productionLine(ProductionLineRepository repository, string lineId, ProductionLineDto plDto)
         {
             return await repository.Update_productionLine(lineId, plDto);
+        }
+
+        public async Task<string> repo_create_productionLine_steps(ProductionLineRepository repository, ProductionLineConfigDto plConfigDto)
+        {
+            return await repository.Create_productionLine_steps(plConfigDto);
         }
             
         #endregion

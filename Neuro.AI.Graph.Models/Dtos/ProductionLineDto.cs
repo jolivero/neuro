@@ -6,4 +6,19 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string CompanyId { get; set; } = string.Empty;
         public string? CreatedBy { get; set; }
     }
+
+    public class ProductionLineConfigDto
+    {
+        public string LineId { get; set; } = string.Empty;
+        public List<Steps> Steps { get; set; } = [];
+    }
+
+    public class Steps
+    {
+        public string GroupId { get; set; } = string.Empty;
+        public string StationId { get; set; } = string.Empty;
+        public string MachineId { get; set; } = string.Empty;
+        public string? PrevMachineId { get; set; } = null;
+        public string PartId { get; set; } = string.Empty;
+    }
 }

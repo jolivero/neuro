@@ -1,4 +1,5 @@
-﻿using Neuro.AI.Graph.Models.Manufacturing;
+﻿using Neuro.AI.Graph.Models.Dtos;
+using Neuro.AI.Graph.Models.Manufacturing;
 using Neuro.AI.Graph.Repository;
 
 namespace Neuro.AI.Graph.QL.Queries
@@ -25,15 +26,20 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Estaciones [Asignadas a grupos]
 
-        #endregion
-
-        #region Máquinas
-
-        #endregion
-
-        #region Piezas
+        public async Task<StationConfigInfo?> repo_station_with_configInfo(StationRepository repository, string stationId, string machineId, string partId)
+        {
+            return await repository.Select_station_with_configInfo(stationId, machineId, partId);
+        }
 
         #endregion
 
-    }
+            #region Máquinas
+
+            #endregion
+
+            #region Piezas
+
+            #endregion
+
+        }
 }

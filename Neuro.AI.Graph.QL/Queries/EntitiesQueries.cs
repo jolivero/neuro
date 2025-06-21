@@ -1,3 +1,4 @@
+using System.Reflection.PortableExecutable;
 using Data.Entities;
 using Data.Entities.Telered;
 using HotChocolate.Authorization;
@@ -132,6 +133,11 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
+    public IQueryable<Skill> GetSkills(ManufacturingDbContext context) => context.Skills;
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
     public IQueryable<ProductionLine> GetProductionLines(ManufacturingDbContext context) => context.ProductionLines;
 
     [UseProjection]
@@ -147,7 +153,7 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Machine> GetMachines(ManufacturingDbContext context) => context.Machines.Include(m => m.MachineReports);
+    public IQueryable<Models.Manufacturing.Machine> GetMachines(ManufacturingDbContext context) => context.Machines.Include(m => m.MachineReports);
 
     [UseProjection]
     [UseFiltering]
