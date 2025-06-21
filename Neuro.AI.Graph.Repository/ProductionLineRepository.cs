@@ -111,6 +111,32 @@ namespace Neuro.AI.Graph.Repository
             return p.Get<string>("@Message");
         }
 
+        public async Task<string> Create_productionLine_steps(ProductionLineConfigDto plConfigDto)
+        {
+            var sp = "sp_productionLine_steps";
+            var p = new DynamicParameters();
+            p.Add("@LineId", plConfigDto.LineId);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            foreach (var step in plConfigDto.Steps)
+            {
+                p.Add("@GroupId", step.GroupId);
+                p.Add("@StationId", step.StationId);
+                p.Add("@MachineId", step.MachineId);
+                p.Add("@PrevMachineId", step.PrevMachineId);
+                p.Add("@PartId", step.PartId);
+                p.Add("@Action", string.IsNullOrEmpty(step.PrevMachineId) ? "insertar" : "actualizar");
+
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+
+            return p.Get<string>("@Message");
+        }
+
         #endregion
     }
 }

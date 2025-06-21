@@ -17,6 +17,31 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
+        public async Task<StationConfigInfo?> Select_station_with_configInfo(string stationId, string machineId, string partId)
+        {
+            var sp = "sp_select_station_config";
+            var p = new DynamicParameters();
+            p.Add("@StationId", stationId);
+            p.Add("@MachineId", machineId);
+            p.Add("@PartId", partId);
+
+            var response = await _db.QueryAsync<StationConfigInfo, MachineDto, PartDto, StationConfigInfo>(
+                sp,
+                (s, m, p) =>
+                {
+                    s.Machine = m;
+                    s.Part = p;
+
+                    return s;
+                },
+                p,
+                splitOn: "MachineId, PartId",
+                commandType: CommandType.StoredProcedure
+            );
+
+            return response.FirstOrDefault();
+        }
+    
         #endregion
 
         #region Mutations
