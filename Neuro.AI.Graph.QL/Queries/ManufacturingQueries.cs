@@ -17,6 +17,11 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_productionLines_With_Details(lineId)).AsQueryable();
         }
 
+        public async Task<IQueryable<ProductionLineMachineHoursPerCut>> repo_productionLines_with_machineHoursCut(ProductionLineRepository repository, string lineId)
+        {
+            return (await repository.Select_productionLines_With_MachineHoursPerCut(lineId)).AsQueryable();
+        }
+
         #endregion
 
         #region Grupos [Líneas de producción]
