@@ -29,5 +29,7 @@ public partial class Station
 
     public virtual ICollection<Part> Parts { get; set; } = new List<Part>();
 
+    public virtual ICollection<ProductionLineRecipe> ProductionLineRecipes { get; set; } = new List<ProductionLineRecipe>();
+
     public virtual ICollection<Machine> Machines { get; set; } = new List<Machine>();
 }

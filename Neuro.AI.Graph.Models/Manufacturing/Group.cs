@@ -23,5 +23,7 @@ public partial class Group
 
     public virtual ProductionLine? Line { get; set; }
 
+    public virtual ICollection<ProductionLineRecipe> ProductionLineRecipes { get; set; } = new List<ProductionLineRecipe>();
+
     public virtual ICollection<Station> Stations { get; set; } = new List<Station>();
 }
