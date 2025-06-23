@@ -41,5 +41,7 @@ public partial class Machine
 
     public virtual ICollection<MachineReport> MachineReports { get; set; } = new List<MachineReport>();
 
+    public virtual ICollection<ProductionLineRecipe> ProductionLineRecipes { get; set; } = new List<ProductionLineRecipe>();
+
     public virtual ICollection<Station> Stations { get; set; } = new List<Station>();
 }
