@@ -45,6 +45,8 @@ public partial class ManufacturingDbContext : DbContext
 
     public virtual DbSet<ProductionLine> ProductionLines { get; set; }
 
+    public virtual DbSet<ProductionLineRecipe> ProductionLineRecipes { get; set; }
+
     public virtual DbSet<ProductionRecord> ProductionRecords { get; set; }
 
     public virtual DbSet<QualityClasification> QualityClasifications { get; set; }
@@ -465,6 +467,38 @@ public partial class ManufacturingDbContext : DbContext
                 .HasConstraintName("FK__Productio__Creat__3C94E422");
         });
 
+        modelBuilder.Entity<ProductionLineRecipe>(entity =>
+        {
+            entity.HasKey(e => e.RecipeId).HasName("PK__Producti__FDD988B0620C6831");
+
+            entity.Property(e => e.RecipeId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.RequiredQuantity).HasColumnType("decimal(10, 3)");
+
+            entity.HasOne(d => d.Group).WithMany(p => p.ProductionLineRecipes)
+                .HasForeignKey(d => d.GroupId)
+                .HasConstraintName("FK__Productio__Group__5748DA5E");
+
+            entity.HasOne(d => d.Line).WithMany(p => p.ProductionLineRecipes)
+                .HasForeignKey(d => d.LineId)
+                .HasConstraintName("FK__Productio__LineI__5654B625");
+
+            entity.HasOne(d => d.Machine).WithMany(p => p.ProductionLineRecipes)
+                .HasForeignKey(d => d.MachineId)
+                .HasConstraintName("FK__Productio__Machi__593122D0");
+
+            entity.HasOne(d => d.Part).WithMany(p => p.ProductionLineRecipeParts)
+                .HasForeignKey(d => d.PartId)
+                .HasConstraintName("FK__Productio__PartI__5A254709");
+
+            entity.HasOne(d => d.PreviousPart).WithMany(p => p.ProductionLineRecipePreviousParts)
+                .HasForeignKey(d => d.PreviousPartId)
+                .HasConstraintName("FK__Productio__previ__5B196B42");
+
+            entity.HasOne(d => d.Station).WithMany(p => p.ProductionLineRecipes)
+                .HasForeignKey(d => d.StationId)
+                .HasConstraintName("FK__Productio__Stati__583CFE97");
+        });
+
         modelBuilder.Entity<ProductionRecord>(entity =>
         {
             entity.HasKey(e => e.ProductionId).HasName("PK__Producti__D5D9A2D58D6FD574");
@@ -658,7 +692,7 @@ public partial class ManufacturingDbContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.FirstName).HasMaxLength(255);
             entity.Property(e => e.LastName).HasMaxLength(255);
-            entity.Property(e => e.Password).HasMaxLength(255);
+            entity.Property(e => e.Password).HasMaxLength(200);
             entity.Property(e => e.Phone).HasMaxLength(255);
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
