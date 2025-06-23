@@ -71,6 +71,20 @@ namespace Neuro.AI.Graph.Repository
             return productionLineDict.Values;
         }
 
+
+
+        public async Task<IEnumerable<ProductionLineMachineHoursPerCut>> Select_productionLines_With_MachineHoursPerCut(string lineId)
+        {
+            var sp = "sp_productionLines_with_machineHoursPerCut";
+            var p = new DynamicParameters();
+            p.Add("@LineId", lineId);
+
+            return await _db.QueryAsync<ProductionLineMachineHoursPerCut>(
+                sp,
+                p,
+                commandType: CommandType.StoredProcedure
+            );
+        }
         #endregion
 
         #region Mutations
@@ -113,7 +127,7 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Create_productionLine_steps(ProductionLineConfigDto plConfigDto)
         {
-            var sp = "sp_productionLine_steps";
+            var sp = "sp_create_productionLine_steps";
             var p = new DynamicParameters();
             p.Add("@LineId", plConfigDto.LineId);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
@@ -125,6 +139,8 @@ namespace Neuro.AI.Graph.Repository
                 p.Add("@MachineId", step.MachineId);
                 p.Add("@PrevMachineId", step.PrevMachineId);
                 p.Add("@PartId", step.PartId);
+                p.Add("@PrevPartId", step.PrevPartId);
+                p.Add("@Quantity", step.RequiredQuantity);
                 p.Add("@Action", string.IsNullOrEmpty(step.PrevMachineId) ? "insertar" : "actualizar");
 
                 await _db.ExecuteAsync(
@@ -136,7 +152,6 @@ namespace Neuro.AI.Graph.Repository
 
             return p.Get<string>("@Message");
         }
-
         #endregion
     }
 }
