@@ -6,7 +6,6 @@ using HotChocolate.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
-using Neuro.AI.Graph.Models.Response;
 using TropigasMobile.Backend.Data;
 using TropigasMobile.Backend.Data.Entities;
 
@@ -136,37 +135,17 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Skill> GetSkills(ManufacturingDbContext context) => context.Skills;
-
-    // [UseProjection]
-    // [UseFiltering]
-    // [UseSorting]
-    // public IQueryable<ProductionLine> GetProductionLines(ManufacturingDbContext context) => context.ProductionLines;
+    public IQueryable<User> GetUsersInfo(ManufacturingDbContext context) => context.Users.Include(u => u.UsersSkills);
 
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<EFProductionLineList> GetProductionLines(ManufacturingDbContext context)
-    {
-        var response =
-            from pl in context.ProductionLines
-            join u in context.Users on pl.CreatedBy equals u.UserId
-            join c in context.Companies on pl.CompanyId equals c.CompanyId
-            select new EFProductionLineList
-            {
-                LineId = pl.LineId.ToString(),
-                Name = pl.Name,
-                Status = pl.Status.Value,
-                CreatedAt = pl.CreatedAt.Value,
-                UpdatedAt = pl.UpdatedAt.Value,
-                CompanyId = c.CompanyName,
-                Company = c.CompanyName,
-                CreatedBy = $"{u.FirstName} {u.LastName}",
-                UserId = u.UserId.ToString()
-            };
+    public IQueryable<Skill> GetSkills(ManufacturingDbContext context) => context.Skills;
 
-        return response;
-    }
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<ProductionLine> GetProductionLines(ManufacturingDbContext context) => context.ProductionLines;
 
     [UseProjection]
     [UseFiltering]

@@ -23,6 +23,7 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Create_companies(CompanyDto company)
         {
+            var sp = "sp_create_update_company";
             var p = new DynamicParameters();
             p.Add("@CompanyName", company.CompanyName);
             p.Add("@CompanyRuc", company.CompanyRuc);
@@ -35,9 +36,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@ContactPhone", company.ContactPhone);
             p.Add("@ContactEmail", company.ContactEmail);
             p.Add("@CreatedBy", company.CreatedBy);
-            p.Add("@Message", dbType: DbType.Single, size: 100, direction: ParameterDirection.Output);
-
-            var sp = "sp_create_update_company";
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             await _db.ExecuteAsync(sp, p);
 
@@ -46,8 +45,9 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Update_companies(string companyId, CompanyDto company)
         {
+            var sp = "sp_create_update_company";
             var p = new DynamicParameters();
-             p.Add("@CompanyId", companyId);
+            p.Add("@CompanyId", companyId);
             p.Add("@CompanyName", company.CompanyName);
             p.Add("@CompanyRuc", company.CompanyRuc);
             p.Add("@CompanyAddress", company.CompanyAddress);
@@ -58,9 +58,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@ContactName", company.ContactName);
             p.Add("@ContactPhone", company.ContactPhone);
             p.Add("@ContactEmail", company.ContactEmail);
-            p.Add("@Message", dbType: DbType.Single, size: 100, direction: ParameterDirection.Output);
-
-            var sp = "sp_create_update_company";
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             await _db.ExecuteAsync(sp, p);
 
