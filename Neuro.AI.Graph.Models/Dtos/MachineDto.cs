@@ -14,4 +14,15 @@
         public string? StationId { get; set; }
         public string? CreatedBy { get; set; }
     }
+
+    public class MachineReportDto
+    {
+        public string Type { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public string? Status { get; set; }
+        public string StationId { get; set; } = string.Empty;
+        public string MachineId { get; set; } = string.Empty;
+        public string OperatorId { get; set; } = string.Empty;
+        public string? TechnicalId { get; set; }
+    }
 }

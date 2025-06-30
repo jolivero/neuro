@@ -73,6 +73,45 @@ namespace Neuro.AI.Graph.Repository
             return p.Get<string>("@Message");
         }
 
+        public async Task<string> Create_machine_report(MachineReportDto machineReportDto)
+        {
+            var sp = "sp_create_update_machine_report";
+            var p = new DynamicParameters();
+            p.Add("@Type", machineReportDto.Type);
+            p.Add("@StationId", machineReportDto.StationId);
+            p.Add("@MachineId", machineReportDto.MachineId);
+            p.Add("@OperatorId", machineReportDto.OperatorId);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            await _db.ExecuteAsync(
+                sp,
+                p,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return p.Get<string>("@Message");
+        }
+
+        public async Task<string> Update_machine_report(string reportId, MachineReportDto machineReportDto)
+        {
+            var sp = "sp_create_update_machine_report";
+            var p = new DynamicParameters();
+            p.Add("@ReportId", reportId);
+            p.Add("@Type", machineReportDto.Type);
+            p.Add("@Description", machineReportDto.Description);
+            p.Add("@Status", machineReportDto.Status);
+            p.Add("@TechnicalId", machineReportDto.TechnicalId);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            await _db.ExecuteAsync(
+                sp,
+                p,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return p.Get<string>("@Message");
+        }
+
         #endregion
 
     }
