@@ -165,6 +165,11 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
+    public IQueryable<MachineReport> GetMachineReports(ManufacturingDbContext context) => context.MachineReports.OrderBy(mr => mr.CreatedAt);
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
     public IQueryable<Part> GetParts(ManufacturingDbContext context) => context.Parts.Include(p => p.Inventory);
 
     #endregion
