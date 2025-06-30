@@ -10,6 +10,15 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #endregion
 
+        #region Habilidades
+
+        public async Task<IQueryable<string>> repo_skills_options(UserRepository repository)
+        {
+            return (await repository.Select_skill_options()).AsQueryable();
+        }
+
+        #endregion
+
         #region Línea de producción
 
         public async Task<IQueryable<ProductionLine>> repo_productionLines_with_details(ProductionLineRepository repository, string lineId)
@@ -38,13 +47,21 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #endregion
 
-            #region Máquinas
+        #region Máquinas
 
-            #endregion
+        #endregion
 
-            #region Piezas
+        #region Piezas
 
-            #endregion
+        #endregion
 
+        #region Turnos/Detalles
+
+        public async Task<IQueryable<Turn>> repo_turns_with_details(TurnRepository repository)
+        {
+            return (await repository.Select_turns_with_details()).AsQueryable();
         }
+
+        #endregion
+    }
 }

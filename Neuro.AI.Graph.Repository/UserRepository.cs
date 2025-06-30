@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.Dtos;
+using Neuro.AI.Graph.Models.Manufacturing;
+using Microsoft.EntityFrameworkCore;
 
 public class UserDto
 {
@@ -52,9 +54,23 @@ public class UserRepository
 
 	#endregion
 
-	#region Manufactoring
+	#region ManufactoringQueries
 
-	public async Task<string> Create_Update_user(UserIpcDto userIpcDto)
+	public async Task<IEnumerable<string>> Select_skill_options()
+	{
+		var sp = "sp_select_skill_level_options";
+
+		return await _db.QueryAsync<string>(
+			sp,
+			commandType: CommandType.StoredProcedure
+		);
+	}
+
+	#endregion
+
+	#region ManufactoringMutations
+
+	public async Task<string> Create_update_user(UserIpcDto userIpcDto)
 	{
 		var sp = "sp_create_update_user";
 		var p = new DynamicParameters();
@@ -76,6 +92,28 @@ public class UserRepository
 			p,
 			commandType: CommandType.StoredProcedure
 		);
+
+		return p.Get<string>("@Message");
+	}
+
+	public async Task<string> Update_user_skills(UserSkillsDto userSkillsDto)
+	{
+		var sp = "sp_update_user_skills";
+		var p = new DynamicParameters();
+		p.Add("@UserId", userSkillsDto.UserId);
+
+		foreach (var userSkill in userSkillsDto.Skills)
+		{
+			p.Add("@SkillId", userSkill.SkillId);
+			p.Add("@SkillLevel", userSkill.Level);
+			p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+			await _db.ExecuteAsync(
+				sp,
+				p,
+				commandType: CommandType.StoredProcedure
+			);
+		}
 
 		return p.Get<string>("@Message");
 	}
