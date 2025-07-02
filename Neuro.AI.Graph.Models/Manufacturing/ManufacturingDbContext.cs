@@ -692,8 +692,10 @@ public partial class ManufacturingDbContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.FirstName).HasMaxLength(255);
             entity.Property(e => e.LastName).HasMaxLength(255);
-            entity.Property(e => e.Password).HasMaxLength(200);
             entity.Property(e => e.Phone).HasMaxLength(255);
+            entity.Property(e => e.Rol)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -702,10 +704,6 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasOne(d => d.Company).WithMany(p => p.Users)
                 .HasForeignKey(d => d.CompanyId)
                 .HasConstraintName("FK__Users__CompanyId__22D5121F");
-
-            entity.HasOne(d => d.Rol).WithMany(p => p.Users)
-                .HasForeignKey(d => d.RolId)
-                .HasConstraintName("FK__Users__RolId__23C93658");
         });
 
         modelBuilder.Entity<UsersSkill>(entity =>

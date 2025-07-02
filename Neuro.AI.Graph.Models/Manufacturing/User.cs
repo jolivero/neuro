@@ -17,8 +17,6 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
-    public string? Password { get; set; }
-
     public string? Phone { get; set; }
 
     public string? Address { get; set; }
@@ -35,7 +33,7 @@ public partial class User
 
     public Guid? CompanyId { get; set; }
 
-    public Guid? RolId { get; set; }
+    public string? Rol { get; set; }
 
     public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
 
@@ -62,8 +60,6 @@ public partial class User
     public virtual ICollection<ProductionLine> ProductionLines { get; set; } = new List<ProductionLine>();
 
     public virtual ICollection<ProductionRecord> ProductionRecords { get; set; } = new List<ProductionRecord>();
-
-    public virtual Role? Rol { get; set; }
 
     public virtual ICollection<Station> Stations { get; set; } = new List<Station>();
 
