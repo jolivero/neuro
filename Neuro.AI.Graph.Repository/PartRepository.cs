@@ -24,7 +24,6 @@ namespace Neuro.AI.Graph.Repository
         {
 
             var sp = "sp_create_update_part_inventory";
-
             var p = new DynamicParameters();
             p.Add("@PName", partDto.Name);
             p.Add("@Code", partDto.Code);

@@ -21,13 +21,12 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Create_groups(GroupDto groupDTo)
         {
+            var sp = "sp_create_update_fields";
             var p = new DynamicParameters();
             p.Add("@FieldType", "Grupo");
             p.Add("@Name", groupDTo.Name);
             p.Add("@CreatedBy", groupDTo.CreatedBy);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
-
-            var sp = "sp_create_update_fields";
 
             await _db.ExecuteAsync(
                 sp,
@@ -40,13 +39,12 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Update_groups(string groupId, GroupDto groupDTo)
         {
+            var sp = "sp_create_update_fields";
             var p = new DynamicParameters();
             p.Add("@Id", groupId);
             p.Add("@FieldType", "Grupo");
             p.Add("@Name", groupDTo.Name);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
-
-            var sp = "sp_create_update_fields";
 
             await _db.ExecuteAsync(
                 sp,

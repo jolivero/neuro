@@ -23,7 +23,12 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         public async Task<string> repo_create_update_user(UserRepository repository, UserIpcDto userIpcDto)
         {
-            return await repository.Create_Update_user(userIpcDto);
+            return await repository.Create_update_user(userIpcDto);
+        }
+
+        public async Task<string> repo_create_update_userSkills(UserRepository repository, UserSkillsDto userSkillsDto)
+        {
+            return await repository.Update_user_skills(userSkillsDto);
         }
 
         #endregion
@@ -44,7 +49,7 @@ namespace Neuro.AI.Graph.QL.Mutations
         {
             return await repository.Create_productionLine_steps(plConfigDto);
         }
-            
+
         #endregion
 
         #region Grupos
@@ -87,6 +92,16 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Update_machines(machineId, machineDto);
         }
 
+        public async Task<string> repo_create_machine_report(MachineRepository repository, MachineReportDto machineReportDto)
+        {
+            return await repository.Create_machine_report(machineReportDto);
+        }
+
+        public async Task<string> repo_update_machine_report(MachineRepository repository, string reportId, MachineReportDto machineReportDto)
+        {
+            return await repository.Update_machine_report(reportId, machineReportDto);
+        }
+
         #endregion
 
         #region Piezas
@@ -102,5 +117,21 @@ namespace Neuro.AI.Graph.QL.Mutations
         }
 
         #endregion
+
+        #region Turnos-Detalles
+
+        public async Task<string> repo_create_turn_with_details(TurnRepository repository, TurnDto turnDto)
+        {
+            return await repository.Create_turns(turnDto);
+        }
+
+        public async Task<string> repo_update_turn_with_details(TurnRepository repository, string turnId, TurnDto turnDto)
+        {
+            return await repository.Update_turns(turnId, turnDto);
+        }
+
+        #endregion
+
+
     }
 }
