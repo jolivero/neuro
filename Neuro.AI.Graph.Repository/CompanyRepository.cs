@@ -38,9 +38,16 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@CreatedBy", company.CreatedBy);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            await _db.ExecuteAsync(sp, p);
-
-            return p.Get<string>("@Message");
+            try
+            {
+                await _db.ExecuteAsync(sp, p);
+    
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public async Task<string> Update_companies(string companyId, CompanyDto company)
@@ -60,9 +67,16 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@ContactEmail", company.ContactEmail);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            await _db.ExecuteAsync(sp, p);
+            try
+            {
+                await _db.ExecuteAsync(sp, p);
 
-            return p.Get<string>("@Message");
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         #endregion

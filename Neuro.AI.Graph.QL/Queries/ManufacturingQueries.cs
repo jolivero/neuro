@@ -1,4 +1,5 @@
-﻿using Neuro.AI.Graph.Models.Dtos;
+﻿using Neuro.AI.Graph.Models.DbResponse;
+using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
 using Neuro.AI.Graph.Repository;
 
@@ -21,14 +22,18 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Línea de producción
 
+        public async Task<IQueryable<ProductionLineBasicInfo>> repo_productionLines_basic(ProductionLineRepository repository, string lineId)
+        {
+            return (await repository.Select_productionLines_basic(lineId)).AsQueryable();
+        }
         public async Task<IQueryable<ProductionLine>> repo_productionLines_with_details(ProductionLineRepository repository, string lineId)
         {
-            return (await repository.Select_productionLines_With_Details(lineId)).AsQueryable();
+            return (await repository.Select_productionLines_with_details(lineId)).AsQueryable();
         }
 
         public async Task<IQueryable<ProductionLineMachineHoursPerCut>> repo_productionLines_with_machineHoursCut(ProductionLineRepository repository, string lineId)
         {
-            return (await repository.Select_productionLines_With_MachineHoursPerCut(lineId)).AsQueryable();
+            return (await repository.Select_productionLines_with_machineHoursPerCut(lineId)).AsQueryable();
         }
 
         #endregion

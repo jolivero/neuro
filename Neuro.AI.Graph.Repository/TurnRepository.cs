@@ -61,21 +61,28 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@Action", "insertar");
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            foreach (var detail in turnDto.Details)
+            try
             {
-                p.Add("@PeriodType", detail.PeriodType);
-                p.Add("@BeginAt", detail.BeginAt);
-                p.Add("@EndAt", detail.EndAt);
-                p.Add("@Quantity", detail.Quantity);
-
-                await _db.ExecuteAsync(
-                    sp,
-                    p,
-                    commandType: CommandType.StoredProcedure
-                );
+                foreach (var detail in turnDto.Details)
+                {
+                    p.Add("@PeriodType", detail.PeriodType);
+                    p.Add("@BeginAt", detail.BeginAt);
+                    p.Add("@EndAt", detail.EndAt);
+                    p.Add("@Quantity", detail.Quantity);
+    
+                    await _db.ExecuteAsync(
+                        sp,
+                        p,
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+    
+                return p.Get<string>("@Message");
             }
-
-            return p.Get<string>("@Message");
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
 
         }
 
@@ -92,22 +99,29 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@Action", "actualizar");
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            foreach (var detail in turnDto.Details)
+            try
             {
-                p.Add("@TurnDetailId", detail.Id);
-                p.Add("@PeriodType", detail.PeriodType);
-                p.Add("@BeginAt", detail.BeginAt);
-                p.Add("@EndAt", detail.EndAt);
-                p.Add("@Quantity", detail.Quantity);
+                foreach (var detail in turnDto.Details)
+                {
+                    p.Add("@TurnDetailId", detail.Id);
+                    p.Add("@PeriodType", detail.PeriodType);
+                    p.Add("@BeginAt", detail.BeginAt);
+                    p.Add("@EndAt", detail.EndAt);
+                    p.Add("@Quantity", detail.Quantity);
 
-                await _db.ExecuteAsync(
-                    sp,
-                    p,
-                    commandType: CommandType.StoredProcedure
-                );
+                    await _db.ExecuteAsync(
+                        sp,
+                        p,
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+
+                return p.Get<string>("@Message");
             }
-
-            return p.Get<string>("@Message");
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
 
         }
 
