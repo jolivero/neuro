@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.Dtos;
+using Neuro.AI.Graph.Models.DbResponse;
 using Neuro.AI.Graph.Models.Manufacturing;
 
 namespace Neuro.AI.Graph.Repository
@@ -22,7 +18,28 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<IEnumerable<ProductionLine>> Select_productionLines_With_Details(string lineId)
+        public async Task<IEnumerable<ProductionLineBasicInfo>> Select_productionLines_basic(string lineId)
+        {
+            var sp = "sp_select_productionLine_basic";
+            var p = new DynamicParameters();
+            p.Add("@LineId", lineId);
+
+            try
+            {
+                return await _db.QueryAsync<ProductionLineBasicInfo>(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<ProductionLine>> Select_productionLines_with_details(string lineId)
         {
             var sp = "sp_select_productionLine_details";
             var p = new DynamicParameters();
@@ -30,50 +47,62 @@ namespace Neuro.AI.Graph.Repository
 
             var productionLineDict = new Dictionary<string, ProductionLine>();
 
-            await _db.QueryAsync<ProductionLine, Group, Station, Machine, Part, ProductionLine>(
-                sp,
-                (line, group, station, machine, part) =>
-                {
-                    if (!productionLineDict.TryGetValue(line.LineId.ToString(), out var productionLineData))
+            try
+            {
+                await _db.QueryAsync<ProductionLine, Group, Station, Machine, Part, Inventory, ProductionLine>(
+                    sp,
+                    (line, group, station, machine, part, inventory) =>
                     {
-                        productionLineData = line;
-                        productionLineData.Groups = [];
-                        productionLineDict.Add(line.LineId.ToString(), productionLineData);
-                    }
+                        if (!productionLineDict.TryGetValue(line.LineId.ToString(), out var productionLineData))
+                        {
+                            productionLineData = line;
+                            productionLineData.Groups = [];
+                            productionLineDict.Add(line.LineId.ToString(), productionLineData);
+                        }
 
-                    var groupData = productionLineData.Groups.FirstOrDefault(ln => ln.GroupId == group.GroupId);
-                    if (groupData == null)
-                    {
-                        groupData = group;
-                        groupData.Stations = [];
-                        productionLineData.Groups.Add(groupData);
-                    }
+                        var groupData = productionLineData.Groups.FirstOrDefault(ln => ln.GroupId == group.GroupId);
+                        if (groupData == null)
+                        {
+                            groupData = group;
+                            groupData.Stations = [];
+                            productionLineData.Groups.Add(groupData);
+                        }
 
-                    var stationData = groupData.Stations.FirstOrDefault(g => g.StationId == station.StationId);
-                    if (stationData == null)
-                    {
-                        stationData = station;
-                        stationData.Machines = [];
-                        stationData.Parts = [];
-                        groupData.Stations.Add(stationData);
-                    }
+                        var stationData = groupData.Stations.FirstOrDefault(g => g.StationId == station.StationId);
+                        if (stationData == null)
+                        {
+                            stationData = station;
+                            stationData.Machines = [];
+                            stationData.Parts = [];
+                            groupData.Stations.Add(stationData);
+                        }
 
-                    if (machine != null && !stationData.Machines.Any(s => s.MachineId == machine.MachineId)) stationData.Machines.Add(machine);
-                    if (part != null && !stationData.Parts.Any(s => s.PartId == part.PartId)) stationData.Parts.Add(part);
+                        if (machine != null && !stationData.Machines.Any(s => s.MachineId == machine.MachineId)) stationData.Machines.Add(machine);
+                        if (part != null && !stationData.Parts.Any(s => s.PartId == part.PartId))
+                        {
+                            if (inventory != null && part.PartId == inventory.PartId) part.Inventory = inventory;
+                            stationData.Parts.Add(part);
+                        }
 
-                    return productionLineData;
-                },
-                p,
-                splitOn: "GroupId, StationId, MachineId, PartId",
-                commandType: CommandType.StoredProcedure
-                );
+                        return productionLineData;
+                    },
+                    p,
+                    splitOn: "GroupId, StationId, MachineId, PartId, InventoryId",
+                    commandType: CommandType.StoredProcedure
+                    );
 
-            return productionLineDict.Values;
+                return productionLineDict.Values;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return productionLineDict.Values;
+            }
         }
 
 
 
-        public async Task<IEnumerable<ProductionLineMachineHoursPerCut>> Select_productionLines_With_MachineHoursPerCut(string lineId)
+        public async Task<IEnumerable<ProductionLineMachineHoursPerCut>> Select_productionLines_with_machineHoursPerCut(string lineId)
         {
             var sp = "sp_productionLines_with_machineHoursPerCut";
             var p = new DynamicParameters();
@@ -98,13 +127,20 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@CreatedBy", plDto.CreatedBy);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            await _db.QueryAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
-
-            return p.Get<string>("@Message");
+            try
+            {
+                await _db.QueryAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+    
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public async Task<string> Update_productionLine(string lineId, ProductionLineDto plDto)
@@ -116,13 +152,20 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@CompanyId", plDto.CompanyId);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            await _db.QueryAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
-
-            return p.Get<string>("@Message");
+            try
+            {
+                await _db.QueryAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+    
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public async Task<string> Create_productionLine_steps(ProductionLineConfigDto plConfigDto)
@@ -132,25 +175,32 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@LineId", plConfigDto.LineId);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            foreach (var step in plConfigDto.Steps)
+            try
             {
-                p.Add("@GroupId", step.GroupId);
-                p.Add("@StationId", step.StationId);
-                p.Add("@MachineId", step.MachineId);
-                p.Add("@PrevMachineId", step.PrevMachineId);
-                p.Add("@PartId", step.PartId);
-                p.Add("@PrevPartId", step.PrevPartId);
-                p.Add("@Quantity", step.RequiredQuantity);
-                p.Add("@Action", string.IsNullOrEmpty(step.PrevMachineId) ? "insertar" : "actualizar");
-
-                await _db.ExecuteAsync(
-                    sp,
-                    p,
-                    commandType: CommandType.StoredProcedure
-                );
+                foreach (var step in plConfigDto.Steps)
+                {
+                    p.Add("@GroupId", step.GroupId);
+                    p.Add("@StationId", step.StationId);
+                    p.Add("@MachineId", step.MachineId);
+                    p.Add("@PrevMachineId", step.PrevMachineId);
+                    p.Add("@PartId", step.PartId);
+                    p.Add("@PrevPartId", step.PrevPartId);
+                    p.Add("@Quantity", step.RequiredQuantity);
+                    p.Add("@Action", string.IsNullOrEmpty(step.PrevMachineId) ? "insertar" : "actualizar");
+    
+                    await _db.ExecuteAsync(
+                        sp,
+                        p,
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+    
+                return p.Get<string>("@Message");
             }
-
-            return p.Get<string>("@Message");
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
         #endregion
     }
