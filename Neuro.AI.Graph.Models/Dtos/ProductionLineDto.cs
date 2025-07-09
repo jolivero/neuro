@@ -23,13 +23,4 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string PrevPartId { get; set; } = string.Empty;
         public decimal RequiredQuantity { get; set; } = 0;
     }
-
-    public class ProductionLineMachineHoursPerCut
-    {
-        public string GroupName { get; set; } = string.Empty;
-        public string StationName { get; set; } = string.Empty;
-        public string MachineName { get; set; } = string.Empty;
-        public int HoursPerCut { get; set; }
-        public string CreatedBy { get; set; } = string.Empty;
-    }
 }
