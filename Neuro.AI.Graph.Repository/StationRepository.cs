@@ -48,40 +48,52 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Create_stations(StationDto stationDto)
         {
+            var sp = "sp_create_update_fields";
             var p = new DynamicParameters();
             p.Add("@FieldType", "Estación");
             p.Add("@Name", stationDto.Name);
             p.Add("@CreatedBy", stationDto.CreatedBy);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            var sp = "sp_create_update_fields";
-
-            await _db.ExecuteAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
-
-            return p.Get<string>("@Message");
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+    
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public async Task<string> Update_stations(string stationId, StationDto stationDto)
         {
+            var sp = "sp_create_update_fields";
             var p = new DynamicParameters();
             p.Add("@Id", stationId);
             p.Add("@FieldType", "Estación");
             p.Add("@Name", stationDto.Name);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            var sp = "sp_create_update_fields";
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
 
-            await _db.ExecuteAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
-
-            return p.Get<string>("@Message");
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         #endregion

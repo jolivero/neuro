@@ -28,13 +28,20 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@CreatedBy", groupDTo.CreatedBy);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            await _db.ExecuteAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
 
-            return p.Get<string>("@Message");
+                return p.Get<string>("@Message");
+                }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public async Task<string> Update_groups(string groupId, GroupDto groupDTo)
@@ -46,13 +53,20 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@Name", groupDTo.Name);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            await _db.ExecuteAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
 
-            return p.Get<string>("@Message");
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         #endregion

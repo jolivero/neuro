@@ -23,6 +23,7 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Create_machines(MachineDto machineDto)
         {
+            var sp = "sp_create_update_machine";
             var p = new DynamicParameters();
             p.Add("@Name", machineDto.Name);
             p.Add("@Type", machineDto.Type);
@@ -36,19 +37,25 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@CreatedBy", machineDto.CreatedBy);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            var sp = "sp_create_update_machine";
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
 
-            await _db.ExecuteAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
-
-            return p.Get<string>("@Message");
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public async Task<string> Update_machines(string machineId, MachineDto machineDto)
         {
+            var sp = "sp_create_update_machine";
             var p = new DynamicParameters();
             p.Add("@MachineId", machineId);
             p.Add("@Name", machineDto.Name);
@@ -62,15 +69,20 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@Status", machineDto.Status);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            var sp = "sp_create_update_machine";
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
 
-            await _db.ExecuteAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
-
-            return p.Get<string>("@Message");
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public async Task<string> Create_machine_report(MachineReportDto machineReportDto)
@@ -83,13 +95,20 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@OperatorId", machineReportDto.OperatorId);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            await _db.ExecuteAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
-
-            return p.Get<string>("@Message");
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+    
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public async Task<string> Update_machine_report(string reportId, MachineReportDto machineReportDto)
@@ -103,13 +122,20 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@TechnicalId", machineReportDto.TechnicalId);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            await _db.ExecuteAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
 
-            return p.Get<string>("@Message");
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         #endregion

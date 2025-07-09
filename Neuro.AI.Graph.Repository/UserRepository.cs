@@ -87,13 +87,20 @@ public class UserRepository
 		p.Add("@CompanyId", userIpcDto.CompanyId);
 		p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-		await _db.ExecuteAsync(
-			sp,
-			p,
-			commandType: CommandType.StoredProcedure
-		);
+		try
+		{
+			await _db.ExecuteAsync(
+				sp,
+				p,
+				commandType: CommandType.StoredProcedure
+			);
 
-		return p.Get<string>("@Message");
+			return p.Get<string>("@Message");
+		}
+		catch (Exception ex)
+		{
+			return ex.Message;
+		}
 	}
 
 	public async Task<string> Update_user_skills(UserSkillsDto userSkillsDto)
@@ -102,20 +109,27 @@ public class UserRepository
 		var p = new DynamicParameters();
 		p.Add("@UserId", userSkillsDto.UserId);
 
-		foreach (var userSkill in userSkillsDto.Skills)
+		try
 		{
-			p.Add("@SkillId", userSkill.SkillId);
-			p.Add("@SkillLevel", userSkill.Level);
-			p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+			foreach (var userSkill in userSkillsDto.Skills)
+			{
+				p.Add("@SkillId", userSkill.SkillId);
+				p.Add("@SkillLevel", userSkill.Level);
+				p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-			await _db.ExecuteAsync(
-				sp,
-				p,
-				commandType: CommandType.StoredProcedure
-			);
+				await _db.ExecuteAsync(
+					sp,
+					p,
+					commandType: CommandType.StoredProcedure
+				);
+			}
+
+			return p.Get<string>("@Message");
 		}
-
-		return p.Get<string>("@Message");
+		catch (Exception ex)
+		{
+			return ex.Message;
+		}
 	}
 
 	#endregion

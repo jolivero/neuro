@@ -32,19 +32,25 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@Quantity", partDto.Inventory.Quantity);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            await _db.QueryAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
-
-            return p.Get<string>("@Message");
+            try
+            {
+                await _db.QueryAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+    
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public async Task<string> Update_parts(string partId, PartDto partDto)
         {
             var sp = "sp_create_update_part_inventory";
-
             var p = new DynamicParameters();
             p.Add("@PartId", partId);
             p.Add("@PName", partDto.Name);
@@ -54,13 +60,20 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@Quantity", partDto.Inventory.Quantity);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            await _db.QueryAsync(
-                sp,
-                p,
-                commandType: CommandType.StoredProcedure
-            );
+            try
+            {
+                await _db.QueryAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
 
-            return p.Get<string>("@Message");
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         #endregion
