@@ -7,7 +7,7 @@ public partial class MonthlySchedule
 {
     public Guid MonthId { get; set; }
 
-    public string Month { get; set; } = null!;
+    public int Month { get; set; }
 
     public int Year { get; set; }
 
@@ -28,6 +28,8 @@ public partial class MonthlySchedule
     public Guid? TurnId { get; set; }
 
     public Guid? PlannedBy { get; set; }
+
+    public string? Reason { get; set; }
 
     public virtual ICollection<DailySchedule> DailySchedules { get; set; } = new List<DailySchedule>();
 
