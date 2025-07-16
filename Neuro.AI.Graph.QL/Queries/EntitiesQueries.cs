@@ -198,7 +198,7 @@ public class EntitiesQueries
     [UseSorting]
     public async Task<IQueryable<MonthlySchedule>> GetMonthlyAndDailySchedule(ManufacturingDbContext context)
     {
-        var schedules = await context.MonthlySchedules.OrderBy(ms => ms.CreatedAt).Include(ms => ms.DailySchedules).ToListAsync();
+        var schedules = await context.MonthlySchedules.OrderBy(ms => ms.CreatedAt).Include(ms => ms.DailySchedules.Where(ds => ds.Available > 0)).ToListAsync();
         foreach (var schedule in schedules)
         {
             schedule.DailySchedules = schedule.DailySchedules.OrderBy(ds => ds.ProductionDate).ToList();
