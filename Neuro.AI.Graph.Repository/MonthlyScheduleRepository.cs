@@ -58,7 +58,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Update_monthlyGoal_schedule(MonthlyGoalDto mgDto)
+        public async Task<string> Update_monthlyGoal_schedule(UpdateMonthlyScheduleDto mgDto)
         {
             var sp = "sp_update_monthlyGoal";
             var p = new DynamicParameters();
@@ -74,6 +74,45 @@ namespace Neuro.AI.Graph.Repository
                     p,
                     commandType: CommandType.StoredProcedure
                 );
+
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> Update_monthlyDays_schedule(UpdateMonthlyScheduleDto mdDto)
+        {
+            var businessDays = mdDto.UpdateDailyScheduleDto!.Count(d => d.DayType.Equals("laboral", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
+            var extraDays = mdDto.UpdateDailyScheduleDto!.Count(d => d.DayType.Equals("extra", StringComparison.CurrentCultureIgnoreCase)  && d.Available == 1);
+            var dailyGoal = mdDto.MonthlyGoal/(businessDays + extraDays);
+
+            var sp = "sp_update_monthlyDays";
+            var p = new DynamicParameters();
+            p.Add("@MonthId", mdDto.MonthId);
+            p.Add("@BusinessDays", businessDays);
+            p.Add("@ExtraDays", extraDays);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                foreach (var item in mdDto.UpdateDailyScheduleDto!)
+                {
+                    p.Add("@DayId", item.DayId);
+                    p.Add("@DailyGoal", dailyGoal);
+                    p.Add("@ProductionDate", item.ProductionDate);
+                    p.Add("@DayType", item.DayType);
+                    p.Add("@Available", item.Available);
+                    p.Add("@Reason", mdDto.Reason);
+
+                    await _db.ExecuteAsync(
+                        sp,
+                        p,
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
 
                 return p.Get<string>("@Message");
             }

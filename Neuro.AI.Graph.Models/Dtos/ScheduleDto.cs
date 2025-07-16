@@ -20,16 +20,17 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string DayType { get; set; } = string.Empty;
     }
 
-    public class MonthlyGoalDto
+    public class UpdateMonthlyScheduleDto
     {
         public string MonthId { get; set; } = string.Empty;
         public int MonthlyGoal { get; set; }
         public string Reason { get; set; } = string.Empty;
+        public List<UpdateDailyScheduleDto>? UpdateDailyScheduleDto { get; set; } = [];
     }
 
-    public class MonthlyDayDto : DailyScheduleDto
+    public class UpdateDailyScheduleDto : DailyScheduleDto
     {
-        public string DayId { get; set; } = string.Empty;
+        public string? DayId { get; set; }
         public int Available { get; set; }
     }
 }
