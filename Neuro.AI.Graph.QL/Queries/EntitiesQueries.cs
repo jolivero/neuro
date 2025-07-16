@@ -160,17 +160,52 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Models.Manufacturing.Machine> GetMachines(ManufacturingDbContext context) => context.Machines.Include(m => m.MachineReports);
+    async public Task<IQueryable<Models.Manufacturing.Machine>> GetMachinesWithReports(ManufacturingDbContext context)
+    {
+        var machines = await context.Machines
+            .Include(m => m.CreatedByNavigation)
+            .Include(m => m.MachineReports).ThenInclude(mr => mr.Operator)
+            .Include(m => m.MachineReports).ThenInclude(mr => mr.Technical).ToListAsync();
+        foreach (var machine in machines)
+        {
+            machine.MachineReports = machine.MachineReports.OrderByDescending(mr => mr.CreatedAt).ToList();
+        }
+
+        return machines.AsQueryable();
+    }
 
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<MachineReport> GetMachineReports(ManufacturingDbContext context) => context.MachineReports.OrderBy(mr => mr.CreatedAt);
+    public IQueryable<Part> GetPartsWithInventory(ManufacturingDbContext context) => context.Parts.Include(p => p.Inventory).OrderBy(p => p.CreatedAt);
 
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Part> GetParts(ManufacturingDbContext context) => context.Parts.Include(p => p.Inventory);
+    async public Task<IQueryable<Turn>> GetTurnsWithDetails(ManufacturingDbContext context)
+    {
+        var turns = await context.Turns.OrderBy(t => t.CreatedAt).Include(t => t.TurnDetails).Include(t => t.CreatedByNavigation).ToListAsync();
+        foreach (var turn in turns)
+        {
+            turn.TurnDetails = turn.TurnDetails.OrderBy(td => td.CreatedAt).ToList();
+        }
+
+        return turns.AsQueryable();
+    }
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public async Task<IQueryable<MonthlySchedule>> GetMonthlyAndDailySchedule(ManufacturingDbContext context)
+    {
+        var schedules = await context.MonthlySchedules.OrderBy(ms => ms.CreatedAt).Include(ms => ms.DailySchedules).ToListAsync();
+        foreach (var schedule in schedules)
+        {
+            schedule.DailySchedules = schedule.DailySchedules.OrderBy(ds => ds.ProductionDate).ToList();
+        }
+
+        return schedules.AsQueryable();
+    }
 
     #endregion
 

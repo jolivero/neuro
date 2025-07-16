@@ -50,6 +50,11 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_productionLine_steps(plConfigDto);
         }
 
+        public async Task<string> repo_update_productionLine_steps(ProductionLineRepository repository, ProductionLineUpdateDto plUpdateDto)
+        {
+            return await repository.Update_productionLine_steps(plUpdateDto);
+        }
+
         #endregion
 
         #region Grupos
@@ -122,16 +127,29 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         public async Task<string> repo_create_turn_with_details(TurnRepository repository, TurnDto turnDto)
         {
-            return await repository.Create_turns(turnDto);
+            return await repository.Create_Update_turns(turnDto);
         }
 
-        public async Task<string> repo_update_turn_with_details(TurnRepository repository, string turnId, TurnDto turnDto)
+        public async Task<string> repo_update_turn_with_details(TurnRepository repository, TurnDto turnDto, string turnId)
         {
-            return await repository.Update_turns(turnId, turnDto);
+            return await repository.Create_Update_turns(turnDto, turnId);
         }
 
         #endregion
 
+        #region Planeación mensual
+
+        public async Task<string> repo_create_monthlySchedule(MonthlyScheduleRepository repository, MonthlyScheduleDto msDto)
+        {
+            return await repository.Create_monthly_schedule(msDto);
+        }
+
+        public async Task<string> repo_update_monthlyGoalSchedule(MonthlyScheduleRepository repository, MonthlyGoalDto mgDto)
+        {
+            return await repository.Update_monthlyGoal_schedule(mgDto);
+        }
+
+        #endregion
 
     }
 }
