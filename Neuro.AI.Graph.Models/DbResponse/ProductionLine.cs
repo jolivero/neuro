@@ -2,6 +2,7 @@ namespace Neuro.AI.Graph.Models.DbResponse
 {
     public class ProductionLineBasicInfo
     {
+        public Guid RecipeId { get; set; }
         public Guid LineId { get; set; }
         public string LineName { get; set; } = string.Empty;
         public string GroupName { get; set; } = string.Empty;

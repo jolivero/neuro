@@ -45,9 +45,9 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Estaciones [Asignadas a grupos]
 
-        public async Task<StationConfigInfo?> repo_station_with_configInfo(StationRepository repository, string stationId, string machineId, string partId)
+        public async Task<StationConfigInfo?> repo_station_with_configInfo(StationRepository repository, string recipeId)
         {
-            return await repository.Select_station_with_configInfo(stationId, machineId, partId);
+            return await repository.Select_station_with_configInfo(recipeId);
         }
 
         #endregion
@@ -62,11 +62,7 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Turnos/Detalles
 
-        public async Task<IQueryable<Turn>> repo_turns_with_details(TurnRepository repository)
-        {
-            return (await repository.Select_turns_with_details()).AsQueryable();
-        }
-
         #endregion
+
     }
 }

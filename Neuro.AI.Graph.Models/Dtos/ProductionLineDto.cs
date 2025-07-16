@@ -23,4 +23,11 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string PrevPartId { get; set; } = string.Empty;
         public decimal RequiredQuantity { get; set; } = 0;
     }
+
+    public class ProductionLineUpdateDto
+    {
+        public string LineId { get; set; } = string.Empty;
+        public string RecipeId { get; set; } = string.Empty;
+        public Steps Steps { get; set; } = new();
+    }
 }
