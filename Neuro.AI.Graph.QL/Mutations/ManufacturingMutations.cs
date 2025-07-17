@@ -154,6 +154,11 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Update_monthlyDays_schedule(mdDto);
         }
 
+        public async Task<string> repo_delete_monthlyDaysSchedule(MonthlyScheduleRepository repository, string monthId)
+        {
+            return await repository.Delete_monthlyDays_schedule(monthId);
+        }
+
         #endregion
 
     }

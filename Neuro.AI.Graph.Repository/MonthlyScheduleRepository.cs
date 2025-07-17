@@ -31,7 +31,6 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@BusinessDays", msDto.BusinessDays);
             p.Add("@ExtraDays", msDto.ExtraDays);
             p.Add("@LineId", msDto.LineId);
-            p.Add("@TurnId", msDto.TurnId);
             p.Add("@PlannedBy", msDto.PlannedBy);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
@@ -86,8 +85,8 @@ namespace Neuro.AI.Graph.Repository
         public async Task<string> Update_monthlyDays_schedule(UpdateMonthlyScheduleDto mdDto)
         {
             var businessDays = mdDto.UpdateDailyScheduleDto!.Count(d => d.DayType.Equals("laboral", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
-            var extraDays = mdDto.UpdateDailyScheduleDto!.Count(d => d.DayType.Equals("extra", StringComparison.CurrentCultureIgnoreCase)  && d.Available == 1);
-            var dailyGoal = mdDto.MonthlyGoal/(businessDays + extraDays);
+            var extraDays = mdDto.UpdateDailyScheduleDto!.Count(d => d.DayType.Equals("extra", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
+            var dailyGoal = mdDto.MonthlyGoal / (businessDays + extraDays);
 
             var sp = "sp_update_monthlyDays";
             var p = new DynamicParameters();
@@ -114,6 +113,28 @@ namespace Neuro.AI.Graph.Repository
                     );
                 }
 
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> Delete_monthlyDays_schedule(string monthId)
+        {
+            var sp = "sp_delete_monthlyDays";
+            var p = new DynamicParameters();
+            p.Add("@MonthId", monthId);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
                 return p.Get<string>("@Message");
             }
             catch (Exception ex)
