@@ -25,8 +25,6 @@ public partial class MonthlySchedule
 
     public Guid? LineId { get; set; }
 
-    public Guid? TurnId { get; set; }
-
     public Guid? PlannedBy { get; set; }
 
     public string? Reason { get; set; }

@@ -204,6 +204,10 @@ public partial class ManufacturingDbContext : DbContext
                 .HasForeignKey(d => d.StationId)
                 .HasConstraintName("FK__DailyTask__Stati__34F3C25A");
 
+            entity.HasOne(d => d.Turn).WithMany(p => p.DailyTasks)
+                .HasForeignKey(d => d.TurnId)
+                .HasConstraintName("FK__DailyTask__TurnI__7F56CBB8");
+
             entity.HasOne(d => d.User).WithMany(p => p.DailyTasks)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__DailyTask__UserI__36DC0ACC");
