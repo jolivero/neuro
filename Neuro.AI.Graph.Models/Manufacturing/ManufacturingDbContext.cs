@@ -181,11 +181,11 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasKey(e => e.TaskId).HasName("PK__DailyTas__7C6949B1D48DD733");
 
             entity.Property(e => e.TaskId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.BeginAt).HasMaxLength(255);
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.CustomeBeginAt).HasMaxLength(255);
-            entity.Property(e => e.CustomeEndAt).HasMaxLength(255);
+            entity.Property(e => e.EndAt).HasMaxLength(255);
             entity.Property(e => e.MachineStatus).HasMaxLength(255);
             entity.Property(e => e.OperatorStatus).HasMaxLength(255);
             entity.Property(e => e.UpdatedAt)
@@ -203,10 +203,6 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasOne(d => d.Station).WithMany(p => p.DailyTasks)
                 .HasForeignKey(d => d.StationId)
                 .HasConstraintName("FK__DailyTask__Stati__34F3C25A");
-
-            entity.HasOne(d => d.Turn).WithMany(p => p.DailyTasks)
-                .HasForeignKey(d => d.TurnId)
-                .HasConstraintName("FK__DailyTask__TurnI__7F56CBB8");
 
             entity.HasOne(d => d.User).WithMany(p => p.DailyTasks)
                 .HasForeignKey(d => d.UserId)
@@ -335,6 +331,10 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasOne(d => d.PlannedByNavigation).WithMany(p => p.MonthlySchedules)
                 .HasForeignKey(d => d.PlannedBy)
                 .HasConstraintName("FK__MonthlySc__Plann__424DBD78");
+
+            entity.HasOne(d => d.Turn).WithMany(p => p.MonthlySchedules)
+                .HasForeignKey(d => d.TurnId)
+                .HasConstraintName("FK__MonthlySc__TurnI__004AEFF1");
         });
 
         modelBuilder.Entity<NonCompliantPartsRecord>(entity =>
