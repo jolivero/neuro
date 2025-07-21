@@ -168,7 +168,7 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Create_productionLine_steps(ProductionLineConfigDto plConfigDto)
         {
-            var sp = "sp_create_update_productionLine_config";
+            var sp = "sp_create_update_productionLine_steps";
             var p = new DynamicParameters();
             p.Add("@LineId", plConfigDto.LineId);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
@@ -183,7 +183,6 @@ namespace Neuro.AI.Graph.Repository
                     p.Add("@PartId", step.PartId);
                     p.Add("@PrevPartId", step.PrevPartId);
                     p.Add("@Quantity", step.RequiredQuantity);
-                    p.Add("@Action", "insertar");
 
                     await _db.ExecuteAsync(
                         sp,
@@ -202,19 +201,16 @@ namespace Neuro.AI.Graph.Repository
         
         public async Task<string> Update_productionLine_steps(ProductionLineUpdateDto plUpdateDto)
         {
-            var sp = "sp_create_update_productionLine_config";
+            var sp = "sp_create_update_productionLine_steps";
             var p = new DynamicParameters();
-            p.Add("@LineId", plUpdateDto.LineId);
             p.Add("@RecipeId", plUpdateDto.RecipeId);
+            p.Add("@LineId", plUpdateDto.LineId);
             p.Add("@GroupId", plUpdateDto.Steps.GroupId);
             p.Add("@StationId", plUpdateDto.Steps.StationId);
             p.Add("@MachineId", plUpdateDto.Steps.MachineId);
-            p.Add("@PrevMachineId", plUpdateDto.Steps.PrevMachineId);
             p.Add("@PartId", plUpdateDto.Steps.PartId);
             p.Add("@PrevPartId", plUpdateDto.Steps.PrevPartId);
             p.Add("@Quantity", plUpdateDto.Steps.RequiredQuantity);
-            p.Add("@RecipeId", plUpdateDto.RecipeId);
-            p.Add("@Action", "actualizar");
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try

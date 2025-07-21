@@ -18,7 +18,6 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string GroupId { get; set; } = string.Empty;
         public string StationId { get; set; } = string.Empty;
         public string MachineId { get; set; } = string.Empty;
-        public string? PrevMachineId { get; set; } = null;
         public string PartId { get; set; } = string.Empty;
         public string PrevPartId { get; set; } = string.Empty;
         public decimal RequiredQuantity { get; set; } = 0;
@@ -26,8 +25,8 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     public class ProductionLineUpdateDto
     {
-        public string LineId { get; set; } = string.Empty;
         public string RecipeId { get; set; } = string.Empty;
+        public string LineId { get; set; } = string.Empty;
         public Steps Steps { get; set; } = new();
     }
 }
