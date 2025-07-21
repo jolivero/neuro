@@ -23,6 +23,8 @@ public partial class Turn
 
     public Guid? CreatedBy { get; set; }
 
+    public string? TurnType { get; set; }
+
     public virtual User? CreatedByNavigation { get; set; }
 
     public virtual ICollection<MonthlySchedule> MonthlySchedules { get; set; } = new List<MonthlySchedule>();

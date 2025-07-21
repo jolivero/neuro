@@ -6,6 +6,7 @@ namespace Neuro.AI.Graph.Models.Dtos
         public decimal Duration { get; set; }
         public decimal ProductiveTime { get; set; }
         public decimal PauseTime { get; set; }
+        public string TurnType { get; set; } = string.Empty;
         public string CreatedBy { get; set; } = string.Empty;
         public List<TurnDetails> Details { get; set; } = [];
     }
