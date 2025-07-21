@@ -60,6 +60,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@Duration", turnDto.Duration);
             p.Add("@ProductiveTime", turnDto.ProductiveTime);
             p.Add("@PauseTime", turnDto.PauseTime);
+            p.Add("@TurnType", turnDto.TurnType);
             p.Add("@CreatedBy", turnDto.CreatedBy);
             p.Add("@Action", string.IsNullOrEmpty(turnId) ? "insertar" : "actualizar");
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
@@ -73,14 +74,14 @@ namespace Neuro.AI.Graph.Repository
                     p.Add("@BeginAt", detail.BeginAt);
                     p.Add("@EndAt", detail.EndAt);
                     p.Add("@Quantity", detail.Quantity);
-    
+
                     await _db.ExecuteAsync(
                         sp,
                         p,
                         commandType: CommandType.StoredProcedure
                     );
                 }
-    
+
                 return p.Get<string>("@Message");
             }
             catch (Exception ex)
