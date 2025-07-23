@@ -2,6 +2,7 @@ using System.Data;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.Dtos;
+using Neuro.AI.Graph.Models.Manufacturing;
 
 namespace Neuro.AI.Graph.Repository
 {
@@ -15,6 +16,54 @@ namespace Neuro.AI.Graph.Repository
         }
 
         #region Queries
+
+        public async Task<IEnumerable<OperatorMonthlySchedule>> Select_monthly_operatorSchedule(string monthId)
+        {
+
+            var sp = "sp_select_operatorScheduleInfoByMonth";
+            var p = new DynamicParameters();
+            p.Add("@MonthId", monthId);
+
+            var operatorScheduleDict = new Dictionary<string, OperatorMonthlySchedule>();
+
+            try
+            {
+                await _db.QueryAsync<OperatorMonthlySchedule, User, DailySchedule, OperatorMonthlySchedule>(
+                sp,
+                (o, u, ds) =>
+                {
+                    if (!operatorScheduleDict.TryGetValue(u.UserId.ToString(), out var operatorData))
+                    {
+                        operatorData = o;
+                        operatorData.OperatorId = u.UserId;
+                        operatorData.OperatorName = string.Concat(u.FirstName, ' ', u.LastName);
+                        operatorData.Days = [];
+                        operatorScheduleDict.Add(o.OperatorId.ToString(), operatorData);
+                    }
+
+                    var dsData = operatorData.Days.FirstOrDefault(d => d.DayId == ds.DayId.ToString());
+                    if (dsData == null)
+                    {
+                        dsData = new AssignedDays() { DayId = ds.DayId.ToString(), ProductiveDate = ds.ProductionDate };
+                        operatorData.Days.Add(dsData);
+                    }
+
+                    return operatorData;
+                },
+                p,
+                splitOn: "UserId, DayId",
+                commandType: CommandType.StoredProcedure
+            );
+
+                return operatorScheduleDict.Values;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw new Exception(ex.Message);
+            }
+
+        }
 
         #endregion
 
