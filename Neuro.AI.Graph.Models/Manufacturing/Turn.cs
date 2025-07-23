@@ -27,7 +27,7 @@ public partial class Turn
 
     public virtual User? CreatedByNavigation { get; set; }
 
-    public virtual ICollection<MonthlySchedule> MonthlySchedules { get; set; } = new List<MonthlySchedule>();
+    public virtual ICollection<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();
 
     public virtual ICollection<TurnDetail> TurnDetails { get; set; } = new List<TurnDetail>();
 }

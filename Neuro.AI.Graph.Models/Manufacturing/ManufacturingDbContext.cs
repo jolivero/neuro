@@ -204,6 +204,10 @@ public partial class ManufacturingDbContext : DbContext
                 .HasForeignKey(d => d.StationId)
                 .HasConstraintName("FK__DailyTask__Stati__34F3C25A");
 
+            entity.HasOne(d => d.Turn).WithMany(p => p.DailyTasks)
+                .HasForeignKey(d => d.TurnId)
+                .HasConstraintName("FK__DailyTask__TurnI__03275C9C");
+
             entity.HasOne(d => d.User).WithMany(p => p.DailyTasks)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__DailyTask__UserI__36DC0ACC");
@@ -331,10 +335,6 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasOne(d => d.PlannedByNavigation).WithMany(p => p.MonthlySchedules)
                 .HasForeignKey(d => d.PlannedBy)
                 .HasConstraintName("FK__MonthlySc__Plann__424DBD78");
-
-            entity.HasOne(d => d.Turn).WithMany(p => p.MonthlySchedules)
-                .HasForeignKey(d => d.TurnId)
-                .HasConstraintName("FK__MonthlySc__TurnI__004AEFF1");
         });
 
         modelBuilder.Entity<NonCompliantPartsRecord>(entity =>
