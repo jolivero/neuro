@@ -1,4 +1,4 @@
-﻿using Neuro.AI.Graph.Models.DbResponse;
+﻿using Neuro.AI.Graph.Models.CustomModels;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
 using Neuro.AI.Graph.Repository;
@@ -64,5 +64,13 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #endregion
 
+        #region Planificación mensual
+
+        public async Task<IQueryable<OperatorMonthlySchedule>> repo_monthlySchedule_with_operators(MonthlyScheduleRepository repository, string monthId)
+        {
+            return (await repository.Select_monthly_operatorSchedule(monthId)).AsQueryable();
+        }
+
+        #endregion
     }
 }
