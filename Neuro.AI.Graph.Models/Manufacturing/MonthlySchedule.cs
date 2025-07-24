@@ -29,13 +29,9 @@ public partial class MonthlySchedule
 
     public string? Reason { get; set; }
 
-    public Guid? TurnId { get; set; }
-
     public virtual ICollection<DailySchedule> DailySchedules { get; set; } = new List<DailySchedule>();
 
     public virtual ProductionLine? Line { get; set; }
 
     public virtual User? PlannedByNavigation { get; set; }
-
-    public virtual Turn? Turn { get; set; }
 }

@@ -1,4 +1,4 @@
-namespace Neuro.AI.Graph.Models.DbResponse
+namespace Neuro.AI.Graph.Models.CustomModels
 {
     public class ProductionLineBasicInfo
     {

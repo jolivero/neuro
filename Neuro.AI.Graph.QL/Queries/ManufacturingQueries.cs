@@ -1,4 +1,4 @@
-﻿using Neuro.AI.Graph.Models.DbResponse;
+﻿using Neuro.AI.Graph.Models.CustomModels;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
 using Neuro.AI.Graph.Repository;
@@ -8,6 +8,15 @@ namespace Neuro.AI.Graph.QL.Queries
     public class ManufacturingQueries
     {
         #region Compañias
+
+        #endregion
+
+        #region Usuarios
+        
+        public async Task<IQueryable<User>> repo_users_with_monthlySchedule(UserRepository repository, int month, int year, string? userId)
+        {
+            return (await repository.Select_users_with_monthlySchedule(month, year, userId)).AsQueryable();
+        }
 
         #endregion
 
@@ -64,5 +73,8 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #endregion
 
+        #region Planificación mensual
+
+        #endregion
     }
 }

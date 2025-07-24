@@ -161,5 +161,17 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #endregion
 
+        #region Asignaciones diarias
+
+        public async Task<string> repo_create_dailyTasks(DailyTaskRepository repository, DailyTaskDto dtTaskDto)
+        {
+            return await repository.Create_dailyTask(dtTaskDto);
+        }
+
+
+
+        #endregion
+
+
     }
 }

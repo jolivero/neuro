@@ -2,6 +2,7 @@ using System.Data;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.Dtos;
+using Neuro.AI.Graph.Models.Manufacturing;
 
 namespace Neuro.AI.Graph.Repository
 {

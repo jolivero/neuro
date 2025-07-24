@@ -198,13 +198,37 @@ public class EntitiesQueries
     [UseSorting]
     public async Task<IQueryable<MonthlySchedule>> GetMonthlyAndDailySchedule(ManufacturingDbContext context)
     {
-        var schedules = await context.MonthlySchedules.OrderBy(ms => ms.CreatedAt).Include(ms => ms.DailySchedules.Where(ds => ds.Available > 0)).ToListAsync();
+        var schedules = await context.MonthlySchedules
+            .OrderBy(ms => ms.CreatedAt)
+            .Include(ms => ms.DailySchedules.Where(ds => ds.Available > 0)).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
+            .Include(ms => ms.DailySchedules).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
+            .Include(ms => ms.DailySchedules).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine).ToListAsync();
         foreach (var schedule in schedules)
         {
             schedule.DailySchedules = schedule.DailySchedules.OrderBy(ds => ds.ProductionDate).ToList();
         }
 
         return schedules.AsQueryable();
+    }
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public async Task<IQueryable<DailySchedule>> GetDailyTasks(ManufacturingDbContext context)
+    {
+        var tasks = await context.DailySchedules
+            .OrderBy(ds => ds.ProductionDate)
+            .Include(ds => ds.DailyTasks.Where(dt => dt.EndAt == null))
+            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
+            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine)
+            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
+            .ToListAsync();
+        foreach (var task in tasks)
+        {
+            task.DailyTasks = task.DailyTasks.OrderBy(dt => dt.CreatedAt).ToList();
+        }
+
+        return tasks.AsQueryable();
     }
 
     #endregion
