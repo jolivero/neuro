@@ -66,6 +66,68 @@ public class UserRepository
 		);
 	}
 
+	public async Task<IEnumerable<User>> Select_users_with_monthlySchedule(int month, int year, string? userId)
+	{
+
+		var sp = "sp_select_operatorScheduleInfoByMonth";
+		var p = new DynamicParameters();
+		p.Add("@Month", month);
+		p.Add("@Year", year);
+		p.Add("@UserId", userId ?? null);
+
+		var operatorScheduleDict = new Dictionary<string, User>();
+
+		try
+		{
+			await _db.QueryAsync<User, DailyTask, Station, DailySchedule, Turn, TurnDetail, User>(
+			sp,
+			(user, task, station, dailySchedule, turn, turnDetail) =>
+			{
+				if (!operatorScheduleDict.TryGetValue(user.UserId.ToString(), out var operatorData))
+				{
+					operatorData = user;
+					operatorData.DailyTasks = [];
+					operatorScheduleDict.Add(user.UserId.ToString(), operatorData);
+				}
+
+				var taskData = operatorData.DailyTasks.FirstOrDefault(t => t.TaskId == task.TaskId);
+				if (taskData == null)
+				{
+					taskData = task;
+					taskData.Station = station;
+					taskData.Day = dailySchedule;
+					taskData.Turn = turn;
+					taskData.Turn.TurnDetails = [];
+
+					operatorData.DailyTasks.Add(taskData);
+				}
+
+
+				var turnDetailData = taskData.Turn?.TurnDetails.FirstOrDefault(td => td.TurnDetailId == turnDetail.TurnDetailId);
+				if (turnDetailData == null)
+				{
+					turnDetailData = turnDetail;
+					taskData.Turn?.TurnDetails.Add(turnDetailData);
+				}
+
+
+				return operatorData;
+			},
+			p,
+			splitOn: "UserId, TaskId, StationId, DayId, TurnId, TurnDetailId",
+			commandType: CommandType.StoredProcedure
+		);
+
+			return operatorScheduleDict.Values;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			throw new Exception(ex.Message);
+		}
+
+	}
+
 	#endregion
 
 	#region ManufactoringMutations
