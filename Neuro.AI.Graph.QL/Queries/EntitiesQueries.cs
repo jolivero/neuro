@@ -135,7 +135,7 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<User> GetUsersInfo(ManufacturingDbContext context) => context.Users.Include(u => u.UsersSkills);
+    public IQueryable<User> GetUsersInfo(ManufacturingDbContext context) => context.Users;
 
     [UseProjection]
     [UseFiltering]
