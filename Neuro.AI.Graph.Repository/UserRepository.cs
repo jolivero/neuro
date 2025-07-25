@@ -10,6 +10,7 @@ using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
 using Microsoft.EntityFrameworkCore;
+using Neuro.AI.Graph.Models.CustomModels;
 
 public class UserDto
 {
@@ -64,6 +65,75 @@ public class UserRepository
 			sp,
 			commandType: CommandType.StoredProcedure
 		);
+	}
+
+	public async Task<IEnumerable<OperatorProfile>> Select_user_with_skills(string userId)
+	{
+		var sp = "sp_select_userProfile";
+		var p = new DynamicParameters();
+		p.Add("@UserId", userId);
+
+		var userProfilDict = new Dictionary<string, OperatorProfile>();
+
+		try
+		{
+			await _db.QueryAsync<User, UsersSkill, Skill, Company, User>(
+				sp,
+				(user, userSkill, skill, company) =>
+				{
+					if (!userProfilDict.TryGetValue(user.UserId.ToString(), out var userProfileData))
+					{
+                        userProfileData = new()
+                        {
+                            UserId = user.UserId,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+							DocumentId = user.DocumentId,
+							UserName = user.UserName,
+                            Email = user.Email,
+							Phone = user.Phone,
+							Address = user.Address,
+							BloodType = user.BloodType,
+							EmployeeNumber = user.EmployeeNumber,
+							Rol = user.Rol,
+							CompanyId = user.CompanyId,
+                            OperatorSkills = []
+                        };
+
+                        userProfilDict.Add(user.UserId.ToString(), userProfileData);
+					}
+
+					var skillsData = userProfileData.OperatorSkills.FirstOrDefault(s => s.SkillId == skill.SkillId);
+					if (skillsData == null)
+					{
+						skillsData = new()
+						{
+							SkillId = skill.SkillId,
+							Name = skill.Name,
+							SkillLevel = userSkill.SkillLevel
+						};
+
+						userProfileData.OperatorSkills.Add(skillsData);
+					}
+
+					if (company != null && user.CompanyId == company.CompanyId) userProfileData.Company = company;
+
+					return userProfileData;
+				},
+				p,
+				splitOn: "SkillId, CompanyId",
+				commandType: CommandType.StoredProcedure
+			);
+
+			return userProfilDict.Values;
+
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			throw;
+		}
+
 	}
 
 	public async Task<IEnumerable<User>> Select_users_with_monthlySchedule(int month, int year, string? userId)
