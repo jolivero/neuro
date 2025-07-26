@@ -1,6 +1,7 @@
 using System.Data;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
+using Neuro.AI.Graph.Models.CustomModels;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
 
@@ -16,6 +17,65 @@ namespace Neuro.AI.Graph.Repository
         }
 
         #region Queries
+
+        public async Task<IEnumerable<MonthlyScheduleProductionLines>> Select_annual_planification(int? year)
+        {
+            var sp = "sp_select_plannificationByYear";
+            var p = new DynamicParameters();
+            p.Add("@Year", year ?? DateTime.Now.Year);
+
+            var planificationDict = new Dictionary<int, MonthlyScheduleProductionLines>();
+
+            try
+            {
+                await _db.QueryAsync<MonthlySchedule, ProductionLine, MonthlySchedule>(
+                    sp,
+                    (ms, pl) =>
+                    {
+                        if (!planificationDict.TryGetValue(ms.Month, out var planificationData))
+                        {
+                            planificationData = new()
+                            {
+                                MonthId = ms.MonthId,
+                                Month = ms.Month,
+                                Year = ms.Year,
+                                BusinessDays = ms.BusinessDays,
+                                ExtraDays = ms.ExtraDays,
+                                LineId = ms.LineId,
+                                AssignedProductionLines = []
+                            };
+
+                            planificationDict.Add(ms.Month, planificationData);
+                        }
+
+                        var plData = planificationData.AssignedProductionLines.FirstOrDefault(mp => mp.LineId == pl.LineId);
+                        if (plData == null)
+                        {
+                            plData = new()
+                            {
+                                LineId = pl.LineId,
+                                Name = pl.Name
+                            };
+
+                            planificationData.AssignedProductionLines.Add(plData);
+                        }
+
+                        return planificationData;
+                    },
+                    p,
+                    splitOn: "LineId",
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return planificationDict.Values;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw new Exception(ex.StackTrace);
+            }
+
+        }
 
         #endregion
 
