@@ -12,6 +12,7 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string Address { get; set; } = string.Empty;
         public string BloodType { get; set; } = string.Empty;
         public string EmployeeNumber { get; set; } = string.Empty;
+        public string Rol { get; set; } = string.Empty;
         public string CompanyId { get; set; } = string.Empty;
     }
     public class SkillsDto

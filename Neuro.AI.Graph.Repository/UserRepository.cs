@@ -216,6 +216,7 @@ public class UserRepository
 		p.Add("@Address", userIpcDto.Address);
 		p.Add("@BloodType", userIpcDto.BloodType);
 		p.Add("@EmployeeNumber", userIpcDto.EmployeeNumber);
+		p.Add("@Rol", userIpcDto.Rol);
 		p.Add("@CompanyId", userIpcDto.CompanyId);
 		p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
