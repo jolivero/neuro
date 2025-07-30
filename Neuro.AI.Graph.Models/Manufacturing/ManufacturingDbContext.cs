@@ -161,9 +161,6 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.DayType)
                 .HasMaxLength(255)
                 .IsUnicode(false);
-            entity.Property(e => e.ProductionDate)
-                .HasMaxLength(255)
-                .IsUnicode(false);
             entity.Property(e => e.Reason)
                 .HasMaxLength(255)
                 .IsUnicode(false);
@@ -181,11 +178,11 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasKey(e => e.TaskId).HasName("PK__DailyTas__7C6949B1D48DD733");
 
             entity.Property(e => e.TaskId).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.BeginAt).HasMaxLength(255);
+            entity.Property(e => e.BeginAt).HasPrecision(0);
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.EndAt).HasMaxLength(255);
+            entity.Property(e => e.EndAt).HasPrecision(0);
             entity.Property(e => e.MachineStatus).HasMaxLength(255);
             entity.Property(e => e.OperatorStatus).HasMaxLength(255);
             entity.Property(e => e.UpdatedAt)
@@ -667,11 +664,11 @@ public partial class ManufacturingDbContext : DbContext
 
             entity.Property(e => e.TurnDetailId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Available).HasDefaultValue(1);
-            entity.Property(e => e.BeginAt).HasMaxLength(255);
+            entity.Property(e => e.BeginAt).HasPrecision(0);
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.EndAt).HasMaxLength(255);
+            entity.Property(e => e.EndAt).HasPrecision(0);
             entity.Property(e => e.PeriodType).HasMaxLength(255);
             entity.Property(e => e.Quantity).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.UpdatedAt)

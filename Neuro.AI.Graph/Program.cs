@@ -9,6 +9,7 @@ using Neuro.AI.Graph.Shield.Solutions;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.QL.Mutations;
 using Neuro.AI.Graph.Models.Manufacturing;
+using Dapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,10 @@ builder.Services.AddScoped<PartRepository>();
 builder.Services.AddScoped<TurnRepository>();
 builder.Services.AddScoped<MonthlyScheduleRepository>();
 builder.Services.AddScoped<DailyTaskRepository>();
+
+//Dapper Handler
+SqlMapper.AddTypeHandler(new TimeOnlyHandler());
+SqlMapper.AddTypeHandler(new DateOnlyHandler());
 
 builder.Services
 	.AddGraphQLServer()

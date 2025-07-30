@@ -150,6 +150,11 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
+    public IQueryable<Models.Manufacturing.Machine> GetMachinesInProductionLines(ManufacturingDbContext context) => context.Machines.Include(m => m.ProductionLineRecipes).ThenInclude(r => r.Line);
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
     public IQueryable<Group> GetGroups(ManufacturingDbContext context) => context.Groups;
 
     [UseProjection]
@@ -200,7 +205,7 @@ public class EntitiesQueries
     {
         var schedules = await context.MonthlySchedules
             .OrderBy(ms => ms.CreatedAt)
-            .Include(ms => ms.DailySchedules.Where(ds => ds.Available > 0)).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
+            .Include(ms => ms.DailySchedules.Where(ds => ds.Available == 1)).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
             .Include(ms => ms.DailySchedules).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
             .Include(ms => ms.DailySchedules).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine).ToListAsync();
         foreach (var schedule in schedules)
@@ -214,11 +219,31 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public async Task<IQueryable<DailySchedule>> GetDailyTasks(ManufacturingDbContext context)
-    {
-        var tasks = await context.DailySchedules
+    public async Task<IQueryable<DailySchedule>> GetDailyTasksByDateRange(ManufacturingDbContext context, DateTime from, DateTime to)
+    {        
+        var tasks = await context.DailySchedules.Where(ds => ds.CreatedAt >= from && ds.CreatedAt <= to && ds.Available == 1)
             .OrderBy(ds => ds.ProductionDate)
             .Include(ds => ds.DailyTasks.Where(dt => dt.EndAt == null))
+            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
+            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine)
+            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
+            .ToListAsync();
+        foreach (var task in tasks)
+        {
+            task.DailyTasks = task.DailyTasks.OrderBy(dt => dt.CreatedAt).ToList();
+        }
+
+        return tasks.AsQueryable();
+    }
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public async Task<IQueryable<DailySchedule>> GetDailyTasksByUserId(ManufacturingDbContext context, int month, int year, string userId)
+    {
+        var tasks = await context.DailySchedules.Where(ds => ds.Month.Month == month && ds.Month.Year == year && ds.Available == 1)
+            .OrderBy(ds => ds.ProductionDate)
+            .Include(ds => ds.DailyTasks.Where(dt => dt.UserId.ToString() == userId && dt.EndAt == null))
             .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
             .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine)
             .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.User)

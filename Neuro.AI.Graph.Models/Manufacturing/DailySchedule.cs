@@ -17,7 +17,7 @@ public partial class DailySchedule
 
     public Guid? MonthId { get; set; }
 
-    public string ProductionDate { get; set; } = null!;
+    public DateOnly? ProductionDate { get; set; }
 
     public string? DayType { get; set; }
 
