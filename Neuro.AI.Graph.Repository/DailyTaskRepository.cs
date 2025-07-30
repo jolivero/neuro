@@ -34,7 +34,7 @@ namespace Neuro.AI.Graph.Repository
                 foreach (var assigment in dtDto.Assigments)
                 {
                     p.Add("@DayId", assigment.DayId);
-                    p.Add("@BeginAt", assigment.BeginAt);
+                    p.Add("@BeginAt", TimeSpan.Parse(assigment.BeginAt));
                     p.Add("@UserId", assigment.UserId);
                     p.Add("@StationId", assigment.StationId);
                     p.Add("@MachineId", assigment.MachineId);

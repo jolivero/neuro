@@ -184,7 +184,7 @@ public class UserRepository
 				return operatorData;
 			},
 			p,
-			splitOn: "UserId, TaskId, StationId, DayId, TurnId, TurnDetailId",
+			splitOn: "TaskId, StationId, DayId, TurnId, TurnDetailId",
 			commandType: CommandType.StoredProcedure
 		);
 

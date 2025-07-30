@@ -71,8 +71,8 @@ namespace Neuro.AI.Graph.Repository
                 {
                     p.Add("@TurnDetailId", detail.Id ?? null);
                     p.Add("@PeriodType", detail.PeriodType);
-                    p.Add("@BeginAt", detail.BeginAt);
-                    p.Add("@EndAt", detail.EndAt);
+                    p.Add("@BeginAt", TimeSpan.Parse(detail.BeginAt));
+                    p.Add("@EndAt", TimeSpan.Parse(detail.EndAt));
                     p.Add("@Quantity", detail.Quantity);
 
                     await _db.ExecuteAsync(
