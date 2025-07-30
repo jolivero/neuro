@@ -7,9 +7,9 @@ public partial class DailyTask
 {
     public Guid TaskId { get; set; }
 
-    public string? BeginAt { get; set; }
+    public TimeOnly? BeginAt { get; set; }
 
-    public string? EndAt { get; set; }
+    public TimeOnly? EndAt { get; set; }
 
     public string? OperatorStatus { get; set; }
 
