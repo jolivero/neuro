@@ -23,7 +23,7 @@ public partial class ProductionChangeRequest
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? ChangesRequestId { get; set; }
+    public Guid? CategoryId { get; set; }
 
     public Guid? RequestingUserId { get; set; }
 
@@ -31,11 +31,19 @@ public partial class ProductionChangeRequest
 
     public Guid? NcPartId { get; set; }
 
+    public Guid? MonthId { get; set; }
+
+    public Guid? DayId { get; set; }
+
     public virtual User? ApprovalUser { get; set; }
+
+    public virtual RequestCategory? Category { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetails { get; set; } = new List<ChangeRequestDetail>();
 
-    public virtual ChangesRequest? ChangesRequest { get; set; }
+    public virtual DailySchedule? Day { get; set; }
+
+    public virtual MonthlySchedule? Month { get; set; }
 
     public virtual NonCompliantPartsRecord? NcPart { get; set; }
 

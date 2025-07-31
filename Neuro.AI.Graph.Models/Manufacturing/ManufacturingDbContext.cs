@@ -17,8 +17,6 @@ public partial class ManufacturingDbContext : DbContext
 
     public virtual DbSet<ChangeRequestDetail> ChangeRequestDetails { get; set; }
 
-    public virtual DbSet<ChangesRequest> ChangesRequests { get; set; }
-
     public virtual DbSet<Company> Companies { get; set; }
 
     public virtual DbSet<DailySchedule> DailySchedules { get; set; }
@@ -53,7 +51,7 @@ public partial class ManufacturingDbContext : DbContext
 
     public virtual DbSet<QualityRecord> QualityRecords { get; set; }
 
-    public virtual DbSet<Role> Roles { get; set; }
+    public virtual DbSet<RequestCategory> RequestCategories { get; set; }
 
     public virtual DbSet<Skill> Skills { get; set; }
 
@@ -79,7 +77,13 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.CurrentValue)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.Description).HasMaxLength(255);
+            entity.Property(e => e.NewValue)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.RequestType).HasMaxLength(255);
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
@@ -100,23 +104,6 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasOne(d => d.Station).WithMany(p => p.ChangeRequestDetails)
                 .HasForeignKey(d => d.StationId)
                 .HasConstraintName("FK__ChangeReq__Stati__480696CE");
-        });
-
-        modelBuilder.Entity<ChangesRequest>(entity =>
-        {
-            entity.HasKey(e => e.ChangesRequestId).HasName("PK__ChangesR__EB099F68094386A3");
-
-            entity.ToTable("ChangesRequest");
-
-            entity.Property(e => e.ChangesRequestId).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.Descripcion).HasMaxLength(255);
-            entity.Property(e => e.Name).HasMaxLength(255);
-            entity.Property(e => e.UpdatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Company>(entity =>
@@ -423,9 +410,17 @@ public partial class ManufacturingDbContext : DbContext
                 .HasForeignKey(d => d.ApprovalUserId)
                 .HasConstraintName("FK__Productio__Appro__4AE30379");
 
-            entity.HasOne(d => d.ChangesRequest).WithMany(p => p.ProductionChangeRequests)
-                .HasForeignKey(d => d.ChangesRequestId)
-                .HasConstraintName("FK__Productio__Chang__4341E1B1");
+            entity.HasOne(d => d.Category).WithMany(p => p.ProductionChangeRequests)
+                .HasForeignKey(d => d.CategoryId)
+                .HasConstraintName("FK__Productio__Categ__08E035F2");
+
+            entity.HasOne(d => d.Day).WithMany(p => p.ProductionChangeRequests)
+                .HasForeignKey(d => d.DayId)
+                .HasConstraintName("FK__Productio__DayId__07EC11B9");
+
+            entity.HasOne(d => d.Month).WithMany(p => p.ProductionChangeRequests)
+                .HasForeignKey(d => d.MonthId)
+                .HasConstraintName("FK__Productio__Month__06F7ED80");
 
             entity.HasOne(d => d.NcPart).WithMany(p => p.ProductionChangeRequests)
                 .HasForeignKey(d => d.NcPartId)
@@ -572,15 +567,21 @@ public partial class ManufacturingDbContext : DbContext
                 .HasConstraintName("FK__QualityRe__NcPar__37D02F05");
         });
 
-        modelBuilder.Entity<Role>(entity =>
+        modelBuilder.Entity<RequestCategory>(entity =>
         {
-            entity.HasKey(e => e.RolId).HasName("PK__Roles__F92302F1BB73CBFE");
+            entity.HasKey(e => e.CategoryId).HasName("PK__ChangesR__EB099F68094386A3");
 
-            entity.Property(e => e.RolId).HasDefaultValueSql("(newid())");
+            entity.ToTable("RequestCategory");
+
+            entity.Property(e => e.CategoryId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.Descripcion).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(255);
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Skill>(entity =>

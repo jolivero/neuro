@@ -25,6 +25,10 @@ public partial class ChangeRequestDetail
 
     public Guid? PartId { get; set; }
 
+    public string? CurrentValue { get; set; }
+
+    public string? NewValue { get; set; }
+
     public virtual Machine? Machine { get; set; }
 
     public virtual Part? Part { get; set; }

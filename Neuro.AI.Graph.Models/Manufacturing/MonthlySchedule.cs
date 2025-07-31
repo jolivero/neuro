@@ -34,4 +34,6 @@ public partial class MonthlySchedule
     public virtual ProductionLine? Line { get; set; }
 
     public virtual User? PlannedByNavigation { get; set; }
+
+    public virtual ICollection<ProductionChangeRequest> ProductionChangeRequests { get; set; } = new List<ProductionChangeRequest>();
 }
