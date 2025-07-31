@@ -216,7 +216,7 @@ public class EntitiesQueries
     [UseFiltering]
     [UseSorting]
     public async Task<IQueryable<DailySchedule>> GetDailyTasksByDateRange(ManufacturingDbContext context, DateTime from, DateTime to)
-    {        
+    {
         var tasks = await context.DailySchedules.Where(ds => ds.CreatedAt >= from && ds.CreatedAt <= to && ds.Available == 1)
             .OrderBy(ds => ds.ProductionDate)
             .Include(ds => ds.DailyTasks.Where(dt => dt.EndAt == null))
@@ -251,6 +251,16 @@ public class EntitiesQueries
 
         return tasks.AsQueryable();
     }
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<RequestCategory> GetRequestCategories(ManufacturingDbContext context) => context.RequestCategories.OrderBy(rc => rc.Name);
+    
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<ProductionChangeRequest> GetRequestList(ManufacturingDbContext context) => context.ProductionChangeRequests.Include(pc => pc.ChangeRequestDetails).Include(pc => pc.RequestingUser).OrderByDescending(pc => pc.CreatedAt);
 
     #endregion
 
