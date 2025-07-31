@@ -150,11 +150,6 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Models.Manufacturing.Machine> GetMachinesInProductionLines(ManufacturingDbContext context) => context.Machines.Include(m => m.ProductionLineRecipes).ThenInclude(r => r.Line);
-
-    [UseProjection]
-    [UseFiltering]
-    [UseSorting]
     public IQueryable<Group> GetGroups(ManufacturingDbContext context) => context.Groups;
 
     [UseProjection]
@@ -165,10 +160,11 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    async public Task<IQueryable<Models.Manufacturing.Machine>> GetMachinesWithReports(ManufacturingDbContext context)
+    async public Task<IQueryable<Models.Manufacturing.Machine>> GetMachinesInfo(ManufacturingDbContext context)
     {
         var machines = await context.Machines
             .Include(m => m.CreatedByNavigation)
+            .Include(m => m.ProductionLineRecipes).ThenInclude(r => r.Line)
             .Include(m => m.MachineReports).ThenInclude(mr => mr.Operator)
             .Include(m => m.MachineReports).ThenInclude(mr => mr.Technical).ToListAsync();
         foreach (var machine in machines)
