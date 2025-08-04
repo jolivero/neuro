@@ -215,9 +215,9 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public async Task<IQueryable<DailySchedule>> GetDailyTasksByDateRange(ManufacturingDbContext context, DateTime from, DateTime to)
+    public async Task<IQueryable<DailySchedule>> GetDailyTasks(ManufacturingDbContext context)
     {
-        var tasks = await context.DailySchedules.Where(ds => ds.CreatedAt >= from && ds.CreatedAt <= to && ds.Available == 1)
+        var tasks = await context.DailySchedules.Where(ds => ds.Available == 1)
             .OrderBy(ds => ds.ProductionDate)
             .Include(ds => ds.DailyTasks.Where(dt => dt.EndAt == null))
             .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
@@ -256,11 +256,17 @@ public class EntitiesQueries
     [UseFiltering]
     [UseSorting]
     public IQueryable<RequestCategory> GetRequestCategories(ManufacturingDbContext context) => context.RequestCategories.OrderBy(rc => rc.Name);
-    
+
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<ProductionChangeRequest> GetRequestList(ManufacturingDbContext context) => context.ProductionChangeRequests.Include(pc => pc.ChangeRequestDetails).Include(pc => pc.RequestingUser).OrderByDescending(pc => pc.CreatedAt);
+    public IQueryable<ProductionChangeRequest> GetChangeRequests(ManufacturingDbContext context) => context.ProductionChangeRequests
+                                                                                                .Include(pc => pc.Month)
+                                                                                                .Include(pc => pc.ChangeRequestDetails)
+                                                                                                .Include(pc => pc.RequestingUser)
+                                                                                                .Include(pc => pc.ApprovalUser)
+                                                                                                .OrderByDescending(pc => pc.CreatedAt);
+
 
     #endregion
 
