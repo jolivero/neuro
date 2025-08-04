@@ -10,10 +10,12 @@ namespace Neuro.AI.Graph.Repository
     public class MonthlyScheduleRepository
     {
         private readonly IDbConnection _db;
+        private readonly ChangeRequestRepository _changeRequestRepository;
 
-        public MonthlyScheduleRepository(ManufacturingConnector manufacturingConnector)
+        public MonthlyScheduleRepository(ManufacturingConnector manufacturingConnector, ChangeRequestRepository changeRequestRepository)
         {
             _db = manufacturingConnector.Connect();
+            _changeRequestRepository = changeRequestRepository;
         }
 
         #region Queries
@@ -120,12 +122,17 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Update_monthlyGoal_schedule(UpdateMonthlyScheduleDto mgDto)
         {
+            var requestId = await _changeRequestRepository.Select_requestId(mgDto.MonthId, "Ajuste de meta");
+            if (string.IsNullOrEmpty(requestId)) return "No hay solicitud de cambio disponible para el mes indicado";
+
             var sp = "sp_update_monthlyGoal";
             var p = new DynamicParameters();
+            p.Add("@RequestId", requestId);
             p.Add("@MonthId", mgDto.MonthId);
             p.Add("@MonthlyGoal", mgDto.MonthlyGoal);
             p.Add("@Reason", mgDto.Reason);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
 
             try
             {
@@ -145,12 +152,17 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Update_monthlyDays_schedule(UpdateMonthlyScheduleDto mdDto)
         {
+            var requestId = await _changeRequestRepository.Select_requestId(mdDto.MonthId, "Ajuste de días");
+
+            if (string.IsNullOrEmpty(requestId)) return "No hay solicitud de cambio disponible para el mes indicado";
+
             var businessDays = mdDto.UpdateDailyScheduleDto!.Count(d => d.DayType.Equals("laboral", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
             var extraDays = mdDto.UpdateDailyScheduleDto!.Count(d => d.DayType.Equals("extra", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
             var dailyGoal = mdDto.MonthlyGoal / (businessDays + extraDays);
 
             var sp = "sp_update_monthlyDays";
             var p = new DynamicParameters();
+            p.Add("@RequestId", requestId);
             p.Add("@MonthId", mdDto.MonthId);
             p.Add("@BusinessDays", businessDays);
             p.Add("@ExtraDays", extraDays);

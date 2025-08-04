@@ -20,7 +20,31 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<string> Create_monthlyGoal_reguest(MonthlyChangeRequestDto mRequestDto)
+        public async Task<string?> Select_requestId(string monthId, string requestType)
+        {
+            var sp = "sp_select_requestId";
+            var p = new DynamicParameters();
+            p.Add("@MonthId", monthId);
+            p.Add("@RequestType", requestType);
+            p.Add("@RequestId", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                await _db.QueryFirstOrDefaultAsync<string>(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return p.Get<string>("@RequestId");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> Create_monthly_reguest(MonthlyChangeRequestDto mRequestDto)
         {
             var sp = "sp_create_monthly_request";
             var p = new DynamicParameters();
