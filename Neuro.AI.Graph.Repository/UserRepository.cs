@@ -149,9 +149,9 @@ public class UserRepository
 
 		try
 		{
-			await _db.QueryAsync<User, DailyTask, Station, DailySchedule, Turn, TurnDetail, User>(
+			await _db.QueryAsync<User, DailyTask, Station, Machine, DailySchedule, Turn, TurnDetail, User>(
 			sp,
-			(user, task, station, dailySchedule, turn, turnDetail) =>
+			(user, task, station, machine, dailySchedule, turn, turnDetail) =>
 			{
 				if (!operatorScheduleDict.TryGetValue(user.UserId.ToString(), out var operatorData))
 				{
@@ -165,6 +165,7 @@ public class UserRepository
 				{
 					taskData = task;
 					taskData.Station = station;
+					taskData.Machine = machine;
 					taskData.Day = dailySchedule;
 					taskData.Turn = turn;
 					taskData.Turn.TurnDetails = [];
@@ -184,7 +185,7 @@ public class UserRepository
 				return operatorData;
 			},
 			p,
-			splitOn: "TaskId, StationId, DayId, TurnId, TurnDetailId",
+			splitOn: "TaskId, StationId, MachineId, DayId, TurnId, TurnDetailId",
 			commandType: CommandType.StoredProcedure
 		);
 
