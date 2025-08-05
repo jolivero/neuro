@@ -50,6 +50,7 @@ namespace Neuro.AI.Graph.Repository
             var p = new DynamicParameters();
             p.Add("@MonthId", mRequestDto.MonthId);
             p.Add("@RequestingUserId", mRequestDto.RequestingUserId);
+            p.Add("@RequestType", mRequestDto.RequestType);
             p.Add("@Reason", mRequestDto.Reason);
             p.Add("@CurrentValue", mRequestDto.CurrentValue);
             p.Add("@NewValue", mRequestDto.NewValue);
