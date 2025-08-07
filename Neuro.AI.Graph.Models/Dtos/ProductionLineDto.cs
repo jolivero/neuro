@@ -10,7 +10,7 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class ProductionLineConfigDto
     {
         public string LineId { get; set; } = string.Empty;
-        public List<Steps> Steps { get; set; } = [];
+        public Steps Steps { get; set; } = new();
     }
 
     public class Steps

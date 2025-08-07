@@ -175,21 +175,18 @@ namespace Neuro.AI.Graph.Repository
 
             try
             {
-                foreach (var step in plConfigDto.Steps)
-                {
-                    p.Add("@GroupId", step.GroupId);
-                    p.Add("@StationId", step.StationId);
-                    p.Add("@MachineId", step.MachineId);
-                    p.Add("@PartId", step.PartId);
-                    p.Add("@PrevPartId", step.PrevPartId);
-                    p.Add("@Quantity", step.RequiredQuantity);
+                p.Add("@GroupId", plConfigDto.Steps.GroupId);
+                p.Add("@StationId", plConfigDto.Steps.StationId);
+                p.Add("@MachineId", plConfigDto.Steps.MachineId);
+                p.Add("@PartId", plConfigDto.Steps.PartId);
+                p.Add("@PrevPartId", plConfigDto.Steps.PrevPartId);
+                p.Add("@Quantity", plConfigDto.Steps.RequiredQuantity);
 
-                    await _db.ExecuteAsync(
-                        sp,
-                        p,
-                        commandType: CommandType.StoredProcedure
-                    );
-                }
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
 
                 return p.Get<string>("@Message");
             }
