@@ -175,21 +175,18 @@ namespace Neuro.AI.Graph.Repository
 
             try
             {
-                foreach (var step in plConfigDto.Steps)
-                {
-                    p.Add("@GroupId", step.GroupId);
-                    p.Add("@StationId", step.StationId);
-                    p.Add("@MachineId", step.MachineId);
-                    p.Add("@PartId", step.PartId);
-                    p.Add("@PrevPartId", step.PrevPartId);
-                    p.Add("@Quantity", step.RequiredQuantity);
+                p.Add("@GroupId", plConfigDto.Steps.GroupId);
+                p.Add("@StationId", plConfigDto.Steps.StationId);
+                p.Add("@MachineId", plConfigDto.Steps.MachineId);
+                p.Add("@PartId", plConfigDto.Steps.PartId);
+                p.Add("@PrevPartId", plConfigDto.Steps.PrevPartId);
+                p.Add("@Quantity", plConfigDto.Steps.RequiredQuantity);
 
-                    await _db.ExecuteAsync(
-                        sp,
-                        p,
-                        commandType: CommandType.StoredProcedure
-                    );
-                }
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
 
                 return p.Get<string>("@Message");
             }
@@ -198,8 +195,8 @@ namespace Neuro.AI.Graph.Repository
                 return ex.Message;
             }
         }
-        
-        public async Task<string> Update_productionLine_steps(ProductionLineUpdateDto plUpdateDto)
+
+        public async Task<string> Update_productionLine_steps(ProductionLineHandleStepDto plUpdateDto)
         {
             var sp = "sp_create_update_productionLine_steps";
             var p = new DynamicParameters();
@@ -211,6 +208,35 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@PartId", plUpdateDto.Steps.PartId);
             p.Add("@PrevPartId", plUpdateDto.Steps.PrevPartId);
             p.Add("@Quantity", plUpdateDto.Steps.RequiredQuantity);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        
+        public async Task<string> Delete_productionLine_steps(ProductionLineHandleStepDto plDeleteDto)
+        {
+            var sp = "sp_delete_productionLine_step";
+            var p = new DynamicParameters();
+            p.Add("@RecipeId", plDeleteDto.RecipeId);
+            p.Add("@LineId", plDeleteDto.LineId);
+            p.Add("@GroupId", plDeleteDto.Steps.GroupId);
+            p.Add("@StationId", plDeleteDto.Steps.StationId);
+            p.Add("@MachineId", plDeleteDto.Steps.MachineId);
+            p.Add("@PartId", plDeleteDto.Steps.PartId);
+            p.Add("@PrevPartId", plDeleteDto.Steps.PrevPartId);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
