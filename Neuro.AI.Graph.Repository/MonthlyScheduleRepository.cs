@@ -79,6 +79,28 @@ namespace Neuro.AI.Graph.Repository
 
         }
 
+        public async Task<IEnumerable<OperatorSelectList>> Select_available_operators(string monthId)
+        {
+            var sp = "sp_select_operators";
+            var p = new DynamicParameters();
+            p.Add("@MonthId", monthId);
+
+            try
+            {
+                return await _db.QueryAsync<OperatorSelectList>(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         #endregion
 
         #region Mutations
@@ -194,6 +216,31 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
+        public async Task<string> Update_monthlySchedule_operator(string monthId, string userId)
+        {
+            var sp = "sp_update_monthlySchedule_operator";
+            var p = new DynamicParameters();
+            p.Add("@MonthId", monthId);
+            p.Add("@UserId", userId);
+            p.Add("@Action", "actualizar");
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
         public async Task<string> Delete_monthlyDays_schedule(string monthId)
         {
             var sp = "sp_delete_monthlyDays";
@@ -208,6 +255,31 @@ namespace Neuro.AI.Graph.Repository
                     p,
                     commandType: CommandType.StoredProcedure
                 );
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> Delete_monthlySchedule_operator(string monthId, string userId)
+        {
+            var sp = "sp_update_monthlySchedule_operator";
+            var p = new DynamicParameters();
+            p.Add("@MonthId", monthId);
+            p.Add("@UserId", userId);
+            p.Add("@Action", "remover");
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+
                 return p.Get<string>("@Message");
             }
             catch (Exception ex)
