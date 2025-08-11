@@ -165,6 +165,7 @@ public class EntitiesQueries
         var machines = await context.Machines
             .Include(m => m.CreatedByNavigation)
             .Include(m => m.ProductionLineRecipes).ThenInclude(r => r.Line)
+            .Include(m => m.Stations)
             .Include(m => m.MachineReports).ThenInclude(mr => mr.Operator)
             .Include(m => m.MachineReports).ThenInclude(mr => mr.Technical).ToListAsync();
         foreach (var machine in machines)
