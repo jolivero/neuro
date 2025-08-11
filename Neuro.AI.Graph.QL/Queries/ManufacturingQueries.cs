@@ -89,6 +89,22 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Planificación mensual
 
+        public async Task<IQueryable<OperatorSelectList>> repo_available_operators(MonthlyScheduleRepository repository, string monthId)
+        {
+            return (await repository.Select_available_operators(monthId)).AsQueryable();
+        }
+
         #endregion
+
+        #region Tareas diarias
+
+        public async Task<IQueryable<DailySchedule>> repo_dailyTasks_by_userId(DailyTaskRepository repository, string currentDate, string userId)
+        {
+            return (await repository.Select_dailyTask_by_userId(currentDate, userId)).AsQueryable();
+        }
+
+        #endregion
+
+
     }
 }
