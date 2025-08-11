@@ -215,19 +215,13 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public async Task<IQueryable<DailySchedule>> GetDailyTasks(ManufacturingDbContext context)
+    public async Task<IQueryable<DailyTask>> GetOperatorDailyTasks(ManufacturingDbContext context)
     {
-        var tasks = await context.DailySchedules.Where(ds => ds.Available == 1)
-            .OrderBy(ds => ds.ProductionDate)
-            .Include(ds => ds.DailyTasks.Where(dt => dt.EndAt == null))
-            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
-            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine)
-            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
-            .ToListAsync();
-        foreach (var task in tasks)
-        {
-            task.DailyTasks = task.DailyTasks.OrderBy(dt => dt.CreatedAt).ToList();
-        }
+        var tasks = await context.DailyTasks
+        .Include(dt => dt.User)
+        .Include(dt => dt.Station)
+        .Include(dt => dt.Machine)
+        .Include(dt => dt.Day).Where(dt => dt.Day.Available == 1).ToListAsync();
 
         return tasks.AsQueryable();
     }
@@ -235,21 +229,14 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public async Task<IQueryable<DailySchedule>> GetDailyTasksByUserId(ManufacturingDbContext context, int month, int year, string userId)
+    public async Task<IQueryable<MonthlySchedule>> GetMonthlyScheduleInfo(ManufacturingDbContext context)
     {
-        var tasks = await context.DailySchedules.Where(ds => ds.Month.Month == month && ds.Month.Year == year && ds.Available == 1)
-            .OrderBy(ds => ds.ProductionDate)
-            .Include(ds => ds.DailyTasks.Where(dt => dt.UserId.ToString() == userId && dt.EndAt == null))
-            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
-            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine)
-            .Include(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
-            .ToListAsync();
-        foreach (var task in tasks)
-        {
-            task.DailyTasks = task.DailyTasks.OrderBy(dt => dt.CreatedAt).ToList();
-        }
+        var schedule = await context.MonthlySchedules
+        .Include(ms => ms.DailySchedules).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
+        .Include(ms => ms.DailySchedules).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
+        .Include(ms => ms.DailySchedules).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine).ToListAsync();
 
-        return tasks.AsQueryable();
+        return schedule.AsQueryable();
     }
 
     [UseProjection]
