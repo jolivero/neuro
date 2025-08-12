@@ -230,19 +230,6 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public async Task<IQueryable<MonthlySchedule>> GetMonthlyScheduleInfo(ManufacturingDbContext context)
-    {
-        var schedule = await context.MonthlySchedules
-        .Include(ms => ms.DailySchedules).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
-        .Include(ms => ms.DailySchedules).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
-        .Include(ms => ms.DailySchedules).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine).ToListAsync();
-
-        return schedule.AsQueryable();
-    }
-
-    [UseProjection]
-    [UseFiltering]
-    [UseSorting]
     public IQueryable<RequestCategory> GetRequestCategories(ManufacturingDbContext context) => context.RequestCategories.OrderBy(rc => rc.Name);
 
     [UseProjection]

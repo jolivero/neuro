@@ -89,9 +89,14 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Planificación mensual
 
-        public async Task<IQueryable<OperatorSelectList>> repo_available_operators(MonthlyScheduleRepository repository, string monthId)
+        public async Task<IQueryable<OperatorSelectList>> repo_available_operators(MonthlyScheduleRepository repository, string monthId, string beginAt, string endAt)
         {
-            return (await repository.Select_available_operators(monthId)).AsQueryable();
+            return (await repository.Select_available_operators(monthId, beginAt, endAt)).AsQueryable();
+        }
+
+        public async Task<IQueryable<MonthlySchedule>> repo_station_with_machine_planification(MonthlyScheduleRepository repository, string monthId, string stationId, string machineId)
+        {
+            return (await repository.Select_station_with_machine_planification(monthId, stationId, machineId)).AsQueryable();
         }
 
         #endregion
