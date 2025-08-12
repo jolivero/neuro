@@ -44,7 +44,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Create_monthly_reguest(MonthlyChangeRequestDto mRequestDto)
+        public async Task<string> Create_monthly_request(MonthlyChangeRequestDto mRequestDto)
         {
             var sp = "sp_create_monthly_request";
             var p = new DynamicParameters();
@@ -69,6 +69,41 @@ namespace Neuro.AI.Graph.Repository
             catch (Exception ex)
             {
                 return ex.Message;
+            }
+        }
+
+        public async Task<string> Create_daily_request(DailyChangeRequestDto dRequestDto)
+        {
+            var sp = "sp_create_monthly_request";
+            var p = new DynamicParameters();
+            p.Add("@RequestingUserId", dRequestDto.RequestingUserId);
+            p.Add("@Reason", dRequestDto.Reason);
+            p.Add("@RequestType", dRequestDto.RequestType);
+            p.Add("@CurrentValue", dRequestDto.CurrentValue);
+            p.Add("@NewValue", dRequestDto.NewValue);
+            p.Add("@StationId", dRequestDto.StationId);
+            p.Add("@MachineId", dRequestDto.MachineId);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                foreach (var day in dRequestDto.DayId)
+                {
+                    p.Add("@DayId", day);
+
+                    await _db.ExecuteAsync(
+                        sp,
+                        p,
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
             }
         }
 
