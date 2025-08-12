@@ -191,7 +191,12 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         public async Task<string> repo_create_monthly_request(ChangeRequestRepository repository, MonthlyChangeRequestDto mRequestDto)
         {
-            return await repository.Create_monthly_reguest(mRequestDto);
+            return await repository.Create_monthly_request(mRequestDto);
+        }
+
+        public async Task<string> repo_create_daily_request(ChangeRequestRepository repository, DailyChangeRequestDto dRequestDto)
+        {
+            return await repository.Create_daily_request(dRequestDto);
         }
 
         public async Task<string> repo_update_status_request(ChangeRequestRepository repository, UpdateStatusRequestDto usRequestDto)

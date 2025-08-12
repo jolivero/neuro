@@ -1,13 +1,26 @@
 namespace Neuro.AI.Graph.Models.Dtos
 {
-    public class MonthlyChangeRequestDto
+    public class BaseChangeRequestDto
     {
-        public string MonthId { get; set; } = string.Empty;
         public string RequestingUserId { get; set; } = string.Empty;
         public string RequestType { get; set; } = string.Empty;
+        public string Reason { get; set; } = string.Empty;
+    }
+
+    public class MonthlyChangeRequestDto : BaseChangeRequestDto
+    {
+        public string MonthId { get; set; } = string.Empty;
         public int CurrentValue { get; set; }
         public int NewValue { get; set; }
-        public string Reason { get; set; } = string.Empty;
+    }
+
+    public class DailyChangeRequestDto : BaseChangeRequestDto
+    {
+        public List<string> DayId { get; set; } = [];
+        public string CurrentValue { get; set; } = string.Empty;
+        public string NewValue { get; set; } = string.Empty;
+        public string StationId { get; set; } = string.Empty;
+        public string MachineId { get; set; } = string.Empty;
     }
 
     public class UpdateStatusRequestDto
