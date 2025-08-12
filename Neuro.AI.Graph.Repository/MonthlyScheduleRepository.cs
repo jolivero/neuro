@@ -1,5 +1,6 @@
 using System.Data;
 using Dapper;
+using Microsoft.IdentityModel.Tokens;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.CustomModels;
 using Neuro.AI.Graph.Models.Dtos;
@@ -79,11 +80,13 @@ namespace Neuro.AI.Graph.Repository
 
         }
 
-        public async Task<IEnumerable<OperatorSelectList>> Select_available_operators(string monthId)
+        public async Task<IEnumerable<OperatorSelectList>> Select_available_operators(string monthId, string beginAt, string endAt)
         {
-            var sp = "sp_select_operators";
+            var sp = "sp_select_available_operators";
             var p = new DynamicParameters();
             p.Add("@MonthId", monthId);
+            p.Add("@BeginAt", beginAt);
+            p.Add("@EndAt", endAt);
 
             try
             {
@@ -98,6 +101,71 @@ namespace Neuro.AI.Graph.Repository
             {
                 Console.WriteLine(ex.Message);
                 throw;
+            }
+        }
+
+        public async Task<IEnumerable<MonthlySchedule>> Select_station_with_machine_planification(string monthId, string stationId, string machineId)
+        {
+            var sp = "sp_select_station_machine_planification";
+            var p = new DynamicParameters();
+            p.Add("@MonthId", monthId);
+            p.Add("@StationId", stationId);
+            p.Add("@MachineId", machineId);
+
+            var stationMachinePlanificationDict = new Dictionary<string, MonthlySchedule>();
+
+            try
+            {
+                await _db.QueryAsync<MonthlySchedule, DailySchedule, DailyTask, User, Station, Machine, Turn, MonthlySchedule>(
+                    sp,
+                    (ms, ds, dt, u, s, m, t) =>
+                    {
+                        if (!stationMachinePlanificationDict.TryGetValue(ms.MonthId.ToString(), out var stationMachinePlanificationData))
+                        {
+                            stationMachinePlanificationData = ms;
+                            stationMachinePlanificationData.DailySchedules = [];
+                            stationMachinePlanificationDict.Add(ms.MonthId.ToString(), stationMachinePlanificationData);
+                        }
+
+                        var dsData = stationMachinePlanificationData.DailySchedules.FirstOrDefault(d => d.DayId == ds.DayId);
+                        if (dsData == null)
+                        {
+                            dsData = ds;
+                            dsData.DailyTasks = [];
+                            stationMachinePlanificationData.DailySchedules.Add(dsData);
+                        }
+
+                        var dtData = dsData.DailyTasks.FirstOrDefault(d => d.TaskId == dt.TaskId);
+                        if (dtData == null)
+                        {
+                            dtData = dt;
+                            dtData.User = new();
+                            dtData.Station = new();
+                            dtData.Machine = new();
+                            dtData.Turn = new();
+
+                            dsData.DailyTasks.Add(dtData);
+                        }
+
+                        if (u != null && dtData.UserId == u.UserId) dtData.User = u;
+                        if (s != null && dtData.StationId == s.StationId) dtData.Station = s;
+                        if (m != null && dtData.MachineId == m.MachineId) dtData.Machine = m;
+                        if (t != null && dtData.TurnId == t.TurnId) dtData.Turn = t;
+
+                        return stationMachinePlanificationData;
+
+                    },
+                    p,
+                    splitOn: "DayId, TaskId, UserId, StationId, MachineId, TurnId",
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return stationMachinePlanificationDict.Values;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw new Exception(ex.Data.ToString());
             }
         }
 
