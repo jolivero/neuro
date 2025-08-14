@@ -21,6 +21,8 @@ public partial class ProductionLineRecipe
 
     public decimal RequiredQuantity { get; set; }
 
+    public DateTime? CreatedAt { get; set; }
+
     public virtual Group? Group { get; set; }
 
     public virtual ProductionLine? Line { get; set; }

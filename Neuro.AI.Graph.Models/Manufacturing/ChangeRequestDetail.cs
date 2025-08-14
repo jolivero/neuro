@@ -29,7 +29,31 @@ public partial class ChangeRequestDetail
 
     public string? NewValue { get; set; }
 
+    public Guid? CurrentUserId { get; set; }
+
+    public Guid? NewUserId { get; set; }
+
+    public Guid? CurrentStationId { get; set; }
+
+    public Guid? CurrentMachineId { get; set; }
+
+    public Guid? CurrentTurnId { get; set; }
+
+    public Guid? NewTurnId { get; set; }
+
+    public virtual Machine? CurrentMachine { get; set; }
+
+    public virtual Station? CurrentStation { get; set; }
+
+    public virtual Turn? CurrentTurn { get; set; }
+
+    public virtual User? CurrentUser { get; set; }
+
     public virtual Machine? Machine { get; set; }
+
+    public virtual Turn? NewTurn { get; set; }
+
+    public virtual User? NewUser { get; set; }
 
     public virtual Part? Part { get; set; }
 
