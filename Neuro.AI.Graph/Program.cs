@@ -86,8 +86,10 @@ app.UseSwaggerUI();
 
 if (app.Environment.IsDevelopment())
 {
-  app.UseCors("EnableCORS");
+	//app.UseCors("EnableCORS");
 }
+
+app.UseCors("EnableCORS");
 
 app.UseHttpsRedirection();
 app.UseKeycloakLoginAPI();
