@@ -284,11 +284,12 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Update_monthlySchedule_operator(string monthId, string userId)
+        public async Task<string> Update_monthlySchedule_operator(string monthId, string dayId, string userId)
         {
             var sp = "sp_update_monthlySchedule_operator";
             var p = new DynamicParameters();
             p.Add("@MonthId", monthId);
+            p.Add("@DayId", dayId);
             p.Add("@UserId", userId);
             p.Add("@Action", "actualizar");
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
@@ -331,11 +332,12 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Delete_monthlySchedule_operator(string monthId, string userId)
+        public async Task<string> Delete_monthlySchedule_operator(string monthId, string dayId, string userId)
         {
             var sp = "sp_update_monthlySchedule_operator";
             var p = new DynamicParameters();
             p.Add("@MonthId", monthId);
+            p.Add("@DayId", dayId);
             p.Add("@UserId", userId);
             p.Add("@Action", "remover");
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
