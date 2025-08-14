@@ -46,6 +46,7 @@ builder.Services.AddScoped<MachineRepository>();
 builder.Services.AddScoped<PartRepository>();
 builder.Services.AddScoped<TurnRepository>();
 builder.Services.AddScoped<MonthlyScheduleRepository>();
+builder.Services.AddScoped<DailyScheduleRepository>();
 builder.Services.AddScoped<DailyTaskRepository>();
 builder.Services.AddScoped<ChangeRequestRepository>();
 
