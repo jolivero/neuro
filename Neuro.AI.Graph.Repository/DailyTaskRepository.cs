@@ -99,6 +99,7 @@ namespace Neuro.AI.Graph.Repository
                 {
                     p.Add("@DayId", assigment.DayId);
                     p.Add("@BeginAt", TimeSpan.Parse(assigment.BeginAt));
+                    p.Add("@EndAt", !string.IsNullOrEmpty(assigment.EndAt) ? TimeSpan.Parse(assigment.EndAt) : null);
                     p.Add("@UserId", assigment.UserId);
                     p.Add("@StationId", assigment.StationId);
                     p.Add("@MachineId", assigment.MachineId);
