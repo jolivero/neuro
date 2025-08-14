@@ -248,7 +248,13 @@ namespace Neuro.AI.Graph.Repository
 
             var businessDays = mdDto.UpdateDailyScheduleDto!.Count(d => d.DayType.Equals("laboral", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
             var extraDays = mdDto.UpdateDailyScheduleDto!.Count(d => d.DayType.Equals("extra", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
-            var dailyGoal = mdDto.MonthlyGoal / (businessDays + extraDays);
+
+            var previousDays = mdDto.UpdateDailyScheduleDto!.FindAll(d => DateOnly.Parse(d.ProductionDate) < DateOnly.FromDateTime(DateTime.Now) && d.Available == 1);
+            var currentGoal = previousDays.Sum(p => p.DailyGoal);
+
+            var daysToUpdate = mdDto.UpdateDailyScheduleDto!.FindAll(d => DateOnly.Parse(d.ProductionDate) >= DateOnly.FromDateTime(DateTime.Now) && d.Available == 1);
+            var currentAndNewdays = daysToUpdate.Count(d => DateOnly.Parse(d.ProductionDate) >= DateOnly.FromDateTime(DateTime.Now));
+            var dailyGoal = (mdDto.MonthlyGoal - currentGoal) / currentAndNewdays;
 
             var sp = "sp_update_monthlyDays";
             var p = new DynamicParameters();
@@ -260,7 +266,7 @@ namespace Neuro.AI.Graph.Repository
 
             try
             {
-                foreach (var item in mdDto.UpdateDailyScheduleDto!)
+                foreach (var item in daysToUpdate)
                 {
                     p.Add("@DayId", item.DayId);
                     p.Add("@DailyGoal", dailyGoal);
