@@ -4,6 +4,7 @@ using Data.Entities;
 using Data.Entities.Telered;
 using HotChocolate.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Neuro.AI.Graph.Models.CustomModels;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
 using TropigasMobile.Backend.Data;
@@ -193,6 +194,28 @@ public class EntitiesQueries
         }
 
         return turns.AsQueryable();
+    }
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    async public Task<IQueryable<TurnWithTimeDetail>> GetTurnsWithTimeDetail(ManufacturingDbContext context)
+    {
+        var turnWitTimeDetail = await context.Turns
+            .Select(t => new TurnWithTimeDetail
+            {
+                TurnId = t.TurnId,
+                Name = t.Name!,
+                Duration = t.Duration,
+                TimeDetail = new()
+                {
+                    BeginAt = t.TurnDetails.Min(td => td.BeginAt),
+                    EndAt = t.TurnDetails.Max(td => td.EndAt)
+                }
+
+            }).ToListAsync();
+
+        return turnWitTimeDetail.AsQueryable();
     }
 
     [UseProjection]

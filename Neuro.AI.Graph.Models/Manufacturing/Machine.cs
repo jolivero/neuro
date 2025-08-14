@@ -33,7 +33,9 @@ public partial class Machine
 
     public Guid? CreatedBy { get; set; }
 
-    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetails { get; set; } = new List<ChangeRequestDetail>();
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentMachines { get; set; } = new List<ChangeRequestDetail>();
+
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailMachines { get; set; } = new List<ChangeRequestDetail>();
 
     public virtual User? CreatedByNavigation { get; set; }
 

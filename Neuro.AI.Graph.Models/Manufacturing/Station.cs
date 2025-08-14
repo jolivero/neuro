@@ -17,7 +17,9 @@ public partial class Station
 
     public Guid? CreatedBy { get; set; }
 
-    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetails { get; set; } = new List<ChangeRequestDetail>();
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentStations { get; set; } = new List<ChangeRequestDetail>();
+
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailStations { get; set; } = new List<ChangeRequestDetail>();
 
     public virtual User? CreatedByNavigation { get; set; }
 

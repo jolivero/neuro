@@ -19,8 +19,14 @@ namespace Neuro.AI.Graph.Models.Dtos
         public List<string> DayId { get; set; } = [];
         public string CurrentValue { get; set; } = string.Empty;
         public string NewValue { get; set; } = string.Empty;
-        public string StationId { get; set; } = string.Empty;
-        public string MachineId { get; set; } = string.Empty;
+        public string CurrentUserId { get; set; } = string.Empty;
+        public string? NewUserId { get; set; }
+        public string CurrentStationId { get; set; }  = string.Empty;
+        public string? StationId { get; set; }
+        public string CurrentMachineId { get; set; } = string.Empty;
+        public string? MachineId { get; set; }
+        public string? CurrentTurnId { get; set; }
+        public string? NewTurnId { get; set; }
     }
 
     public class UpdateStatusRequestDto

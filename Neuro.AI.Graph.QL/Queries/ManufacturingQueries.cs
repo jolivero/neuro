@@ -101,6 +101,15 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #endregion
 
+        #region Planificación diaria
+
+        public async Task<string> repo_turn_validation(DailyScheduleRepository repository, string monthId, string dayId, string userId, string? turnId, string beginAt, string endAt)
+        {
+            return await repository.Select_turn_validation(monthId, dayId, userId, turnId, beginAt, endAt);
+        }
+
+        #endregion
+
         #region Tareas diarias
 
         public async Task<IQueryable<DailySchedule>> repo_dailyTasks_by_userId(DailyTaskRepository repository, string currentDate, string userId)

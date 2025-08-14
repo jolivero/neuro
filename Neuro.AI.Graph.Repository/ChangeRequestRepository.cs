@@ -81,8 +81,14 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@RequestType", dRequestDto.RequestType);
             p.Add("@CurrentValue", dRequestDto.CurrentValue);
             p.Add("@NewValue", dRequestDto.NewValue);
-            p.Add("@StationId", dRequestDto.StationId);
-            p.Add("@MachineId", dRequestDto.MachineId);
+            p.Add("@CurrentUserId", dRequestDto.CurrentUserId);
+            p.Add("@NewUserId", dRequestDto.NewUserId ?? null);
+            p.Add("@CurrentStationId", dRequestDto.CurrentStationId);
+            p.Add("@StationId", dRequestDto.StationId ?? null);
+            p.Add("@CurrentMachineId", dRequestDto.CurrentMachineId);
+            p.Add("@MachineId", dRequestDto.MachineId ?? null);
+            p.Add("@CurrentTunId", dRequestDto.CurrentTurnId ?? null);
+            p.Add("@NewTurnId", dRequestDto.NewTurnId ?? null);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try

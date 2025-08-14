@@ -25,6 +25,10 @@ public partial class Turn
 
     public string? TurnType { get; set; }
 
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentTurns { get; set; } = new List<ChangeRequestDetail>();
+
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewTurns { get; set; } = new List<ChangeRequestDetail>();
+
     public virtual User? CreatedByNavigation { get; set; }
 
     public virtual ICollection<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();

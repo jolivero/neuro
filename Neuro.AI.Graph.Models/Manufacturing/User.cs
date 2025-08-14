@@ -35,6 +35,10 @@ public partial class User
 
     public string? Rol { get; set; }
 
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentUsers { get; set; } = new List<ChangeRequestDetail>();
+
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewUsers { get; set; } = new List<ChangeRequestDetail>();
+
     public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
 
     public virtual Company? Company { get; set; }
