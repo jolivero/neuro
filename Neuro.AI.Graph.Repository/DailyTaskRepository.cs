@@ -1,6 +1,7 @@
 using System.Data;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
+using Neuro.AI.Graph.Models.CustomModels;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
 
@@ -17,58 +18,49 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<IEnumerable<DailySchedule>> Select_dailyTask_by_userId(string currentDay, string userId)
+        public async Task<IEnumerable<DailyTaskOperator>> Select_dailyTask_by_userId(string currentDay, string userId)
         {
             var sp = "sp_select_dailyTask_by_userId";
             var p = new DynamicParameters();
             p.Add("@CurrentDay", currentDay);
             p.Add("@UserId", userId);
 
-            var dailyScheduleDict = new Dictionary<string, DailySchedule>();
+            var dailyScheduleDict = new Dictionary<string, DailyTaskOperator>();
 
             try
             {
-                await _db.QueryAsync<DailySchedule, DailyTask, User, Station, Part, Inventory, Machine, DailySchedule>(
+                await _db.QueryAsync<DailySchedule, DailyTask, User, Station, Part, Machine, Part, DailySchedule>(
                     sp,
-                    (dailySchedule, task, user, station, part, inventory, machine) =>
+                    (dailySchedule, dailyTask, user, station, part, machine, prevPart) =>
                     {
                         if (!dailyScheduleDict.TryGetValue(dailySchedule.DayId.ToString(), out var dailyScheduleData))
                         {
-                            dailyScheduleData = dailySchedule;
-                            dailyScheduleData.DailyTasks = [];
+                            dailyScheduleData = new()
+                            {
+                                DayId = dailySchedule.DayId,
+                                ProductionDate = dailySchedule.ProductionDate,
+                                DailyGoal = dailySchedule.DailyGoal,
+                                TaskId = dailyTask.TaskId,
+                                User = user,
+                                Station = new()
+                                {
+                                    StationId = station.StationId,
+                                    Name = station.Name!,
+                                    Machine = machine,
+                                    Part = part,
+                                    PrevPart = [],
+                                },
+                            };
                             dailyScheduleDict.Add(dailySchedule.DayId.ToString(), dailyScheduleData);
                         }
 
-                        var taskData = dailyScheduleData.DailyTasks.FirstOrDefault(dt => dt.TaskId == task.TaskId);
-                        if (taskData == null)
-                        {
-                            taskData = task;
-                            taskData.User = new();
-                            taskData.Station = new();
-                            taskData.Machine = new();
+                        if (part != null && dailyScheduleData.Station.Part.PartId == part.PartId)  dailyScheduleData.Station.Part = part;
+                        if (prevPart != null && dailyScheduleData.Station.StationId == prevPart.StationId)  dailyScheduleData.Station.PrevPart.Add(prevPart);
 
-                            dailyScheduleData.DailyTasks.Add(taskData);
-                        }
-
-                        if (user != null && taskData.UserId == user.UserId) taskData.User = user;
-                        if (station != null && taskData.StationId == station.StationId)
-                        {
-                            taskData.Station = station;
-                            taskData.Station.Parts = [];
-                        }
-
-                        if (part != null && !taskData.Station.Parts.Any(p => p.PartId == part.PartId))
-                        {
-                            if (inventory != null && part.PartId == inventory.PartId) part.Inventory = inventory;
-                            taskData.Station.Parts.Add(part);
-                        }
-
-                        if (machine != null && taskData.MachineId == machine.MachineId) taskData.Machine = machine;
-
-                        return dailyScheduleData;
+                        return dailySchedule;
                     },
                     p,
-                    splitOn: "TaskId, UserId, StationId, PartId, InventoryId, MachineId",
+                    splitOn: "TaskId, UserId, StationId, PartId, MachineId, PartId",
                     commandType: CommandType.StoredProcedure
                 );
 
@@ -99,7 +91,7 @@ namespace Neuro.AI.Graph.Repository
                 {
                     p.Add("@DayId", assigment.DayId);
                     p.Add("@BeginAt", TimeSpan.Parse(assigment.BeginAt));
-                    p.Add("@EndAt", !string.IsNullOrEmpty(assigment.EndAt) ? TimeSpan.Parse(assigment.EndAt) : null);
+                    p.Add("@EndAt", TimeSpan.Parse(assigment.EndAt));
                     p.Add("@UserId", assigment.UserId);
                     p.Add("@StationId", assigment.StationId);
                     p.Add("@MachineId", assigment.MachineId);
