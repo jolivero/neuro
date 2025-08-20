@@ -9,11 +9,11 @@ public partial class ProductionRecord
 
     public string Status { get; set; } = null!;
 
-    public string BeginTime { get; set; } = null!;
+    public TimeOnly BeginTime { get; set; }
 
-    public string EndTime { get; set; } = null!;
+    public TimeOnly? EndTime { get; set; }
 
-    public decimal Duration { get; set; }
+    public decimal? Duration { get; set; }
 
     public int? IsCut { get; set; }
 

@@ -265,6 +265,13 @@ public class EntitiesQueries
                                                                                                 .Include(pc => pc.ApprovalUser)
                                                                                                 .OrderByDescending(pc => pc.CreatedAt);
 
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<ProductionRecord> GetProductionRecords(ManufacturingDbContext context) => context.ProductionRecords
+                                                                                            .Include(pr => pr.CreatedByNavigation)
+                                                                                            .OrderBy(pr => pr.CreatedAt);
+
 
     #endregion
 
