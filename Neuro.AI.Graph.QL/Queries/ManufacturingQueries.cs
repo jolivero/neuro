@@ -112,13 +112,21 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Tareas diarias
 
-        public async Task<IQueryable<DailySchedule>> repo_dailyTasks_by_userId(DailyTaskRepository repository, string currentDate, string userId)
+        public async Task<IQueryable<DailyTaskOperator>> repo_dailyTasks_by_userId(DailyTaskRepository repository, string currentDate, string userId)
         {
             return (await repository.Select_dailyTask_by_userId(currentDate, userId)).AsQueryable();
         }
 
         #endregion
 
+        #region Control de estado
+
+        public async Task<IQueryable<StatusControl>> repo_statusControl(StatusControlRepository repository, string productionDate)
+        {
+            return (await repository.Select_statusControl(productionDate)).AsQueryable();
+        }
+
+        #endregion
 
     }
 }
