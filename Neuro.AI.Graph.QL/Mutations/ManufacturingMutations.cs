@@ -206,7 +206,14 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #endregion
 
+        #region Registro de producción
 
+        public async Task<string> repo_create_update_productionRecord(ProductionRecordRepository repository, ProductionRecordDto prDto)
+        {
+            return await repository.Create_Update_ProductionRecord(prDto);
+        }
+
+        #endregion
 
     }
 }
