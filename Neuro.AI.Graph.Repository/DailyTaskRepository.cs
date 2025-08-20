@@ -41,6 +41,7 @@ namespace Neuro.AI.Graph.Repository
                                 ProductionDate = dailySchedule.ProductionDate,
                                 DailyGoal = dailySchedule.DailyGoal,
                                 TaskId = dailyTask.TaskId,
+                                OperatorStatus = dailyTask.OperatorStatus!,
                                 User = user,
                                 Station = new()
                                 {

@@ -29,7 +29,6 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@UserId", prDto.UserId);
             p.Add("@Status", prDto.Status);
             p.Add("@CurrentTime", TimeSpan.Parse(prDto.CurrentTime));
-            //p.Add("@Duration", prDto.Duration);
             p.Add("@IsCut", prDto.IsCut ? 1 : 0);
             p.Add("@Total", prDto.ProducedPart?.Total);
             p.Add("@ProducedPartId", prDto.ProducedPart?.PartId);
