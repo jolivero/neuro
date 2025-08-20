@@ -5,6 +5,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
     public class DailyTaskOperator : DailySchedule
     {
         public Guid TaskId { get; set; } = new();
+        public string OperatorStatus { get; set; } = string.Empty;
         public User User { get; set; } = new();
         public DailyTaskStation Station { get; set; } = new();
     }
