@@ -536,12 +536,10 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasKey(e => e.ProductionId).HasName("PK__Producti__D5D9A2D58D6FD574");
 
             entity.Property(e => e.ProductionId).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.BeginTime).HasMaxLength(255);
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Duration).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.EndTime).HasMaxLength(255);
             entity.Property(e => e.IsCut).HasDefaultValue(1);
             entity.Property(e => e.Status).HasMaxLength(255);
             entity.Property(e => e.UpdatedAt)
