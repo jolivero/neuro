@@ -180,6 +180,20 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
+    async public Task<IQueryable<MachineReport>> GetReports(ManufacturingDbContext context)
+    {
+        var reports = await context.MachineReports
+            .Include(r => r.Station)
+            .Include(r => r.Machine)
+            .Include(r => r.Operator)
+            .ToListAsync();
+
+        return reports.AsQueryable();
+    }
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
     public IQueryable<Part> GetPartsWithInventory(ManufacturingDbContext context) => context.Parts.Include(p => p.Inventory).OrderBy(p => p.CreatedAt);
 
     [UseProjection]
