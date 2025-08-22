@@ -89,7 +89,6 @@ namespace Neuro.AI.Graph.Repository
         {
             var sp = "sp_create_update_machine_report";
             var p = new DynamicParameters();
-            p.Add("@Type", machineReportDto.Type);
             p.Add("@StationId", machineReportDto.StationId);
             p.Add("@MachineId", machineReportDto.MachineId);
             p.Add("@OperatorId", machineReportDto.OperatorId);
