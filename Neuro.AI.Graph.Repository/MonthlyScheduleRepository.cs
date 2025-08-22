@@ -116,9 +116,9 @@ namespace Neuro.AI.Graph.Repository
 
             try
             {
-                await _db.QueryAsync<MonthlySchedule, DailySchedule, DailyTask, User, Station, Machine, Turn, MonthlySchedule>(
+                await _db.QueryAsync<MonthlySchedule, DailySchedule, DailyTask, User, MonthlySchedule>(
                     sp,
-                    (ms, ds, dt, u, s, m, t) =>
+                    (ms, ds, dt, u) =>
                     {
                         if (!stationMachinePlanificationDict.TryGetValue(ms.MonthId.ToString(), out var stationMachinePlanificationData))
                         {
@@ -135,28 +135,25 @@ namespace Neuro.AI.Graph.Repository
                             stationMachinePlanificationData.DailySchedules.Add(dsData);
                         }
 
-                        var dtData = dsData.DailyTasks.FirstOrDefault(d => d.TaskId == dt.TaskId);
-                        if (dtData == null)
+                        if (dt != null && u != null)
                         {
-                            dtData = dt;
-                            dtData.User = new();
-                            dtData.Station = new();
-                            dtData.Machine = new();
-                            dtData.Turn = new();
+                            var dtData = dsData.DailyTasks.FirstOrDefault(d => d.TaskId == dt.TaskId);
+                            if (dtData == null)
+                            {
+                                dtData = dt;
+                                dtData.User = new();
 
-                            dsData.DailyTasks.Add(dtData);
+                                dsData.DailyTasks.Add(dtData);
+                            }
+
+                            if (u != null && dtData.UserId == u.UserId) dtData.User = u;
                         }
-
-                        if (u != null && dtData.UserId == u.UserId) dtData.User = u;
-                        if (s != null && dtData.StationId == s.StationId) dtData.Station = s;
-                        if (m != null && dtData.MachineId == m.MachineId) dtData.Machine = m;
-                        if (t != null && dtData.TurnId == t.TurnId) dtData.Turn = t;
 
                         return stationMachinePlanificationData;
 
                     },
                     p,
-                    splitOn: "DayId, TaskId, UserId, StationId, MachineId, TurnId",
+                    splitOn: "DayId, TaskId, UserId",
                     commandType: CommandType.StoredProcedure
                 );
 
