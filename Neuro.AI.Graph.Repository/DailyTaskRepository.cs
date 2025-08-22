@@ -1,4 +1,5 @@
 using System.Data;
+using System.Security.Cryptography;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.CustomModels;
@@ -20,7 +21,8 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<IEnumerable<DailyTaskOperator>> Select_dailyTask_by_userId(string currentDay, string userId)
         {
-            var sp = "sp_select_dailyTask_by_userId";
+            var sp_tasks = "sp_select_dailyTask_by_userId";
+            var sp_progress = "sp_select_operator_progress";
             var p = new DynamicParameters();
             p.Add("@CurrentDay", currentDay);
             p.Add("@UserId", userId);
@@ -30,7 +32,7 @@ namespace Neuro.AI.Graph.Repository
             try
             {
                 await _db.QueryAsync<DailySchedule, DailyTask, User, Station, Part, Machine, Part, DailySchedule>(
-                    sp,
+                    sp_tasks,
                     (dailySchedule, dailyTask, user, station, part, machine, prevPart) =>
                     {
                         if (!dailyScheduleDict.TryGetValue(dailySchedule.DayId.ToString(), out var dailyScheduleData))
@@ -55,8 +57,8 @@ namespace Neuro.AI.Graph.Repository
                             dailyScheduleDict.Add(dailySchedule.DayId.ToString(), dailyScheduleData);
                         }
 
-                        if (part != null && dailyScheduleData.Station.Part.PartId == part.PartId)  dailyScheduleData.Station.Part = part;
-                        if (prevPart != null && dailyScheduleData.Station.StationId == prevPart.StationId)  dailyScheduleData.Station.PrevPart.Add(prevPart);
+                        if (part != null && dailyScheduleData.Station.Part.PartId == part.PartId) dailyScheduleData.Station.Part = part;
+                        if (prevPart != null && dailyScheduleData.Station.StationId == prevPart.StationId) dailyScheduleData.Station.PrevPart.Add(prevPart);
 
                         return dailySchedule;
                     },
@@ -65,12 +67,27 @@ namespace Neuro.AI.Graph.Repository
                     commandType: CommandType.StoredProcedure
                 );
 
+                foreach (var dailySchedule in dailyScheduleDict)
+                {
+                    var progress = await _db.QueryFirstAsync<Progress>(
+                       sp_progress,
+                       new
+                       {
+                           dailySchedule.Value.TaskId,
+                           UserId = userId
+                       },
+                       commandType: CommandType.StoredProcedure
+                   );
+
+                    dailySchedule.Value.Progress = progress;
+                }
+
                 return dailyScheduleDict.Values;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
