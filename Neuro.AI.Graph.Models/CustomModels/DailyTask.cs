@@ -6,7 +6,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
     {
         public Guid TaskId { get; set; } = new();
         public string OperatorStatus { get; set; } = string.Empty;
-        public Progress Progress { get; set; } = new();
+        public Compliance Compliance { get; set; } = new();
         public User User { get; set; } = new();
         public DailyTaskStation Station { get; set; } = new();
     }
@@ -20,10 +20,10 @@ namespace Neuro.AI.Graph.Models.CustomModels
         public List<Part> PrevPart { get; set; } = [];
     }
 
-    public class Progress
+    public class Compliance
     {
         public int Total { get; set; }
-        public decimal Compliance { get; set; }
+        public decimal Progress { get; set; }
     }
     
 }

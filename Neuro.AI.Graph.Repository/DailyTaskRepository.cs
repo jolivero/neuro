@@ -69,7 +69,7 @@ namespace Neuro.AI.Graph.Repository
 
                 foreach (var dailySchedule in dailyScheduleDict)
                 {
-                    var progress = await _db.QueryFirstAsync<Progress>(
+                    var compliance = await _db.QueryFirstAsync<Compliance>(
                        sp_progress,
                        new
                        {
@@ -79,7 +79,7 @@ namespace Neuro.AI.Graph.Repository
                        commandType: CommandType.StoredProcedure
                    );
 
-                    dailySchedule.Value.Progress = progress;
+                    dailySchedule.Value.Compliance = compliance;
                 }
 
                 return dailyScheduleDict.Values;
