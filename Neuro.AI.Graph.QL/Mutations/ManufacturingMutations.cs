@@ -215,5 +215,13 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #endregion
 
+        #region Control de estado
+
+        public async Task<string> repo_update_operator_status(StatusControlRepository repository, string taskId, string userId, string status)
+        {
+            return await repository.Update_operator_status(taskId, userId, status);
+        }
+
+        #endregion
     }
 }
