@@ -7,7 +7,7 @@ public partial class MachineReport
 {
     public Guid ReportId { get; set; }
 
-    public string Type { get; set; } = null!;
+    public string? Type { get; set; }
 
     public string? Description { get; set; }
 
