@@ -121,6 +121,11 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Control de estado
 
+        public async Task<IQueryable<string>> repo_statusControl_options(StatusControlRepository repository)
+        {
+            return (await repository.Select_statusControl_options()).AsQueryable();
+        }
+
         public async Task<IQueryable<StatusControl>> repo_statusControl(StatusControlRepository repository, string productionDate)
         {
             return (await repository.Select_statusControl(productionDate)).AsQueryable();
