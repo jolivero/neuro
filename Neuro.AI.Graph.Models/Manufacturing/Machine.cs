@@ -35,7 +35,7 @@ public partial class Machine
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentMachines { get; set; } = new List<ChangeRequestDetail>();
 
-    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailMachines { get; set; } = new List<ChangeRequestDetail>();
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewMachines { get; set; } = new List<ChangeRequestDetail>();
 
     public virtual User? CreatedByNavigation { get; set; }
 

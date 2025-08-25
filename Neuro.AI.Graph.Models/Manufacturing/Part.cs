@@ -21,7 +21,9 @@ public partial class Part
 
     public Guid? CreatedBy { get; set; }
 
-    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetails { get; set; } = new List<ChangeRequestDetail>();
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentParts { get; set; } = new List<ChangeRequestDetail>();
+
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewParts { get; set; } = new List<ChangeRequestDetail>();
 
     public virtual User? CreatedByNavigation { get; set; }
 

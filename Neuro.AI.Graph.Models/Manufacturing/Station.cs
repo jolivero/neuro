@@ -19,7 +19,7 @@ public partial class Station
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentStations { get; set; } = new List<ChangeRequestDetail>();
 
-    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailStations { get; set; } = new List<ChangeRequestDetail>();
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewStations { get; set; } = new List<ChangeRequestDetail>();
 
     public virtual User? CreatedByNavigation { get; set; }
 
