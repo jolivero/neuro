@@ -35,6 +35,8 @@ public partial class ProductionChangeRequest
 
     public Guid? DayId { get; set; }
 
+    public Guid? TaskId { get; set; }
+
     public virtual User? ApprovalUser { get; set; }
 
     public virtual RequestCategory? Category { get; set; }
@@ -48,6 +50,8 @@ public partial class ProductionChangeRequest
     public virtual NonCompliantPartsRecord? NcPart { get; set; }
 
     public virtual User? RequestingUser { get; set; }
+
+    public virtual DailyTask? Task { get; set; }
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

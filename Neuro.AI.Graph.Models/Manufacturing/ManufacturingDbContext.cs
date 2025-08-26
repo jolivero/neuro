@@ -466,6 +466,10 @@ public partial class ManufacturingDbContext : DbContext
                 .HasForeignKey(d => d.RequestingUserId)
                 .HasConstraintName("FK__Productio__Reque__49EEDF40");
 
+            entity.HasOne(d => d.Task).WithMany(p => p.ProductionChangeRequests)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("FK__Productio__TaskI__3C5FD9F8");
+
             entity.HasMany(d => d.Users).WithMany(p => p.Requests)
                 .UsingEntity<Dictionary<string, object>>(
                     "OperatorChangeRequest",
