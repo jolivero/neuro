@@ -19,12 +19,13 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<IEnumerable<DailyTaskOperator>> Select_dailyTask_by_userId(string currentDay, string userId)
+        public async Task<IEnumerable<DailyTaskOperator>> Select_dailyTask_by_userId(string currentDay, string userId, string? taskId = null)
         {
             var sp_tasks = "sp_select_dailyTask_by_userId";
             var sp_progress = "sp_select_operator_progress";
             var p = new DynamicParameters();
             p.Add("@CurrentDay", currentDay);
+            p.Add("@TaskId", taskId);
             p.Add("@UserId", userId);
 
             var dailyScheduleDict = new Dictionary<string, DailyTaskOperator>();
@@ -39,6 +40,7 @@ namespace Neuro.AI.Graph.Repository
                         {
                             dailyScheduleData = new()
                             {
+                                MonthId = dailySchedule.MonthId,
                                 DayId = dailySchedule.DayId,
                                 ProductionDate = dailySchedule.ProductionDate,
                                 DailyGoal = dailySchedule.DailyGoal,
