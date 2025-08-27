@@ -74,6 +74,30 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #endregion
 
+        #region Línea de producción [Recetas]
+
+        public async Task<IQueryable<Group>> repo_groups_from_recipe(ProductionLineRecipeRepository repository, string taskId, string userId)
+        {
+            return (await repository.Select_groups(taskId, userId)).AsQueryable();
+        }
+
+        public async Task<IQueryable<Station>> repo_stations_from_recipe(ProductionLineRecipeRepository repository, string lineId, string groupId)
+        {
+            return (await repository.Select_stations(lineId, groupId)).AsQueryable();
+        }
+
+        public async Task<IQueryable<Machine>> repo_machines_from_recipe(ProductionLineRecipeRepository repository, string lineId, string groupId, string stationId)
+        {
+            return (await repository.Select_machines(lineId, groupId, stationId)).AsQueryable();
+        }
+
+        public async Task<IQueryable<Part>> repo_parts_from_recipe(ProductionLineRecipeRepository repository, string lineId, string groupId, string stationId, string machineId)
+        {
+            return (await repository.Select_parts(lineId, groupId, stationId, machineId)).AsQueryable();
+        }
+
+        #endregion
+
         #region Turnos/Detalles
 
         #endregion
@@ -112,9 +136,9 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Tareas diarias
 
-        public async Task<IQueryable<DailyTaskOperator>> repo_dailyTasks_by_userId(DailyTaskRepository repository, string currentDate, string userId)
+        public async Task<IQueryable<DailyTaskOperator>> repo_dailyTasks_by_userId(DailyTaskRepository repository, string currentDate, string userId, string? taskId = null)
         {
-            return (await repository.Select_dailyTask_by_userId(currentDate, userId)).AsQueryable();
+            return (await repository.Select_dailyTask_by_userId(currentDate, userId, taskId)).AsQueryable();
         }
 
         #endregion

@@ -89,45 +89,57 @@ public partial class ManufacturingDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
 
+            entity.HasOne(d => d.CurrentGroup).WithMany(p => p.ChangeRequestDetailCurrentGroups)
+                .HasForeignKey(d => d.CurrentGroupId)
+                .HasConstraintName("FK__ChangeReq__Curre__2D1D9668");
+
             entity.HasOne(d => d.CurrentMachine).WithMany(p => p.ChangeRequestDetailCurrentMachines)
                 .HasForeignKey(d => d.CurrentMachineId)
-                .HasConstraintName("FK__ChangeReq__Curre__1A0AC1F4");
+                .HasConstraintName("FK__ChangeReq__Curre__30EE274C");
+
+            entity.HasOne(d => d.CurrentPart).WithMany(p => p.ChangeRequestDetailCurrentParts)
+                .HasForeignKey(d => d.CurrentPartId)
+                .HasConstraintName("FK__ChangeReq__Curre__34BEB830");
 
             entity.HasOne(d => d.CurrentStation).WithMany(p => p.ChangeRequestDetailCurrentStations)
                 .HasForeignKey(d => d.CurrentStationId)
-                .HasConstraintName("FK__ChangeReq__Curre__19169DBB");
+                .HasConstraintName("FK__ChangeReq__Curre__2F05DEDA");
 
             entity.HasOne(d => d.CurrentTurn).WithMany(p => p.ChangeRequestDetailCurrentTurns)
                 .HasForeignKey(d => d.CurrentTurnId)
-                .HasConstraintName("FK__ChangeReq__Curre__1AFEE62D");
+                .HasConstraintName("FK__ChangeReq__Curre__32D66FBE");
 
             entity.HasOne(d => d.CurrentUser).WithMany(p => p.ChangeRequestDetailCurrentUsers)
                 .HasForeignKey(d => d.CurrentUserId)
-                .HasConstraintName("FK__ChangeReq__Curre__172E5549");
+                .HasConstraintName("FK__ChangeReq__Curre__2B354DF6");
 
-            entity.HasOne(d => d.Machine).WithMany(p => p.ChangeRequestDetailMachines)
-                .HasForeignKey(d => d.MachineId)
-                .HasConstraintName("FK__ChangeReq__Machi__47127295");
+            entity.HasOne(d => d.NewGroup).WithMany(p => p.ChangeRequestDetailNewGroups)
+                .HasForeignKey(d => d.NewGroupId)
+                .HasConstraintName("FK__ChangeReq__NewGr__2E11BAA1");
+
+            entity.HasOne(d => d.NewMachine).WithMany(p => p.ChangeRequestDetailNewMachines)
+                .HasForeignKey(d => d.NewMachineId)
+                .HasConstraintName("FK__ChangeReq__NewMa__31E24B85");
+
+            entity.HasOne(d => d.NewPart).WithMany(p => p.ChangeRequestDetailNewParts)
+                .HasForeignKey(d => d.NewPartId)
+                .HasConstraintName("FK__ChangeReq__NewPa__35B2DC69");
+
+            entity.HasOne(d => d.NewStation).WithMany(p => p.ChangeRequestDetailNewStations)
+                .HasForeignKey(d => d.NewStationId)
+                .HasConstraintName("FK__ChangeReq__NewSt__2FFA0313");
 
             entity.HasOne(d => d.NewTurn).WithMany(p => p.ChangeRequestDetailNewTurns)
                 .HasForeignKey(d => d.NewTurnId)
-                .HasConstraintName("FK__ChangeReq__NewTu__1BF30A66");
+                .HasConstraintName("FK__ChangeReq__NewTu__33CA93F7");
 
             entity.HasOne(d => d.NewUser).WithMany(p => p.ChangeRequestDetailNewUsers)
                 .HasForeignKey(d => d.NewUserId)
-                .HasConstraintName("FK__ChangeReq__NewUs__18227982");
-
-            entity.HasOne(d => d.Part).WithMany(p => p.ChangeRequestDetails)
-                .HasForeignKey(d => d.PartId)
-                .HasConstraintName("FK__ChangeReq__PartI__48FABB07");
+                .HasConstraintName("FK__ChangeReq__NewUs__2C29722F");
 
             entity.HasOne(d => d.Request).WithMany(p => p.ChangeRequestDetails)
                 .HasForeignKey(d => d.RequestId)
                 .HasConstraintName("FK__ChangeReq__Reque__443605EA");
-
-            entity.HasOne(d => d.Station).WithMany(p => p.ChangeRequestDetailStations)
-                .HasForeignKey(d => d.StationId)
-                .HasConstraintName("FK__ChangeReq__Stati__480696CE");
         });
 
         modelBuilder.Entity<Company>(entity =>
@@ -453,6 +465,10 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasOne(d => d.RequestingUser).WithMany(p => p.ProductionChangeRequestRequestingUsers)
                 .HasForeignKey(d => d.RequestingUserId)
                 .HasConstraintName("FK__Productio__Reque__49EEDF40");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.ProductionChangeRequests)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("FK__Productio__TaskI__3C5FD9F8");
 
             entity.HasMany(d => d.Users).WithMany(p => p.Requests)
                 .UsingEntity<Dictionary<string, object>>(

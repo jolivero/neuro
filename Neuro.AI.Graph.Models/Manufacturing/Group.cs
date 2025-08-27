@@ -19,6 +19,10 @@ public partial class Group
 
     public Guid? CreatedBy { get; set; }
 
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentGroups { get; set; } = new List<ChangeRequestDetail>();
+
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewGroups { get; set; } = new List<ChangeRequestDetail>();
+
     public virtual User? CreatedByNavigation { get; set; }
 
     public virtual ProductionLine? Line { get; set; }

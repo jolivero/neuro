@@ -33,6 +33,8 @@ public partial class DailyTask
 
     public virtual Machine? Machine { get; set; }
 
+    public virtual ICollection<ProductionChangeRequest> ProductionChangeRequests { get; set; } = new List<ProductionChangeRequest>();
+
     public virtual ICollection<ProductionRecord> ProductionRecords { get; set; } = new List<ProductionRecord>();
 
     public virtual Station? Station { get; set; }

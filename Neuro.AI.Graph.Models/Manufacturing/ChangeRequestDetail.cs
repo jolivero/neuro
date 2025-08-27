@@ -19,12 +19,6 @@ public partial class ChangeRequestDetail
 
     public Guid? RequestId { get; set; }
 
-    public Guid? StationId { get; set; }
-
-    public Guid? MachineId { get; set; }
-
-    public Guid? PartId { get; set; }
-
     public string? CurrentValue { get; set; }
 
     public string? NewValue { get; set; }
@@ -33,15 +27,31 @@ public partial class ChangeRequestDetail
 
     public Guid? NewUserId { get; set; }
 
+    public Guid? CurrentGroupId { get; set; }
+
+    public Guid? NewGroupId { get; set; }
+
     public Guid? CurrentStationId { get; set; }
 
+    public Guid? NewStationId { get; set; }
+
     public Guid? CurrentMachineId { get; set; }
+
+    public Guid? NewMachineId { get; set; }
 
     public Guid? CurrentTurnId { get; set; }
 
     public Guid? NewTurnId { get; set; }
 
+    public Guid? CurrentPartId { get; set; }
+
+    public Guid? NewPartId { get; set; }
+
+    public virtual Group? CurrentGroup { get; set; }
+
     public virtual Machine? CurrentMachine { get; set; }
+
+    public virtual Part? CurrentPart { get; set; }
 
     public virtual Station? CurrentStation { get; set; }
 
@@ -49,15 +59,17 @@ public partial class ChangeRequestDetail
 
     public virtual User? CurrentUser { get; set; }
 
-    public virtual Machine? Machine { get; set; }
+    public virtual Group? NewGroup { get; set; }
+
+    public virtual Machine? NewMachine { get; set; }
+
+    public virtual Part? NewPart { get; set; }
+
+    public virtual Station? NewStation { get; set; }
 
     public virtual Turn? NewTurn { get; set; }
 
     public virtual User? NewUser { get; set; }
 
-    public virtual Part? Part { get; set; }
-
     public virtual ProductionChangeRequest? Request { get; set; }
-
-    public virtual Station? Station { get; set; }
 }

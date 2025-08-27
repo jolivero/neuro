@@ -51,6 +51,7 @@ builder.Services.AddScoped<DailyTaskRepository>();
 builder.Services.AddScoped<ChangeRequestRepository>();
 builder.Services.AddScoped<ProductionRecordRepository>();
 builder.Services.AddScoped<StatusControlRepository>();
+builder.Services.AddScoped<ProductionLineRecipeRepository>();
 
 //Dapper Handler
 SqlMapper.AddTypeHandler(new TimeOnlyHandler());
