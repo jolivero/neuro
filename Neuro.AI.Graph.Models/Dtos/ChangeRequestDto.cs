@@ -4,7 +4,17 @@ namespace Neuro.AI.Graph.Models.Dtos
     {
         public string RequestingUserId { get; set; } = string.Empty;
         public string RequestType { get; set; } = string.Empty;
-        public string Reason { get; set; } = string.Empty;
+        public string? Reason { get; set; }
+    }
+
+    public class FieldsChangeRequetsDto : BaseChangeRequestDto
+    {
+        public string LineId { get; set; } = string.Empty;
+        public string GroupId { get; set; } = string.Empty;
+        public string StationId { get; set; } = string.Empty;
+        public string MachineId { get; set; } = string.Empty;
+        public string PartId { get; set; } = string.Empty;
+        
     }
 
     public class MonthlyChangeRequestDto : BaseChangeRequestDto
@@ -27,6 +37,20 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string? MachineId { get; set; }
         public string? CurrentTurnId { get; set; }
         public string? NewTurnId { get; set; }
+    }
+
+    public class ChangePlanificationRequestDto : FieldsChangeRequetsDto
+    {
+        public string TaskId { get; set; } = string.Empty;
+        public string BeginAt { get; set; } = string.Empty;
+        public string EndAt { get; set; } = string.Empty;
+        public int NewValue { get; set; }
+    }
+
+    public class SpecialMissionRequestDto : BaseChangeRequestDto
+    {
+        public string TaskId { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
     }
 
     public class UpdateStatusRequestDto
