@@ -132,28 +132,6 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Update_dailyTask()
-        {
-            //Implementar
-            var sp = "sp_update_dailyTasks";
-            var p = new DynamicParameters();
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
-
-            try
-            {
-                await _db.ExecuteAsync(
-                    sp,
-                    p,
-                    commandType: CommandType.StoredProcedure
-                );
-                return p.Get<string>("@Message");
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-
         #endregion
     }
 }
