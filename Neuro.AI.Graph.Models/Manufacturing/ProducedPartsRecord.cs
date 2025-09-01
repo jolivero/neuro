@@ -13,11 +13,11 @@ public partial class ProducedPartsRecord
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? ProductionId { get; set; }
-
     public Guid? PartId { get; set; }
+
+    public Guid? TaskId { get; set; }
 
     public virtual Part? Part { get; set; }
 
-    public virtual ProductionRecord? Production { get; set; }
+    public virtual DailyTask? Task { get; set; }
 }

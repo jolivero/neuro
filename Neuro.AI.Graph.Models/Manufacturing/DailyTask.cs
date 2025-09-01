@@ -33,6 +33,10 @@ public partial class DailyTask
 
     public virtual Machine? Machine { get; set; }
 
+    public virtual ICollection<NonCompliantPartsRecord> NonCompliantPartsRecords { get; set; } = new List<NonCompliantPartsRecord>();
+
+    public virtual ICollection<ProducedPartsRecord> ProducedPartsRecords { get; set; } = new List<ProducedPartsRecord>();
+
     public virtual ICollection<ProductionChangeRequest> ProductionChangeRequests { get; set; } = new List<ProductionChangeRequest>();
 
     public virtual ICollection<ProductionRecord> ProductionRecords { get; set; } = new List<ProductionRecord>();

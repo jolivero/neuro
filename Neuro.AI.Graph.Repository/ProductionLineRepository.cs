@@ -100,6 +100,22 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
+        public async Task<IEnumerable<ProductionLine>> Select_productionLine_recipe(string taskId, string userId)
+        {
+            var sp_lineId = "sp_select_lineId_from_recipe";
+            var p1 = new DynamicParameters();
+            p1.Add("@TaskId", taskId);
+            p1.Add("@UserId", userId);
+
+            var lineId = await _db.QueryFirstAsync<Guid>(
+                sp_lineId,
+                p1,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return await Select_productionLines_with_details(lineId.ToString());
+        }
+
         public async Task<IEnumerable<ProductionLineMachineHoursPerCut>> Select_productionLines_with_machineHoursPerCut(string lineId)
         {
             var sp = "sp_productionLines_with_machineHoursPerCut";

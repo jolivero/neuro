@@ -45,6 +45,11 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_productionLines_with_details(lineId)).AsQueryable();
         }
 
+        public async Task<IQueryable<ProductionLine>> repo_productionLine_recipe(ProductionLineRepository repository, string taskId, string userId)
+        {
+            return (await repository.Select_productionLine_recipe(taskId, userId)).AsQueryable();
+        }
+
         public async Task<IQueryable<ProductionLineMachineHoursPerCut>> repo_productionLines_with_machineHoursCut(ProductionLineRepository repository, string lineId)
         {
             return (await repository.Select_productionLines_with_machineHoursPerCut(lineId)).AsQueryable();
@@ -71,30 +76,6 @@ namespace Neuro.AI.Graph.QL.Queries
         #endregion
 
         #region Piezas
-
-        #endregion
-
-        #region Línea de producción [Recetas]
-
-        public async Task<IQueryable<Group>> repo_groups_from_recipe(ProductionLineRecipeRepository repository, string taskId, string userId)
-        {
-            return (await repository.Select_groups(taskId, userId)).AsQueryable();
-        }
-
-        public async Task<IQueryable<Station>> repo_stations_from_recipe(ProductionLineRecipeRepository repository, string lineId, string groupId)
-        {
-            return (await repository.Select_stations(lineId, groupId)).AsQueryable();
-        }
-
-        public async Task<IQueryable<Machine>> repo_machines_from_recipe(ProductionLineRecipeRepository repository, string lineId, string groupId, string stationId)
-        {
-            return (await repository.Select_machines(lineId, groupId, stationId)).AsQueryable();
-        }
-
-        public async Task<IQueryable<Part>> repo_parts_from_recipe(ProductionLineRecipeRepository repository, string lineId, string groupId, string stationId, string machineId)
-        {
-            return (await repository.Select_parts(lineId, groupId, stationId, machineId)).AsQueryable();
-        }
 
         #endregion
 

@@ -1,7 +1,9 @@
 using System.Data;
+using System.Text.RegularExpressions;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.Dtos;
+using Neuro.AI.Graph.Models.Manufacturing;
 
 namespace Neuro.AI.Graph.Repository
 {
@@ -15,10 +17,6 @@ namespace Neuro.AI.Graph.Repository
         }
 
         #region Queries
-
-        #endregion
-
-        #region Mutations
 
         public async Task<string?> Select_requestId(string monthId, string requestType)
         {
@@ -43,6 +41,10 @@ namespace Neuro.AI.Graph.Repository
                 return ex.Message;
             }
         }
+
+        #endregion
+
+        #region Mutations
 
         public async Task<string> Create_monthly_request(MonthlyChangeRequestDto mRequestDto)
         {
@@ -110,6 +112,102 @@ namespace Neuro.AI.Graph.Repository
             {
                 Console.WriteLine(ex.Message);
                 throw;
+            }
+        }
+
+        public async Task<string> Create_changePlannification_request(ChangePlanificationRequestDto cpRequestDto)
+        {
+            var sp = "sp_create_changePlannification_request";
+            var p = new DynamicParameters();
+            p.Add("@TaskId", cpRequestDto.TaskId);
+            p.Add("@RequestingUserId", cpRequestDto.RequestingUserId);
+            p.Add("@RequestType", cpRequestDto.RequestType);
+            p.Add("@LineId", cpRequestDto.LineId);
+            p.Add("@GroupId", cpRequestDto.GroupId);
+            p.Add("@StationId", cpRequestDto.StationId);
+            p.Add("@MachineId", cpRequestDto.MachineId);
+            p.Add("@PartId", cpRequestDto.PartId);
+            p.Add("@BeginAt", TimeSpan.Parse(cpRequestDto.BeginAt));
+            p.Add("@EndAt", TimeSpan.Parse(cpRequestDto.EndAt));
+            p.Add("@NewValue", cpRequestDto.NewValue);
+            p.Add("@Message", dbType: DbType.String, size: 255, direction: ParameterDirection.Output);
+
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> Create_specialMission_request(SpecialMissionRequestDto smRequestDto)
+        {
+            var sp = "sp_create_specialMission_request";
+            var p = new DynamicParameters();
+            p.Add("@TaskId", smRequestDto.TaskId);
+            p.Add("@UserId", smRequestDto.UserId);
+            p.Add("@RequestingUserId", smRequestDto.RequestingUserId);
+            p.Add("@RequestType", smRequestDto.RequestType);
+            p.Add("@Reason", smRequestDto.Reason);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> Create_extraTime_request(int month, string currentDate, ExtraTimeRequestDto etRequestDto)
+        {
+            var sp = "sp_create_extraTime_request";
+            var p = new DynamicParameters();
+            p.Add("@Month", month);
+            p.Add("@CurrentDate", currentDate);
+            p.Add("@LineId", etRequestDto.LineId);
+            p.Add("@GroupId", etRequestDto.GroupId);
+            p.Add("@StationId", etRequestDto.StationId);
+            p.Add("@MachineId", etRequestDto.MachineId);
+            p.Add("@PartId", etRequestDto.PartId);
+            p.Add("@TaskId", etRequestDto.RequestingUserId);
+            p.Add("@TaskId", etRequestDto.RequestType);
+            p.Add("@Reason", etRequestDto.Reason);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                foreach (var userId in etRequestDto.UserIds)
+                {
+                    p.Add("@UserId", userId);
+                    await _db.ExecuteAsync(
+                        sp,
+                        p,
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+
+                return p.Get<string>("@Message");
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 

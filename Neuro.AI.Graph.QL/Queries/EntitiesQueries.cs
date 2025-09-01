@@ -131,7 +131,11 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Company> GetCompanies(ManufacturingDbContext context) => context.Companies.Include(c => c.Users).Include(c => c.ProductionLines);
+    public IQueryable<Company> GetCompanies(ManufacturingDbContext context) => context.Companies
+                                                                            .Include(c => c.Users)
+                                                                            .Include(c => c.ProductionLines)
+                                                                            .Where(c => c.Available == 1)
+                                                                            .OrderByDescending(c => c.CreatedAt);
 
     [UseProjection]
     [UseFiltering]
@@ -146,17 +150,21 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<ProductionLine> GetProductionLines(ManufacturingDbContext context) => context.ProductionLines;
+    public IQueryable<ProductionLine> GetProductionLines(ManufacturingDbContext context) => context.ProductionLines
+                                                                                            .Where(pl => pl.Available == 1)
+                                                                                            .OrderByDescending(pl => pl.CreatedAt);
 
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Group> GetGroups(ManufacturingDbContext context) => context.Groups;
+    public IQueryable<Group> GetGroups(ManufacturingDbContext context) => context.Groups
+                                                                        .Where(g => g.Available == 1)
+                                                                        .OrderByDescending(g => g.CreatedAt);
 
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Station> GetStations(ManufacturingDbContext context) => context.Stations;
+    public IQueryable<Station> GetStations(ManufacturingDbContext context) => context.Stations.OrderByDescending(s => s.CreatedAt);
 
     [UseProjection]
     [UseFiltering]
@@ -168,7 +176,9 @@ public class EntitiesQueries
             .Include(m => m.ProductionLineRecipes).ThenInclude(r => r.Line)
             .Include(m => m.Stations)
             .Include(m => m.MachineReports).ThenInclude(mr => mr.Operator)
-            .Include(m => m.MachineReports).ThenInclude(mr => mr.Technical).ToListAsync();
+            .Include(m => m.MachineReports).ThenInclude(mr => mr.Technical)
+            .OrderByDescending(m => m.CreatedAt)
+            .ToListAsync();
         foreach (var machine in machines)
         {
             machine.MachineReports = machine.MachineReports.OrderByDescending(mr => mr.CreatedAt).ToList();
@@ -180,21 +190,16 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    async public Task<IQueryable<MachineReport>> GetReports(ManufacturingDbContext context)
-    {
-        var reports = await context.MachineReports
-            .Include(r => r.Station)
-            .Include(r => r.Machine)
-            .Include(r => r.Operator)
-            .ToListAsync();
-
-        return reports.AsQueryable();
-    }
+    public IQueryable<MachineReport> GetReports(ManufacturingDbContext context) => context.MachineReports
+                                                                                .Include(r => r.Station)
+                                                                                .Include(r => r.Machine)
+                                                                                .Include(r => r.Operator)
+                                                                                .OrderByDescending(r => r.CreatedAt);
 
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Part> GetPartsWithInventory(ManufacturingDbContext context) => context.Parts.Include(p => p.Inventory).OrderBy(p => p.CreatedAt);
+    public IQueryable<Part> GetPartsWithInventory(ManufacturingDbContext context) => context.Parts.Include(p => p.Inventory).OrderByDescending(p => p.CreatedAt);
 
     [UseProjection]
     [UseFiltering]
@@ -216,6 +221,7 @@ public class EntitiesQueries
     async public Task<IQueryable<TurnWithTimeDetail>> GetTurnsWithTimeDetail(ManufacturingDbContext context)
     {
         var turnWitTimeDetail = await context.Turns
+            .OrderBy(t => t.CreatedAt)
             .Select(t => new TurnWithTimeDetail
             {
                 TurnId = t.TurnId,
@@ -227,7 +233,8 @@ public class EntitiesQueries
                     EndAt = t.TurnDetails.Max(td => td.EndAt)
                 }
 
-            }).ToListAsync();
+            })
+            .ToListAsync();
 
         return turnWitTimeDetail.AsQueryable();
     }
@@ -253,16 +260,11 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public async Task<IQueryable<DailyTask>> GetOperatorDailyTasks(ManufacturingDbContext context)
-    {
-        var tasks = await context.DailyTasks
-        .Include(dt => dt.User)
-        .Include(dt => dt.Station)
-        .Include(dt => dt.Machine)
-        .Include(dt => dt.Day).Where(dt => dt.Day.Available == 1).ToListAsync();
-
-        return tasks.AsQueryable();
-    }
+    public IQueryable<DailyTask> GetOperatorDailyTasks(ManufacturingDbContext context) => context.DailyTasks
+                                                                                        .Include(dt => dt.User)
+                                                                                        .Include(dt => dt.Station)
+                                                                                        .Include(dt => dt.Machine)
+                                                                                        .Include(dt => dt.Day).Where(dt => dt.Day!.Available == 1);
 
     [UseProjection]
     [UseFiltering]

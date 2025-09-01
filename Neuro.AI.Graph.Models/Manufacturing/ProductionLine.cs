@@ -21,6 +21,10 @@ public partial class ProductionLine
 
     public Guid? CreatedBy { get; set; }
 
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentLines { get; set; } = new List<ChangeRequestDetail>();
+
+    public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewLines { get; set; } = new List<ChangeRequestDetail>();
+
     public virtual Company? Company { get; set; }
 
     public virtual User? CreatedByNavigation { get; set; }
