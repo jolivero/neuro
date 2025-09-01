@@ -93,6 +93,10 @@ public partial class ManufacturingDbContext : DbContext
                 .HasForeignKey(d => d.CurrentGroupId)
                 .HasConstraintName("FK__ChangeReq__Curre__2D1D9668");
 
+            entity.HasOne(d => d.CurrentLine).WithMany(p => p.ChangeRequestDetailCurrentLines)
+                .HasForeignKey(d => d.CurrentLineId)
+                .HasConstraintName("FK__ChangeReq__Curre__3E48226A");
+
             entity.HasOne(d => d.CurrentMachine).WithMany(p => p.ChangeRequestDetailCurrentMachines)
                 .HasForeignKey(d => d.CurrentMachineId)
                 .HasConstraintName("FK__ChangeReq__Curre__30EE274C");
@@ -116,6 +120,10 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasOne(d => d.NewGroup).WithMany(p => p.ChangeRequestDetailNewGroups)
                 .HasForeignKey(d => d.NewGroupId)
                 .HasConstraintName("FK__ChangeReq__NewGr__2E11BAA1");
+
+            entity.HasOne(d => d.NewLine).WithMany(p => p.ChangeRequestDetailNewLines)
+                .HasForeignKey(d => d.NewLineId)
+                .HasConstraintName("FK__ChangeReq__NewLi__3F3C46A3");
 
             entity.HasOne(d => d.NewMachine).WithMany(p => p.ChangeRequestDetailNewMachines)
                 .HasForeignKey(d => d.NewMachineId)
@@ -365,14 +373,17 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
 
             entity.HasOne(d => d.Part).WithMany(p => p.NonCompliantPartsRecords)
                 .HasForeignKey(d => d.PartId)
                 .HasConstraintName("FK__NonCompli__PartI__33FF9E21");
 
-            entity.HasOne(d => d.Production).WithMany(p => p.NonCompliantPartsRecords)
-                .HasForeignKey(d => d.ProductionId)
-                .HasConstraintName("FK__NonCompli__Produ__321755AF");
+            entity.HasOne(d => d.Task).WithMany(p => p.NonCompliantPartsRecords)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("FK__NonCompli__TaskI__4400FBC0");
         });
 
         modelBuilder.Entity<Part>(entity =>
@@ -415,9 +426,9 @@ public partial class ManufacturingDbContext : DbContext
                 .HasForeignKey(d => d.PartId)
                 .HasConstraintName("FK__ProducedP__PartI__330B79E8");
 
-            entity.HasOne(d => d.Production).WithMany(p => p.ProducedPartsRecords)
-                .HasForeignKey(d => d.ProductionId)
-                .HasConstraintName("FK__ProducedP__Produ__31233176");
+            entity.HasOne(d => d.Task).WithMany(p => p.ProducedPartsRecords)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("FK__ProducedP__TaskI__430CD787");
         });
 
         modelBuilder.Entity<ProductionChangeRequest>(entity =>

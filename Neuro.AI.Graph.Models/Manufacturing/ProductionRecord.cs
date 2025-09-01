@@ -27,9 +27,5 @@ public partial class ProductionRecord
 
     public virtual User? CreatedByNavigation { get; set; }
 
-    public virtual ICollection<NonCompliantPartsRecord> NonCompliantPartsRecords { get; set; } = new List<NonCompliantPartsRecord>();
-
-    public virtual ICollection<ProducedPartsRecord> ProducedPartsRecords { get; set; } = new List<ProducedPartsRecord>();
-
     public virtual DailyTask? Task { get; set; }
 }

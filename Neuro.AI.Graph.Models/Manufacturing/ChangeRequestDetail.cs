@@ -47,7 +47,13 @@ public partial class ChangeRequestDetail
 
     public Guid? NewPartId { get; set; }
 
+    public Guid? CurrentLineId { get; set; }
+
+    public Guid? NewLineId { get; set; }
+
     public virtual Group? CurrentGroup { get; set; }
+
+    public virtual ProductionLine? CurrentLine { get; set; }
 
     public virtual Machine? CurrentMachine { get; set; }
 
@@ -60,6 +66,8 @@ public partial class ChangeRequestDetail
     public virtual User? CurrentUser { get; set; }
 
     public virtual Group? NewGroup { get; set; }
+
+    public virtual ProductionLine? NewLine { get; set; }
 
     public virtual Machine? NewMachine { get; set; }
 
