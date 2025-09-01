@@ -209,6 +209,11 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_specialMission_request(smRequestDto);
         }
 
+        public async Task<string> repo_create_extraTime_request(ChangeRequestRepository repository,int month, string currentDate, ExtraTimeRequestDto etRequestDto)
+        {
+            return await repository.Create_extraTime_request(month, currentDate, etRequestDto);
+        }
+
         public async Task<string> repo_update_status_request(ChangeRequestRepository repository, UpdateStatusRequestDto usRequestDto)
         {
             return await repository.Update_status_request(usRequestDto);

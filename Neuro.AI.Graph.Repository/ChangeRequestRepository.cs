@@ -174,6 +174,43 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
+        public async Task<string> Create_extraTime_request(int month, string currentDate, ExtraTimeRequestDto etRequestDto)
+        {
+            var sp = "sp_create_extraTime_request";
+            var p = new DynamicParameters();
+            p.Add("@Month", month);
+            p.Add("@CurrentDate", currentDate);
+            p.Add("@LineId", etRequestDto.LineId);
+            p.Add("@GroupId", etRequestDto.GroupId);
+            p.Add("@StationId", etRequestDto.StationId);
+            p.Add("@MachineId", etRequestDto.MachineId);
+            p.Add("@PartId", etRequestDto.PartId);
+            p.Add("@TaskId", etRequestDto.RequestingUserId);
+            p.Add("@TaskId", etRequestDto.RequestType);
+            p.Add("@Reason", etRequestDto.Reason);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                foreach (var userId in etRequestDto.UserIds)
+                {
+                    p.Add("@UserId", userId);
+                    await _db.ExecuteAsync(
+                        sp,
+                        p,
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+
+                return p.Get<string>("@Message");
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<string> Update_status_request(UpdateStatusRequestDto usRequestDto)
         {
             var sp = "sp_update_request";

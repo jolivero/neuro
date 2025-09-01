@@ -53,6 +53,12 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string UserId { get; set; } = string.Empty;
     }
 
+    public class ExtraTimeRequestDto : FieldsChangeRequetsDto
+    {
+        public int ExtraTimeTotal { get; set; }
+        public List<string> UserIds { get; set; } = [];
+    }
+
     public class UpdateStatusRequestDto
     {
         public string RequestId { get; set; } = string.Empty;
