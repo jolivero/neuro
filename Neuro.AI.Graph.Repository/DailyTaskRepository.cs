@@ -36,7 +36,7 @@ namespace Neuro.AI.Graph.Repository
                     sp_tasks,
                     (dailySchedule, dailyTask, user, station, part, machine, prevPart) =>
                     {
-                        if (!dailyScheduleDict.TryGetValue(dailySchedule.DayId.ToString(), out var dailyScheduleData))
+                        if (!dailyScheduleDict.TryGetValue(dailyTask.TaskId.ToString(), out var dailyScheduleData))
                         {
                             dailyScheduleData = new()
                             {
@@ -56,7 +56,7 @@ namespace Neuro.AI.Graph.Repository
                                     PrevPart = [],
                                 },
                             };
-                            dailyScheduleDict.Add(dailySchedule.DayId.ToString(), dailyScheduleData);
+                            dailyScheduleDict.Add(dailyTask.TaskId.ToString(), dailyScheduleData);
                         }
 
                         if (part != null && dailyScheduleData.Station.Part.PartId == part.PartId) dailyScheduleData.Station.Part = part;
