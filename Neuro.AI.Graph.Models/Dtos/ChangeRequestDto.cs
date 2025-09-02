@@ -55,7 +55,7 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     public class ExtraTimeRequestDto : FieldsChangeRequetsDto
     {
-        public int ExtraTimeTotal { get; set; }
+        public decimal HoursQuantity { get; set; }
         public List<string> UserIds { get; set; } = [];
     }
 

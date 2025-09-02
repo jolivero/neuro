@@ -279,6 +279,7 @@ public class EntitiesQueries
                                                                                                 .Include(pc => pc.ChangeRequestDetails)
                                                                                                 .Include(pc => pc.RequestingUser)
                                                                                                 .Include(pc => pc.ApprovalUser)
+                                                                                                .Include(pc => pc.Users)
                                                                                                 .OrderByDescending(pc => pc.CreatedAt);
 
     [UseProjection]

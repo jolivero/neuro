@@ -138,5 +138,14 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #endregion
 
+        #region Control de cambios
+
+        public async Task<IQueryable<string>> repo_specialMissions_options(ChangeRequestRepository repository)
+        {
+            return (await repository.Select_specialMissions_options()).AsQueryable();
+        }
+
+        #endregion
+
     }
 }

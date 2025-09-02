@@ -18,6 +18,24 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
+        public async Task<IEnumerable<string>> Select_specialMissions_options()
+        {
+            var sp = "sp_select_specialMissions_options";
+
+            try
+            {
+                return await _db.QueryAsync<string>(
+                    sp,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);    
+                throw new Exception(ex.Data.ToString());
+            }
+        }
+
         public async Task<string?> Select_requestId(string monthId, string requestType)
         {
             var sp = "sp_select_requestId";
@@ -174,19 +192,20 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Create_extraTime_request(int month, string currentDate, ExtraTimeRequestDto etRequestDto)
+        public async Task<string> Create_extraTime_request(string currentDate, ExtraTimeRequestDto etRequestDto)
         {
             var sp = "sp_create_extraTime_request";
             var p = new DynamicParameters();
-            p.Add("@Month", month);
+            p.Add("@RequestId", Guid.NewGuid());
             p.Add("@CurrentDate", currentDate);
             p.Add("@LineId", etRequestDto.LineId);
             p.Add("@GroupId", etRequestDto.GroupId);
             p.Add("@StationId", etRequestDto.StationId);
             p.Add("@MachineId", etRequestDto.MachineId);
             p.Add("@PartId", etRequestDto.PartId);
-            p.Add("@TaskId", etRequestDto.RequestingUserId);
-            p.Add("@TaskId", etRequestDto.RequestType);
+            p.Add("@RequestingUserId", etRequestDto.RequestingUserId);
+            p.Add("@RequestType", etRequestDto.RequestType);
+            p.Add("@HoursQuantity", etRequestDto.HoursQuantity);
             p.Add("@Reason", etRequestDto.Reason);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
@@ -207,6 +226,7 @@ namespace Neuro.AI.Graph.Repository
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 throw new Exception(ex.Message);
             }
         }
