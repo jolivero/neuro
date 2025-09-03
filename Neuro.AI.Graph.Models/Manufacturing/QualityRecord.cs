@@ -7,8 +7,6 @@ public partial class QualityRecord
 {
     public Guid QualityId { get; set; }
 
-    public string? Type { get; set; }
-
     public string? Status { get; set; }
 
     public DateTime? CreatedAt { get; set; }
