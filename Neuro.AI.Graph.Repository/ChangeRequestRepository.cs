@@ -31,7 +31,7 @@ namespace Neuro.AI.Graph.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);    
+                Console.WriteLine(ex.Message);
                 throw new Exception(ex.Data.ToString());
             }
         }
@@ -63,6 +63,39 @@ namespace Neuro.AI.Graph.Repository
         #endregion
 
         #region Mutations
+
+        public async Task<string> Create_change_request(ChangeRequestDto crDto)
+        {
+            var sp = "sp_create_changeRequest";
+            var p = new DynamicParameters();
+            p.Add("@TaskId", crDto.TaskId ?? null);
+            p.Add("@NcPartId", crDto.NcPartId ?? null);
+            p.Add("@UserId", crDto.UserId);
+            p.Add("@CreatedBy", crDto.CreatedBy);
+            p.Add("@CategoryId", crDto.CategoryId);
+            p.Add("@OriginRequest", crDto.OriginRequest);
+            p.Add("@RequestType", crDto.RequestType);
+            p.Add("@Reason", crDto.Reason ?? null);
+            p.Add("@CurrentValue", crDto.CurrentValue);
+            p.Add("@NewValue", crDto.NewValue);
+            p.Add("@Message", dbType: DbType.String, size: 255, direction: ParameterDirection.Output);
+
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
 
         public async Task<string> Create_monthly_request(MonthlyChangeRequestDto mRequestDto)
         {
@@ -168,23 +201,30 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Create_specialMission_request(SpecialMissionRequestDto smRequestDto)
         {
-            var sp = "sp_create_specialMission_request";
+
+            var changeRequestDto = new ChangeRequestDto()
+            {
+                TaskId = smRequestDto.TaskId,
+                UserId = smRequestDto.UserId,
+                CreatedBy = smRequestDto.RequestingUserId,
+                CategoryId = "EB8D8429-E72D-49C4-AFC5-D80F11F5DFC9",
+                OriginRequest = "Control de estado",
+                RequestType = smRequestDto.RequestType,
+                Reason = smRequestDto.Reason
+            };
+
+            /*var sp = "sp_create_specialMission_request";
             var p = new DynamicParameters();
             p.Add("@TaskId", smRequestDto.TaskId);
             p.Add("@UserId", smRequestDto.UserId);
             p.Add("@RequestingUserId", smRequestDto.RequestingUserId);
             p.Add("@RequestType", smRequestDto.RequestType);
             p.Add("@Reason", smRequestDto.Reason);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);*/
 
             try
             {
-                await _db.ExecuteAsync(
-                    sp,
-                    p,
-                    commandType: CommandType.StoredProcedure
-                );
-                return p.Get<string>("@Message");
+                return await Create_change_request(changeRequestDto);
             }
             catch (Exception ex)
             {

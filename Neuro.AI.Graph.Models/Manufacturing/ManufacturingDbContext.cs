@@ -609,7 +609,6 @@ public partial class ManufacturingDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Status).HasMaxLength(255);
-            entity.Property(e => e.Type).HasMaxLength(255);
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
