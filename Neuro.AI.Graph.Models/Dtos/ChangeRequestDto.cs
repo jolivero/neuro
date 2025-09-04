@@ -59,6 +59,20 @@ namespace Neuro.AI.Graph.Models.Dtos
         public List<string> UserIds { get; set; } = [];
     }
 
+    public class ChangeRequestDto
+    {
+        public string? TaskId { get; set; }
+        public string? NcPartId { get; set; }
+        public string UserId { get; set; } = string.Empty;
+        public string CreatedBy { get; set; } = string.Empty;
+        public string CategoryId { get; set; } = string.Empty;
+        public string OriginRequest { get; set; } = string.Empty;
+        public string RequestType { get; set; } = string.Empty;
+        public string? Reason { get; set; }
+        public string? CurrentValue { get; set; }
+        public string? NewValue { get; set; }
+    }
+
     public class UpdateStatusRequestDto
     {
         public string RequestId { get; set; } = string.Empty;
