@@ -204,7 +204,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_changePlannification_request(cpRequestDto);
         }
 
-        public async Task<string> repo_create_specialMission_request(ChangeRequestRepository repository,SpecialMissionRequestDto smRequestDto)
+        public async Task<string> repo_create_specialMission_request(ChangeRequestRepository repository, SpecialMissionRequestDto smRequestDto)
         {
             return await repository.Create_specialMission_request(smRequestDto);
         }
@@ -238,5 +238,15 @@ namespace Neuro.AI.Graph.QL.Mutations
         }
 
         #endregion
+
+        #region Registro de calidad
+
+        public async Task<string> repo_create_qualityRecord(QualityRecordRepository repository, QualityRecordDto qrDto)
+        {
+            return await repository.Create_qualityRecord(qrDto);
+        }
+
+        #endregion
+
     }
 }
