@@ -11,10 +11,12 @@ namespace Neuro.AI.Graph.Repository
     public class DailyTaskRepository
     {
         private readonly IDbConnection _db;
+        private readonly ChangeRequestRepository _changeRequestRepository;
 
-        public DailyTaskRepository(ManufacturingConnector manufacturingConnector)
+        public DailyTaskRepository(ManufacturingConnector manufacturingConnector, ChangeRequestRepository changeRequestRepository)
         {
             _db = manufacturingConnector.Connect();
+            _changeRequestRepository = changeRequestRepository;
         }
 
         #region Queries
@@ -97,12 +99,12 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<string> Create_dailyTask(DailyTaskDto dtDto)
+        public async Task<string> Create_update_dailyTask(DailyTaskDto dtDto)
         {
-            var sp = "sp_create_dailyTasks";
+            var sp = "sp_create_update_dailyTask";
             var p = new DynamicParameters();
             p.Add("@MonthId", dtDto.MonthId);
-            p.Add("@TurnId", dtDto.TurnId);
+            p.Add("@TurnId", dtDto.TurnId ?? null);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
@@ -113,6 +115,7 @@ namespace Neuro.AI.Graph.Repository
                     p.Add("@BeginAt", TimeSpan.Parse(assigment.BeginAt));
                     p.Add("@EndAt", TimeSpan.Parse(assigment.EndAt));
                     p.Add("@UserId", assigment.UserId);
+                    p.Add("@RemoveUserId", assigment.RemoveUserId ?? null);
                     p.Add("@StationId", assigment.StationId);
                     p.Add("@MachineId", assigment.MachineId);
 

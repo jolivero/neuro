@@ -80,37 +80,6 @@ namespace Neuro.AI.Graph.Repository
 
         }
 
-        public async Task<IEnumerable<OperatorSelectList>> Select_available_operators(List<string> days, string beginAt, string endAt)
-        {
-            var sp = "sp_select_available_operators";
-            var operatorSelectList = new List<OperatorSelectList>();
-            var p = new DynamicParameters();
-            p.Add("@BeginAt", beginAt);
-            p.Add("@EndAt", endAt);
-
-            try
-            {
-                foreach (var day in days)
-                {
-                    p.Add("@ProductionDate", day);
-                    var operators = await _db.QueryAsync<OperatorSelectList>(
-                        sp,
-                        p,
-                        commandType: CommandType.StoredProcedure
-                    );
-
-                    operatorSelectList.AddRange(operators);
-                }
-
-                return operatorSelectList.GroupBy(op => op.UserId).Select(g => g.First());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw new Exception(ex.Message);
-            }
-        }
-
         public async Task<IEnumerable<MonthlySchedule>> Select_station_with_machine_planification(string monthId, string stationId, string machineId)
         {
             var sp = "sp_select_station_machine_planification";
