@@ -1,6 +1,6 @@
 namespace Neuro.AI.Graph.Models.Dtos
 {
-    public class MonthlyScheduleDto
+    public class MonthlyPlanningDto
     {
         public int Month { get; set; }
         public int Year { get; set; }
@@ -19,7 +19,7 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string DayType { get; set; } = string.Empty;
     }
 
-    public class UpdateMonthlyScheduleDto
+    public class UpdateMonthlyPlanningDto
     {
         public string MonthId { get; set; } = string.Empty;
         public int MonthlyGoal { get; set; }
