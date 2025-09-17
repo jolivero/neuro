@@ -2,7 +2,7 @@ using Neuro.AI.Graph.Models.Manufacturing;
 
 namespace Neuro.AI.Graph.Models.CustomModels
 {
-    public class DailyTaskOperator : DailySchedule
+    public class DailyTaskOperator : DailyPlanning
     {
         public Guid TaskId { get; set; }
         public string OperatorStatus { get; set; } = string.Empty;

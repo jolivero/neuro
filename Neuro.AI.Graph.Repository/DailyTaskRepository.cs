@@ -30,22 +30,22 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@TaskId", taskId);
             p.Add("@UserId", userId);
 
-            var dailyScheduleDict = new Dictionary<string, DailyTaskOperator>();
+            var dailyPlanningDict = new Dictionary<string, DailyTaskOperator>();
 
             try
             {
-                await _db.QueryAsync<DailySchedule, DailyTask, User, Station, Part, Machine, Part, DailySchedule>(
+                await _db.QueryAsync<DailyPlanning, DailyTask, User, Station, Part, Machine, Part, DailyPlanning>(
                     sp_tasks,
-                    (dailySchedule, dailyTask, user, station, part, machine, prevPart) =>
+                    (dailyPlanning, dailyTask, user, station, part, machine, prevPart) =>
                     {
-                        if (!dailyScheduleDict.TryGetValue(dailyTask.TaskId.ToString(), out var dailyScheduleData))
+                        if (!dailyPlanningDict.TryGetValue(dailyTask.TaskId.ToString(), out var dailyPlanningData))
                         {
-                            dailyScheduleData = new()
+                            dailyPlanningData = new()
                             {
-                                MonthId = dailySchedule.MonthId,
-                                DayId = dailySchedule.DayId,
-                                ProductionDate = dailySchedule.ProductionDate,
-                                DailyGoal = dailySchedule.DailyGoal,
+                                MonthId = dailyPlanning.MonthId,
+                                DayId = dailyPlanning.DayId,
+                                ProductionDate = dailyPlanning.ProductionDate,
+                                DailyGoal = dailyPlanning.DailyGoal,
                                 TaskId = dailyTask.TaskId,
                                 OperatorStatus = dailyTask.OperatorStatus!,
                                 User = user,
@@ -58,35 +58,35 @@ namespace Neuro.AI.Graph.Repository
                                     PrevPart = [],
                                 },
                             };
-                            dailyScheduleDict.Add(dailyTask.TaskId.ToString(), dailyScheduleData);
+                            dailyPlanningDict.Add(dailyTask.TaskId.ToString(), dailyPlanningData);
                         }
 
-                        if (part != null && dailyScheduleData.Station.Part.PartId == part.PartId) dailyScheduleData.Station.Part = part;
-                        if (prevPart != null && dailyScheduleData.Station.StationId == prevPart.StationId) dailyScheduleData.Station.PrevPart.Add(prevPart);
+                        if (part != null && dailyPlanningData.Station.Part.PartId == part.PartId) dailyPlanningData.Station.Part = part;
+                        if (prevPart != null && dailyPlanningData.Station.StationId == prevPart.StationId) dailyPlanningData.Station.PrevPart.Add(prevPart);
 
-                        return dailySchedule;
+                        return dailyPlanning;
                     },
                     p,
                     splitOn: "TaskId, UserId, StationId, PartId, MachineId, PartId",
                     commandType: CommandType.StoredProcedure
                 );
 
-                foreach (var dailySchedule in dailyScheduleDict)
+                foreach (var dailyPlanning in dailyPlanningDict)
                 {
                     var compliance = await _db.QueryFirstAsync<Compliance>(
                        sp_progress,
                        new
                        {
-                           dailySchedule.Value.TaskId,
+                           dailyPlanning.Value.TaskId,
                            UserId = userId
                        },
                        commandType: CommandType.StoredProcedure
                    );
 
-                    dailySchedule.Value.Compliance = compliance;
+                    dailyPlanning.Value.Compliance = compliance;
                 }
 
-                return dailyScheduleDict.Values;
+                return dailyPlanningDict.Values;
             }
             catch (Exception ex)
             {
@@ -99,9 +99,70 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<string> Create_update_dailyTask(DailyTaskDto dtDto)
+         public async Task<IEnumerable<ExtraTimeResponse>> Select_extraTime_operator(CheckOperatorExtraTimeDto operatorExtraTimeDto)
         {
-            var sp = "sp_create_update_dailyTask";
+            var sp = "sp_select_operator_extraTime";
+            var p = new DynamicParameters();
+            p.Add("@UserId", operatorExtraTimeDto.UserId);
+            p.Add("@ProductiveDate", operatorExtraTimeDto.ProductiveDate);
+            p.Add("@TaskId", operatorExtraTimeDto.TaskId ?? null);
+            p.Add("@TurnId", operatorExtraTimeDto.TurnId ?? null);
+            p.Add("@BeginAt", TimeSpan.Parse(operatorExtraTimeDto.BeginAt));
+            p.Add("@EndAt", TimeSpan.Parse(operatorExtraTimeDto.EndAt));
+
+            try
+            {
+
+                return await _db.QueryAsync<ExtraTimeResponse>(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<string> Create_dailyTask(DailyTaskDto dtDto)
+        {
+            var sp = "sp_create_dailyTask";
+            var p = new DynamicParameters();
+            p.Add("@MonthId", dtDto.MonthId);
+            p.Add("@TurnId", dtDto.TurnId ?? null);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                foreach (var assigment in dtDto.Assigments)
+                {
+                    p.Add("@DayId", assigment.DayId);
+                    p.Add("@BeginAt", TimeSpan.Parse(assigment.BeginAt));
+                    p.Add("@EndAt", TimeSpan.Parse(assigment.EndAt));
+                    p.Add("@UserId", assigment.UserId);
+                    p.Add("@StationId", assigment.StationId);
+                    p.Add("@MachineId", assigment.MachineId);
+
+                    await _db.ExecuteAsync(
+                        sp,
+                        p,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                }
+
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> Update_dailyTask(DailyTaskDto dtDto)
+        {
+            var sp = "sp_Update_dailyTask";
             var p = new DynamicParameters();
             p.Add("@MonthId", dtDto.MonthId);
             p.Add("@TurnId", dtDto.TurnId ?? null);
