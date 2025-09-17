@@ -47,7 +47,7 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int NewValue { get; set; }
     }
 
-    public class SpecialMissionRequestDto : BaseChangeRequestDto
+    public class CommonRequestDto : BaseChangeRequestDto
     {
         public string TaskId { get; set; } = string.Empty;
         public string UserId { get; set; } = string.Empty;
