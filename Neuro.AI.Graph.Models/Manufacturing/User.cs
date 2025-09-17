@@ -53,7 +53,7 @@ public partial class User
 
     public virtual ICollection<Machine> Machines { get; set; } = new List<Machine>();
 
-    public virtual ICollection<MonthlySchedule> MonthlySchedules { get; set; } = new List<MonthlySchedule>();
+    public virtual ICollection<MonthlyPlanning> MonthlyPlannings { get; set; } = new List<MonthlyPlanning>();
 
     public virtual ICollection<Part> Parts { get; set; } = new List<Part>();
 

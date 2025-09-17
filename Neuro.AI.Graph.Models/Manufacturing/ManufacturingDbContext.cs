@@ -31,7 +31,7 @@ public partial class ManufacturingDbContext : DbContext
 
     public virtual DbSet<MachineReport> MachineReports { get; set; }
 
-    public virtual DbSet<MonthlySchedule> MonthlySchedules { get; set; }
+    public virtual DbSet<MonthlyPlanning> MonthlyPlannings { get; set; }
 
     public virtual DbSet<NonCompliantPartsRecord> NonCompliantPartsRecords { get; set; }
 
@@ -201,7 +201,7 @@ public partial class ManufacturingDbContext : DbContext
 
             entity.HasOne(d => d.Month).WithMany(p => p.DailyPlannings)
                 .HasForeignKey(d => d.MonthId)
-                .HasConstraintName("FK__DailyPlan__Month__5066D2A5");
+                .HasConstraintName("FK__DailyPlan__Month__524F1B17");
         });
 
         modelBuilder.Entity<DailyTask>(entity =>
@@ -340,11 +340,11 @@ public partial class ManufacturingDbContext : DbContext
                 .HasConstraintName("FK__MachineRe__Techn__3AAC9BB0");
         });
 
-        modelBuilder.Entity<MonthlySchedule>(entity =>
+        modelBuilder.Entity<MonthlyPlanning>(entity =>
         {
             entity.HasKey(e => e.MonthId).HasName("PK__MonthlyS__9FA83FA6639DF960");
 
-            entity.ToTable("MonthlySchedule");
+            entity.ToTable("MonthlyPlanning");
 
             entity.Property(e => e.MonthId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Available).HasDefaultValue(1);
@@ -356,13 +356,13 @@ public partial class ManufacturingDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
 
-            entity.HasOne(d => d.Line).WithMany(p => p.MonthlySchedules)
+            entity.HasOne(d => d.Line).WithMany(p => p.MonthlyPlannings)
                 .HasForeignKey(d => d.LineId)
-                .HasConstraintName("FK__MonthlySc__LineI__2D52A092");
+                .HasConstraintName("FK__MonthlyPl__LineI__515AF6DE");
 
-            entity.HasOne(d => d.PlannedByNavigation).WithMany(p => p.MonthlySchedules)
+            entity.HasOne(d => d.PlannedByNavigation).WithMany(p => p.MonthlyPlannings)
                 .HasForeignKey(d => d.PlannedBy)
-                .HasConstraintName("FK__MonthlySc__Plann__424DBD78");
+                .HasConstraintName("FK__MonthlyPl__Plann__53433F50");
         });
 
         modelBuilder.Entity<NonCompliantPartsRecord>(entity =>
@@ -467,7 +467,7 @@ public partial class ManufacturingDbContext : DbContext
 
             entity.HasOne(d => d.Month).WithMany(p => p.ProductionChangeRequests)
                 .HasForeignKey(d => d.MonthId)
-                .HasConstraintName("FK__Productio__Month__06F7ED80");
+                .HasConstraintName("FK__Productio__Month__54376389");
 
             entity.HasOne(d => d.NcPart).WithMany(p => p.ProductionChangeRequests)
                 .HasForeignKey(d => d.NcPartId)

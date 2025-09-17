@@ -45,7 +45,7 @@ public partial class ProductionChangeRequest
 
     public virtual DailyPlanning? Day { get; set; }
 
-    public virtual MonthlySchedule? Month { get; set; }
+    public virtual MonthlyPlanning? Month { get; set; }
 
     public virtual NonCompliantPartsRecord? NcPart { get; set; }
 
