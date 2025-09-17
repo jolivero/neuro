@@ -80,37 +80,6 @@ namespace Neuro.AI.Graph.Repository
 
         }
 
-        public async Task<IEnumerable<OperatorSelectList>> Select_available_operators(List<string> days, string beginAt, string endAt)
-        {
-            var sp = "sp_select_available_operators";
-            var operatorSelectList = new List<OperatorSelectList>();
-            var p = new DynamicParameters();
-            p.Add("@BeginAt", beginAt);
-            p.Add("@EndAt", endAt);
-
-            try
-            {
-                foreach (var day in days)
-                {
-                    p.Add("@ProductionDate", day);
-                    var operators = await _db.QueryAsync<OperatorSelectList>(
-                        sp,
-                        p,
-                        commandType: CommandType.StoredProcedure
-                    );
-
-                    operatorSelectList.AddRange(operators);
-                }
-
-                return operatorSelectList.GroupBy(op => op.UserId).Select(g => g.First());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw new Exception(ex.Message);
-            }
-        }
-
         public async Task<IEnumerable<MonthlySchedule>> Select_station_with_machine_planification(string monthId, string stationId, string machineId)
         {
             var sp = "sp_select_station_machine_planification";
@@ -123,23 +92,23 @@ namespace Neuro.AI.Graph.Repository
 
             try
             {
-                await _db.QueryAsync<MonthlySchedule, DailySchedule, DailyTask, User, MonthlySchedule>(
+                await _db.QueryAsync<MonthlySchedule, DailyPlanning, DailyTask, User, MonthlySchedule>(
                     sp,
                     (ms, ds, dt, u) =>
                     {
                         if (!stationMachinePlanificationDict.TryGetValue(ms.MonthId.ToString(), out var stationMachinePlanificationData))
                         {
                             stationMachinePlanificationData = ms;
-                            stationMachinePlanificationData.DailySchedules = [];
+                            stationMachinePlanificationData.DailyPlannings = [];
                             stationMachinePlanificationDict.Add(ms.MonthId.ToString(), stationMachinePlanificationData);
                         }
 
-                        var dsData = stationMachinePlanificationData.DailySchedules.FirstOrDefault(d => d.DayId == ds.DayId);
+                        var dsData = stationMachinePlanificationData.DailyPlannings.FirstOrDefault(d => d.DayId == ds.DayId);
                         if (dsData == null)
                         {
                             dsData = ds;
                             dsData.DailyTasks = [];
-                            stationMachinePlanificationData.DailySchedules.Add(dsData);
+                            stationMachinePlanificationData.DailyPlannings.Add(dsData);
                         }
 
                         if (dt != null && u != null)
@@ -193,7 +162,7 @@ namespace Neuro.AI.Graph.Repository
 
             try
             {
-                foreach (var item in msDto.DailySchedule)
+                foreach (var item in msDto.DailyPlanning)
                 {
                     p.Add("@DailyGoal", item.DailyGoal);
                     p.Add("@ProductionDate", item.ProductionDate);
@@ -250,13 +219,13 @@ namespace Neuro.AI.Graph.Repository
 
             if (string.IsNullOrEmpty(requestId)) return "No hay solicitud de cambio disponible para el mes indicado";
 
-            var businessDays = mdDto.UpdateDailyScheduleDto!.Count(d => d.DayType.Equals("laboral", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
-            var extraDays = mdDto.UpdateDailyScheduleDto!.Count(d => d.DayType.Equals("extra", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
+            var businessDays = mdDto.UpdateDailyPlanningDto!.Count(d => d.DayType.Equals("laboral", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
+            var extraDays = mdDto.UpdateDailyPlanningDto!.Count(d => d.DayType.Equals("extra", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
 
-            var previousDays = mdDto.UpdateDailyScheduleDto!.FindAll(d => DateOnly.Parse(d.ProductionDate) < DateOnly.FromDateTime(DateTime.Now) && d.Available == 1);
+            var previousDays = mdDto.UpdateDailyPlanningDto!.FindAll(d => DateOnly.Parse(d.ProductionDate) < DateOnly.FromDateTime(DateTime.Now) && d.Available == 1);
             var currentGoal = previousDays.Sum(p => p.DailyGoal);
 
-            var daysToUpdate = mdDto.UpdateDailyScheduleDto!.FindAll(d => DateOnly.Parse(d.ProductionDate) >= DateOnly.FromDateTime(DateTime.Now) && d.Available == 1);
+            var daysToUpdate = mdDto.UpdateDailyPlanningDto!.FindAll(d => DateOnly.Parse(d.ProductionDate) >= DateOnly.FromDateTime(DateTime.Now) && d.Available == 1);
             var currentAndNewdays = daysToUpdate.Count(d => DateOnly.Parse(d.ProductionDate) >= DateOnly.FromDateTime(DateTime.Now));
             var dailyGoal = (mdDto.MonthlyGoal - currentGoal) / currentAndNewdays;
 

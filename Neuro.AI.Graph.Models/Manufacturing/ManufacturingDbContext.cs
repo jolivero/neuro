@@ -19,7 +19,7 @@ public partial class ManufacturingDbContext : DbContext
 
     public virtual DbSet<Company> Companies { get; set; }
 
-    public virtual DbSet<DailySchedule> DailySchedules { get; set; }
+    public virtual DbSet<DailyPlanning> DailyPlannings { get; set; }
 
     public virtual DbSet<DailyTask> DailyTasks { get; set; }
 
@@ -178,11 +178,11 @@ public partial class ManufacturingDbContext : DbContext
                 .HasConstraintName("FK__Companies__Creat__4DBF7024");
         });
 
-        modelBuilder.Entity<DailySchedule>(entity =>
+        modelBuilder.Entity<DailyPlanning>(entity =>
         {
             entity.HasKey(e => e.DayId).HasName("PK__DailySch__BF3DD8C52D2776A1");
 
-            entity.ToTable("DailySchedule");
+            entity.ToTable("DailyPlanning");
 
             entity.Property(e => e.DayId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Available).HasDefaultValue(1);
@@ -199,9 +199,9 @@ public partial class ManufacturingDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
 
-            entity.HasOne(d => d.Month).WithMany(p => p.DailySchedules)
+            entity.HasOne(d => d.Month).WithMany(p => p.DailyPlannings)
                 .HasForeignKey(d => d.MonthId)
-                .HasConstraintName("FK__DailySche__Month__2E46C4CB");
+                .HasConstraintName("FK__DailyPlan__Month__5066D2A5");
         });
 
         modelBuilder.Entity<DailyTask>(entity =>
@@ -222,7 +222,7 @@ public partial class ManufacturingDbContext : DbContext
 
             entity.HasOne(d => d.Day).WithMany(p => p.DailyTasks)
                 .HasForeignKey(d => d.DayId)
-                .HasConstraintName("FK__DailyTask__DayId__2F3AE904");
+                .HasConstraintName("FK__DailyTask__DayId__4E7E8A33");
 
             entity.HasOne(d => d.Machine).WithMany(p => p.DailyTasks)
                 .HasForeignKey(d => d.MachineId)
@@ -463,7 +463,7 @@ public partial class ManufacturingDbContext : DbContext
 
             entity.HasOne(d => d.Day).WithMany(p => p.ProductionChangeRequests)
                 .HasForeignKey(d => d.DayId)
-                .HasConstraintName("FK__Productio__DayId__07EC11B9");
+                .HasConstraintName("FK__Productio__DayId__4F72AE6C");
 
             entity.HasOne(d => d.Month).WithMany(p => p.ProductionChangeRequests)
                 .HasForeignKey(d => d.MonthId)

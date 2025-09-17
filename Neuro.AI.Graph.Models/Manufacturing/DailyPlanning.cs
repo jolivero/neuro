@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Neuro.AI.Graph.Models.Manufacturing;
 
-public partial class DailySchedule
+public partial class DailyPlanning
 {
     public Guid DayId { get; set; }
 

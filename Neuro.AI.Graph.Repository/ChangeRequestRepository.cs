@@ -199,18 +199,41 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Create_specialMission_request(SpecialMissionRequestDto smRequestDto)
+        public async Task<string> Create_changeOperator_request(CommonRequestDto cRequestDto)
+        {
+            var changeRequestDto = new ChangeRequestDto()
+            {
+                TaskId = cRequestDto.TaskId,
+                UserId = cRequestDto.UserId,
+                CreatedBy = cRequestDto.RequestingUserId,
+                CategoryId = "1759C46B-DD1F-41ED-BE36-11BFF20C2CBA",
+                OriginRequest = "Planificacion diaria",
+                RequestType = cRequestDto.RequestType,
+                Reason = cRequestDto.Reason
+            };
+
+            try
+            {
+                return await Create_change_request(changeRequestDto);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> Create_specialMission_request(CommonRequestDto cRequestDto)
         {
 
             var changeRequestDto = new ChangeRequestDto()
             {
-                TaskId = smRequestDto.TaskId,
-                UserId = smRequestDto.UserId,
-                CreatedBy = smRequestDto.RequestingUserId,
+                TaskId = cRequestDto.TaskId,
+                UserId = cRequestDto.UserId,
+                CreatedBy = cRequestDto.RequestingUserId,
                 CategoryId = "EB8D8429-E72D-49C4-AFC5-D80F11F5DFC9",
                 OriginRequest = "Control de estado",
-                RequestType = smRequestDto.RequestType,
-                Reason = smRequestDto.Reason
+                RequestType = cRequestDto.RequestType,
+                Reason = cRequestDto.Reason
             };
 
             /*var sp = "sp_create_specialMission_request";

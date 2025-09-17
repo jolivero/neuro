@@ -29,7 +29,7 @@ public partial class DailyTask
 
     public Guid? TurnId { get; set; }
 
-    public virtual DailySchedule? Day { get; set; }
+    public virtual DailyPlanning? Day { get; set; }
 
     public virtual Machine? Machine { get; set; }
 

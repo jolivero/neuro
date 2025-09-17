@@ -94,11 +94,6 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Planificación mensual
 
-        public async Task<IQueryable<OperatorSelectList>> repo_available_operators(MonthlyScheduleRepository repository, List<string> days, string beginAt, string endAt)
-        {
-            return (await repository.Select_available_operators(days, beginAt, endAt)).AsQueryable();
-        }
-
         public async Task<IQueryable<MonthlySchedule>> repo_station_with_machine_planification(MonthlyScheduleRepository repository, string monthId, string stationId, string machineId)
         {
             return (await repository.Select_station_with_machine_planification(monthId, stationId, machineId)).AsQueryable();
@@ -108,14 +103,26 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Planificación diaria
 
-        public async Task<string> repo_turn_validation(DailyScheduleRepository repository, string monthId, string dayId, string userId, string? turnId, string beginAt, string endAt)
+        public async Task<IQueryable<OperatorSelectList>> repo_available_operators(DailyPlanningRepository repository, List<string> days, string beginAt, string endAt)
         {
-            return await repository.Select_turn_validation(monthId, dayId, userId, turnId, beginAt, endAt);
+            return (await repository.Select_available_operators(days, beginAt, endAt)).AsQueryable();
+        }
+
+        public async Task<IQueryable<DailyPlanningSummary>> repo_dailyPlanning_Summary(DailyPlanningRepository repository, string lineId, string productionDate)
+        {
+            return (await repository.Select_dailyPlanning_Summary(lineId, productionDate)).AsQueryable();
         }
 
         #endregion
 
         #region Tareas diarias
+
+
+
+        public async Task<IQueryable<ExtraTimeResponse>> repo_extraTime_operator(DailyTaskRepository repository, CheckOperatorExtraTimeDto operatorExtraTimeDto)
+        {
+            return (await repository.Select_extraTime_operator(operatorExtraTimeDto)).AsQueryable();
+        }
 
         public async Task<IQueryable<DailyTaskOperator>> repo_dailyTasks_by_userId(DailyTaskRepository repository, string currentDate, string userId, string? taskId = null)
         {

@@ -176,14 +176,12 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #endregion
 
-        #region Asignaciones diarias
+        #region Tareas diarias
 
         public async Task<string> repo_create_dailyTasks(DailyTaskRepository repository, DailyTaskDto dtTaskDto)
         {
             return await repository.Create_dailyTask(dtTaskDto);
         }
-
-
 
         #endregion
 
@@ -204,9 +202,14 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_changePlannification_request(cpRequestDto);
         }
 
-        public async Task<string> repo_create_specialMission_request(ChangeRequestRepository repository, SpecialMissionRequestDto smRequestDto)
+        public async Task<string> repo_create_changeOperator_request(ChangeRequestRepository repository, CommonRequestDto cRequestDto)
         {
-            return await repository.Create_specialMission_request(smRequestDto);
+            return await repository.Create_changeOperator_request(cRequestDto);
+        }
+
+        public async Task<string> repo_create_specialMission_request(ChangeRequestRepository repository, CommonRequestDto cRequestDto)
+        {
+            return await repository.Create_specialMission_request(cRequestDto);
         }
 
         public async Task<string> repo_create_extraTime_request(ChangeRequestRepository repository, string currentDate, ExtraTimeRequestDto etRequestDto)

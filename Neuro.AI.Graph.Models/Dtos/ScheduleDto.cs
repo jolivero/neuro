@@ -9,10 +9,10 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int ExtraDays { get; set; }
         public string LineId { get; set; } = string.Empty;
         public string PlannedBy { get; set; } = string.Empty;
-        public List<DailyScheduleDto> DailySchedule { get; set; } = [];
+        public List<DailyPlanningDto> DailyPlanning { get; set; } = [];
     }
 
-    public class DailyScheduleDto
+    public class DailyPlanningDto
     {
         public int DailyGoal { get; set; }
         public string ProductionDate { get; set; } = string.Empty;
@@ -24,10 +24,10 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string MonthId { get; set; } = string.Empty;
         public int MonthlyGoal { get; set; }
         public string Reason { get; set; } = string.Empty;
-        public List<UpdateDailyScheduleDto>? UpdateDailyScheduleDto { get; set; } = [];
+        public List<UpdateDailyPlanningDto>? UpdateDailyPlanningDto { get; set; } = [];
     }
 
-    public class UpdateDailyScheduleDto : DailyScheduleDto
+    public class UpdateDailyPlanningDto : DailyPlanningDto
     {
         public string? DayId { get; set; }
         public int Available { get; set; }
