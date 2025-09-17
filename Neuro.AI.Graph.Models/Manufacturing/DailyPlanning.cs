@@ -25,7 +25,7 @@ public partial class DailyPlanning
 
     public virtual ICollection<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();
 
-    public virtual MonthlySchedule? Month { get; set; }
+    public virtual MonthlyPlanning? Month { get; set; }
 
     public virtual ICollection<ProductionChangeRequest> ProductionChangeRequests { get; set; } = new List<ProductionChangeRequest>();
 }

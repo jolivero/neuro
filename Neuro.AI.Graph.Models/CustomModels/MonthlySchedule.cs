@@ -2,7 +2,7 @@ using Neuro.AI.Graph.Models.Manufacturing;
 
 namespace Neuro.AI.Graph.Models.CustomModels
 {
-    public class MonthlyScheduleProductionLines : MonthlySchedule
+    public class MonthlyPlanningProductionLines : MonthlyPlanning
     {
         public List<AssignedProductionLines> AssignedProductionLines { get; set; } = [];
     }

@@ -242,9 +242,9 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public async Task<IQueryable<MonthlySchedule>> GetMonthlyAndDailyPlanning(ManufacturingDbContext context)
+    public async Task<IQueryable<MonthlyPlanning>> GetMonthlyAndDailyPlanning(ManufacturingDbContext context)
     {
-        var schedules = await context.MonthlySchedules
+        var schedules = await context.MonthlyPlannings
             .OrderBy(ms => ms.CreatedAt)
             .Include(ms => ms.DailyPlannings.Where(ds => ds.Available == 1)).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
             .Include(ms => ms.DailyPlannings).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)

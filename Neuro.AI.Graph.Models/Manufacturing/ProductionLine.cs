@@ -31,7 +31,7 @@ public partial class ProductionLine
 
     public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
 
-    public virtual ICollection<MonthlySchedule> MonthlySchedules { get; set; } = new List<MonthlySchedule>();
+    public virtual ICollection<MonthlyPlanning> MonthlyPlannings { get; set; } = new List<MonthlyPlanning>();
 
     public virtual ICollection<ProductionLineRecipe> ProductionLineRecipes { get; set; } = new List<ProductionLineRecipe>();
 }

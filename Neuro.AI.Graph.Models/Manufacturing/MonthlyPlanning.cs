@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Neuro.AI.Graph.Models.Manufacturing;
 
-public partial class MonthlySchedule
+public partial class MonthlyPlanning
 {
     public Guid MonthId { get; set; }
 
