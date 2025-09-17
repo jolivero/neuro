@@ -43,7 +43,7 @@ public partial class ProductionChangeRequest
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetails { get; set; } = new List<ChangeRequestDetail>();
 
-    public virtual DailySchedule? Day { get; set; }
+    public virtual DailyPlanning? Day { get; set; }
 
     public virtual MonthlySchedule? Month { get; set; }
 

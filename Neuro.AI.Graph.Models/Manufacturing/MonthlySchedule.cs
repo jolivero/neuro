@@ -29,7 +29,7 @@ public partial class MonthlySchedule
 
     public string? Reason { get; set; }
 
-    public virtual ICollection<DailySchedule> DailySchedules { get; set; } = new List<DailySchedule>();
+    public virtual ICollection<DailyPlanning> DailyPlannings { get; set; } = new List<DailyPlanning>();
 
     public virtual ProductionLine? Line { get; set; }
 
