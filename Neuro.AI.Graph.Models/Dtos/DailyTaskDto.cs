@@ -22,4 +22,14 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string MachineId { get; set; } = string.Empty;
     }
 
+    public class CheckOperatorExtraTimeDto
+    {
+        public string UserId { get; set; } = string.Empty;
+        public string ProductiveDate { get; set; } = string.Empty;
+        public string? TaskId { get; set; }
+        public string? TurnId { get; set; }
+        public string BeginAt { get; set; } = string.Empty;
+        public string EndAt { get; set; } = string.Empty;
+    }
+
 }
