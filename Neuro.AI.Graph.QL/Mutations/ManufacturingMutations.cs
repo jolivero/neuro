@@ -144,34 +144,34 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Planeación mensual
 
-        public async Task<string> repo_create_monthlySchedule(MonthlyScheduleRepository repository, MonthlyScheduleDto msDto)
+        public async Task<string> repo_create_monthlyPlanning(MonthlyPlanningRepository repository, MonthlyPlanningDto msDto)
         {
             return await repository.Create_monthly_schedule(msDto);
         }
 
-        public async Task<string> repo_update_monthlyGoalSchedule(MonthlyScheduleRepository repository, UpdateMonthlyScheduleDto mgDto)
+        public async Task<string> repo_update_monthlyGoalPlanning(MonthlyPlanningRepository repository, UpdateMonthlyPlanningDto mgDto)
         {
-            return await repository.Update_monthlyGoal_schedule(mgDto);
+            return await repository.Update_monthlyGoal_planning(mgDto);
         }
 
-        public async Task<string> repo_update_monthlyDaysSchedule(MonthlyScheduleRepository repository, UpdateMonthlyScheduleDto mdDto)
+        public async Task<string> repo_update_monthlyDaysPlanning(MonthlyPlanningRepository repository, UpdateMonthlyPlanningDto mdDto)
         {
             return await repository.Update_monthlyDays_schedule(mdDto);
         }
 
-        public async Task<string> repo_update_monthlySchedule_operator(MonthlyScheduleRepository repository, string monthId, string dayId, string userId)
+        public async Task<string> repo_update_monthlyPlanning_operator(MonthlyPlanningRepository repository, string monthId, string dayId, string userId)
         {
-            return await repository.Update_monthlySchedule_operator(monthId, dayId, userId);
+            return await repository.Update_monthlyPlanning_operator(monthId, dayId, userId);
         }
 
-        public async Task<string> repo_delete_monthlyDaysSchedule(MonthlyScheduleRepository repository, string monthId)
+        public async Task<string> repo_delete_monthlyDaysSchedule(MonthlyPlanningRepository repository, string monthId)
         {
-            return await repository.Delete_monthlyDays_schedule(monthId);
+            return await repository.Delete_monthlyDays_planning(monthId);
         }
 
-        public async Task<string> repo_delete_monthlySchedule_operator(MonthlyScheduleRepository repository, string monthId, string dayId, string userId)
+        public async Task<string> repo_delete_monthlyPlannin_operator(MonthlyPlanningRepository repository, string monthId, string dayId, string userId)
         {
-            return await repository.Delete_monthlySchedule_operator(monthId, dayId, userId);
+            return await repository.Delete_monthlyPlanning_operator(monthId, dayId, userId);
         }
 
         #endregion
