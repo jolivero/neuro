@@ -113,11 +113,14 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_dailyPlanning_Summary(lineId, productionDate)).AsQueryable();
         }
 
+        public async Task<IQueryable<DailyPlanningProductionLine>> repo_dailyPlanning_productionLine(DailyPlanningRepository repository, string lineId, string productionDate)
+        {
+            return (await repository.Select_dailyPlanning_productionLine(lineId, productionDate)).AsQueryable();
+        }
+
         #endregion
 
         #region Tareas diarias
-
-
 
         public async Task<IQueryable<ExtraTimeResponse>> repo_extraTime_operator(DailyTaskRepository repository, CheckOperatorExtraTimeDto operatorExtraTimeDto)
         {
