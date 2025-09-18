@@ -70,6 +70,28 @@ namespace Neuro.AI.Graph.Repository
 
         }
 
+        public async Task<IEnumerable<DailyPlanningProductionLine>> Select_dailyPlanning_productionLine(string lineId, string productionDate)
+        {
+            var sp = "sp_select_dailyPlanning";
+            var p = new DynamicParameters();
+            p.Add("@LineId", lineId);
+            p.Add("@ProductionDate", productionDate);
+
+            try
+            {
+                return await _db.QueryAsync<DailyPlanningProductionLine>(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw new Exception(ex.Message);
+            }
+        }
+
         #endregion
 
         #region Mutations
