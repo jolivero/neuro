@@ -244,17 +244,18 @@ public class EntitiesQueries
     [UseSorting]
     public async Task<IQueryable<MonthlyPlanning>> GetMonthlyAndDailyPlanning(ManufacturingDbContext context)
     {
-        var schedules = await context.MonthlyPlannings
-            .OrderBy(ms => ms.CreatedAt)
-            .Include(ms => ms.DailyPlannings.Where(ds => ds.Available == 1)).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
-            .Include(ms => ms.DailyPlannings).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
-            .Include(ms => ms.DailyPlannings).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine).ToListAsync();
-        foreach (var schedule in schedules)
+        var planningList = await context.MonthlyPlannings
+            .OrderBy(mp => mp.CreatedAt)
+            .Include(mp => mp.Line).Where(mp => mp.Line!.Available == 1)
+            .Include(mp => mp.DailyPlannings.Where(ds => ds.Available == 1)).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
+            .Include(mp => mp.DailyPlannings).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
+            .Include(mp => mp.DailyPlannings).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine).ToListAsync();
+        foreach (var planning in planningList)
         {
-            schedule.DailyPlannings = schedule.DailyPlannings.OrderBy(ds => ds.ProductionDate).ToList();
+            planning.DailyPlannings = planning.DailyPlannings.OrderBy(ds => ds.ProductionDate).ToList();
         }
 
-        return schedules.AsQueryable();
+        return planningList.AsQueryable();
     }
 
     [UseProjection]
