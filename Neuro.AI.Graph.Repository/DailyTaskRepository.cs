@@ -127,7 +127,7 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Create_dailyTask(DailyTaskDto dtDto)
         {
-            var sp = "sp_create_dailyTask";
+            var sp = "sp_create_dailyTasks";
             var p = new DynamicParameters();
             p.Add("@MonthId", dtDto.MonthId);
             p.Add("@TurnId", dtDto.TurnId ?? null);

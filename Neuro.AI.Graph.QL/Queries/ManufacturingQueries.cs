@@ -85,9 +85,19 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Planificación anual
 
-        public async Task<IQueryable<MonthlyPlanningProductionLines>> repo_annual_planification(MonthlyPlanningRepository repository, int? year, int? month)
+        public async Task<AnnualPlannigInfo> repo_annual_plannification_info(MonthlyPlanningRepository repository, int year)
         {
-            return (await repository.Select_annual_planification(year, month)).AsQueryable();
+            return await repository.Select_annual_plannification_info(year);
+        }
+
+        public async Task<IEnumerable<MonthlyPlanningProgress>> repo_monthlyPlanning_progress(MonthlyPlanningRepository repository, string lineId, string currentDay)
+        {
+            return (await repository.Select_monthlyPlanning_Progress(lineId, currentDay)).AsQueryable();
+        }
+
+        public async Task<IQueryable<MonthlyPlanningProductionLines>> repo_annual_planification(MonthlyPlanningRepository repository, int? year, int? month, string? companyId)
+        {
+            return (await repository.Select_annual_planification(year, month, companyId)).AsQueryable();
         }
 
         #endregion
