@@ -13,8 +13,6 @@ public partial class TurnDetail
 
     public TimeOnly? EndAt { get; set; }
 
-    public decimal? Quantity { get; set; }
-
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
@@ -22,6 +20,8 @@ public partial class TurnDetail
     public int? Available { get; set; }
 
     public Guid? TurnId { get; set; }
+
+    public TimeOnly? Duration { get; set; }
 
     public virtual Turn? Turn { get; set; }
 }

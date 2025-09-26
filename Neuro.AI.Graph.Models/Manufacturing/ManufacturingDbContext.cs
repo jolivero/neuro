@@ -722,7 +722,6 @@ public partial class ManufacturingDbContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.EndAt).HasPrecision(0);
             entity.Property(e => e.PeriodType).HasMaxLength(255);
-            entity.Property(e => e.Quantity).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
