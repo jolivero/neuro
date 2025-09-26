@@ -21,12 +21,34 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<IEnumerable<MonthlyPlanningProductionLines>> Select_annual_planification(int? year, int? month)
+        public async Task<AnnualPlannigInfo> Select_annual_plannification_info(int year)
+        {
+            var sp = "sp_select_annual_planning_info";
+            var p = new DynamicParameters();
+            p.Add("@Year", year);
+
+            try
+            {
+                return await _db.QueryFirstAsync<AnnualPlannigInfo>(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<MonthlyPlanningProductionLines>> Select_annual_planification(int? year, int? month, string? companyId)
         {
             var sp = "sp_select_plannificationByYear";
             var p = new DynamicParameters();
             p.Add("@Year", year ?? DateTime.Now.Year);
             p.Add("@Month", month ?? null);
+            p.Add("@CompanyId", companyId ?? null);
 
             var planificationDict = new Dictionary<int, MonthlyPlanningProductionLines>();
 
@@ -82,6 +104,28 @@ namespace Neuro.AI.Graph.Repository
                 throw new Exception(ex.StackTrace);
             }
 
+        }
+
+        public async Task<IEnumerable<MonthlyPlanningProgress>> Select_monthlyPlanning_Progress(string lineId, string currentDay)
+        {
+            var sp = "sp_select_monthlyPlanning_progress";
+            var p = new DynamicParameters();
+            p.Add("@LineId", lineId);
+            p.Add("@CurrentDay", currentDay);
+
+            try
+            {
+                return await _db.QueryAsync<MonthlyPlanningProgress>(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<IEnumerable<MonthlyPlanning>> Select_station_with_machine_planification(string monthId, string stationId, string machineId)
