@@ -21,19 +21,20 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<IEnumerable<MonthlyPlanningProductionLines>> Select_annual_planification(int? year)
+        public async Task<IEnumerable<MonthlyPlanningProductionLines>> Select_annual_planification(int? year, int? month)
         {
             var sp = "sp_select_plannificationByYear";
             var p = new DynamicParameters();
             p.Add("@Year", year ?? DateTime.Now.Year);
+            p.Add("@Month", month ?? null);
 
             var planificationDict = new Dictionary<int, MonthlyPlanningProductionLines>();
 
             try
             {
-                await _db.QueryAsync<MonthlyPlanning, ProductionLine, MonthlyPlanning>(
+                await _db.QueryAsync<MonthlyPlanning, AssignedProductionLines, MonthlyPlanning>(
                     sp,
-                    (ms, pl) =>
+                    (ms, apl) =>
                     {
                         if (!planificationDict.TryGetValue(ms.Month, out var planificationData))
                         {
@@ -51,13 +52,16 @@ namespace Neuro.AI.Graph.Repository
                             planificationDict.Add(ms.Month, planificationData);
                         }
 
-                        var plData = planificationData.AssignedProductionLines.FirstOrDefault(mp => mp.LineId == pl.LineId);
+                        var plData = planificationData.AssignedProductionLines.FirstOrDefault(mp => mp.LineId == apl.LineId);
                         if (plData == null)
                         {
                             plData = new()
                             {
-                                LineId = pl.LineId,
-                                Name = pl.Name
+                                LineId = apl.LineId,
+                                Name = apl.Name,
+                                MonthlyGoal = ms.MonthlyGoal,
+                                CurrentProgress = apl.CurrentProgress,
+                                Progress = apl.Progress
                             };
 
                             planificationData.AssignedProductionLines.Add(plData);
@@ -226,6 +230,8 @@ namespace Neuro.AI.Graph.Repository
             var currentGoal = previousDays.Sum(p => p.DailyGoal);
 
             var daysToUpdate = mdDto.UpdateDailyPlanningDto!.FindAll(d => DateOnly.Parse(d.ProductionDate) >= DateOnly.FromDateTime(DateTime.Now) && d.Available == 1);
+            var daysToRemove = mdDto.UpdateDailyPlanningDto!.FindAll(d => d.Available == 0);
+
             var currentAndNewdays = daysToUpdate.Count(d => DateOnly.Parse(d.ProductionDate) >= DateOnly.FromDateTime(DateTime.Now));
             var dailyGoal = (mdDto.MonthlyGoal - currentGoal) / currentAndNewdays;
 
@@ -239,10 +245,10 @@ namespace Neuro.AI.Graph.Repository
 
             try
             {
-                foreach (var item in daysToUpdate)
+                foreach (var item in daysToUpdate.Concat(daysToRemove))
                 {
                     p.Add("@DayId", item.DayId);
-                    p.Add("@DailyGoal", dailyGoal);
+                    p.Add("@DailyGoal", item.Available == 1 ? dailyGoal : item.DailyGoal);
                     p.Add("@ProductionDate", item.ProductionDate);
                     p.Add("@DayType", item.DayType);
                     p.Add("@Available", item.Available);
