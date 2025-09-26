@@ -11,6 +11,9 @@ namespace Neuro.AI.Graph.Models.CustomModels
     {
         public Guid LineId { get; set; }
         public string Name { get; set; } = string.Empty;
+        public int MonthlyGoal { get; set; }
+        public decimal CurrentProgress { get; set; }
+        public decimal Progress { get; set; }
     }
     
 }

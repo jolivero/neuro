@@ -32,7 +32,7 @@ namespace Neuro.AI.Graph.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);    
+                Console.WriteLine(ex.Message);
                 throw new Exception(ex.Data.ToString());
             }
         }
@@ -64,12 +64,16 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Update_operator_status(string taskId, string userId, string status)
         {
+
+            TimeZoneInfo timeZonePanama = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
+            DateTime dateTimePanama = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZonePanama);
+
             var prDto = new ProductionRecordDto()
             {
                 TaskId = taskId,
                 UserId = userId,
                 Status = status,
-                CurrentTime = DateTime.Now.TimeOfDay.ToString(),
+                CurrentTime = dateTimePanama.TimeOfDay.ToString(),
                 IsCut = false,
             };
 
