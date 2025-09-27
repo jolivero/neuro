@@ -9,12 +9,6 @@ public partial class Turn
 
     public string? Name { get; set; }
 
-    public decimal? Duration { get; set; }
-
-    public decimal? ProductiveTime { get; set; }
-
-    public decimal? PauseTime { get; set; }
-
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
@@ -23,7 +17,11 @@ public partial class Turn
 
     public Guid? CreatedBy { get; set; }
 
-    public string? TurnType { get; set; }
+    public TimeOnly? Duration { get; set; }
+
+    public TimeOnly? ProductiveTime { get; set; }
+
+    public TimeOnly? PauseTime { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentTurns { get; set; } = new List<ChangeRequestDetail>();
 

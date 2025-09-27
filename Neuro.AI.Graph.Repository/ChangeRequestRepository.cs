@@ -1,6 +1,7 @@
 using System.Data;
 using System.Text.RegularExpressions;
 using Dapper;
+using Microsoft.Extensions.Configuration;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
@@ -10,10 +11,12 @@ namespace Neuro.AI.Graph.Repository
     public class ChangeRequestRepository
     {
         private readonly IDbConnection _db;
+        private readonly IConfiguration _config;
 
-        public ChangeRequestRepository(ManufacturingConnector manufacturingConnector)
+        public ChangeRequestRepository(ManufacturingConnector manufacturingConnector, IConfiguration config)
         {
             _db = manufacturingConnector.Connect();
+            _config = config;
         }
 
         #region Queries
@@ -206,7 +209,7 @@ namespace Neuro.AI.Graph.Repository
                 TaskId = cRequestDto.TaskId,
                 UserId = cRequestDto.UserId,
                 CreatedBy = cRequestDto.RequestingUserId,
-                CategoryId = "1759C46B-DD1F-41ED-BE36-11BFF20C2CBA",
+                CategoryId = _config["RequestCategories:ChangeOperator"]!,
                 OriginRequest = "Planificacion diaria",
                 RequestType = cRequestDto.RequestType,
                 Reason = cRequestDto.Reason
@@ -230,7 +233,7 @@ namespace Neuro.AI.Graph.Repository
                 TaskId = cRequestDto.TaskId,
                 UserId = cRequestDto.UserId,
                 CreatedBy = cRequestDto.RequestingUserId,
-                CategoryId = "EB8D8429-E72D-49C4-AFC5-D80F11F5DFC9",
+                CategoryId = _config["RequestCategories:SpecialMissions"]!,
                 OriginRequest = "Control de estado",
                 RequestType = cRequestDto.RequestType,
                 Reason = cRequestDto.Reason

@@ -57,10 +57,9 @@ namespace Neuro.AI.Graph.Repository
             var p = new DynamicParameters();
             p.Add("@TurnId", turnId ?? Guid.NewGuid().ToString());
             p.Add("@Name", turnDto.Name);
-            p.Add("@Duration", turnDto.Duration);
-            p.Add("@ProductiveTime", turnDto.ProductiveTime);
-            p.Add("@PauseTime", turnDto.PauseTime);
-            p.Add("@TurnType", turnDto.TurnType);
+            p.Add("@Duration", TimeSpan.Parse(turnDto.Duration));
+            p.Add("@ProductiveTime", TimeSpan.Parse(turnDto.ProductiveTime));
+            p.Add("@PauseTime", TimeSpan.Parse(turnDto.PauseTime));
             p.Add("@CreatedBy", turnDto.CreatedBy);
             p.Add("@Action", string.IsNullOrEmpty(turnId) ? "insertar" : "actualizar");
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
@@ -73,7 +72,7 @@ namespace Neuro.AI.Graph.Repository
                     p.Add("@PeriodType", detail.PeriodType);
                     p.Add("@BeginAt", TimeSpan.Parse(detail.BeginAt));
                     p.Add("@EndAt", TimeSpan.Parse(detail.EndAt));
-                    p.Add("@Quantity", detail.Quantity);
+                    p.Add("@DurationDetail", TimeSpan.Parse(detail.DurationDetail));
 
                     await _db.ExecuteAsync(
                         sp,
@@ -89,6 +88,52 @@ namespace Neuro.AI.Graph.Repository
                 return ex.Message;
             }
 
+        }
+        
+        public async Task<string> Delete_turn_details(string turnId)
+        {
+            var sp = "sp_delete_turn_details";
+            var p = new DynamicParameters();
+            p.Add("@TurnId", turnId);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        } 
+
+        public async Task<string> Delete_turnDetail_Id(string turnDetailId)
+        {
+            var sp = "sp_delete_turnDetail_id";
+            var p = new DynamicParameters();
+            p.Add("@TurnDetailId", turnDetailId);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         #endregion

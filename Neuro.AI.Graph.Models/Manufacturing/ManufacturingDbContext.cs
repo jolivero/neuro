@@ -694,13 +694,7 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Duration).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.Name).HasMaxLength(255);
-            entity.Property(e => e.PauseTime).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.ProductiveTime).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.TurnType)
-                .HasMaxLength(255)
-                .IsUnicode(false);
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -722,7 +716,6 @@ public partial class ManufacturingDbContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.EndAt).HasPrecision(0);
             entity.Property(e => e.PeriodType).HasMaxLength(255);
-            entity.Property(e => e.Quantity).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
