@@ -140,6 +140,16 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_Update_turns(turnDto, turnId);
         }
 
+        public async Task<string> repo_delete_turn_with_details(TurnRepository repository, string turnId)
+        {
+            return await repository.Delete_turn_details(turnId);
+        }
+
+        public async Task<string> repo_delete_turnDetail(TurnRepository repository, string turnDetailId)
+        {
+            return await repository.Delete_turnDetail_Id(turnDetailId);
+        }
+
         #endregion
 
         #region Planeación mensual
