@@ -206,7 +206,7 @@ public class EntitiesQueries
     [UseSorting]
     async public Task<IQueryable<Turn>> GetTurnsWithDetails(ManufacturingDbContext context)
     {
-        var turns = await context.Turns.OrderBy(t => t.CreatedAt).Include(t => t.TurnDetails).Include(t => t.CreatedByNavigation).ToListAsync();
+        var turns = await context.Turns.Where(t => t.Available == 1).OrderBy(t => t.CreatedAt).Include(t => t.TurnDetails).Include(t => t.CreatedByNavigation).ToListAsync();
         foreach (var turn in turns)
         {
             turn.TurnDetails = turn.TurnDetails.OrderBy(td => td.CreatedAt).ToList();
@@ -222,6 +222,7 @@ public class EntitiesQueries
     {
         var turnWitTimeDetail = await context.Turns
             .OrderBy(t => t.CreatedAt)
+            .Where(t => t.Available == 1)
             .Select(t => new TurnWithTimeDetail
             {
                 TurnId = t.TurnId,

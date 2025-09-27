@@ -4,7 +4,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
     {
         public Guid TurnId { get; set; }
         public string Name { get; set; } = string.Empty;
-        public decimal? Duration { get; set; }
+        public TimeOnly? Duration { get; set; }
         public TimeDetail TimeDetail { get; set; } = new();
     }
 
