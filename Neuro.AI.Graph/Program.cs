@@ -10,6 +10,8 @@ using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.QL.Mutations;
 using Neuro.AI.Graph.Models.Manufacturing;
 using Dapper;
+using Azure.Storage.Blobs;
+using Neuro.AI.Graph;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(c.GetConnectionString("Cnn_TropigasMobile")));
 builder.Services.AddPooledDbContextFactory<ManufacturingDbContext>(options => options.UseSqlServer(c.GetConnectionString("Cnn_Manufacturing")));
+builder.Services.AddSingleton(new BlobServiceClient(
+	builder.Configuration["AzureConnections:AzureBlobStorage"]
+));
 
 builder.Services.AddKeycloakWebApiAuthentication(c.GetSection("KeycloakSettings"));
 builder.Services.AddSingleton(c.ConfigureSection<KeycloakSettings>());
@@ -53,6 +58,9 @@ builder.Services.AddScoped<ProductionRecordRepository>();
 builder.Services.AddScoped<StatusControlRepository>();
 builder.Services.AddScoped<QualityRecordRepository>();
 
+//Servicios
+builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
+
 //Dapper Handler
 SqlMapper.AddTypeHandler(new TimeOnlyHandler());
 SqlMapper.AddTypeHandler(new DateOnlyHandler());
@@ -62,12 +70,13 @@ builder.Services
 	.AddAuthorization()
 	.RegisterDbContextFactory<ApplicationDbContext>()
 	.RegisterDbContextFactory<ManufacturingDbContext>()
-    .AddProjections()
-    .AddFiltering()
-    .AddSorting()
+	.AddProjections()
+	.AddFiltering()
+	.AddSorting()
 	.AddQueryType<Queries>()
 	.AddMutationType<Mutations>()
 	.AddType<CustomQueriesType>()
+	.AddType<UploadType>()
 	.AddInMemorySubscriptions();
 
 builder.Services.AddCors(options =>
