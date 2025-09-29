@@ -22,7 +22,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(c.GetConnectionString("Cnn_TropigasMobile")));
 builder.Services.AddPooledDbContextFactory<ManufacturingDbContext>(options => options.UseSqlServer(c.GetConnectionString("Cnn_Manufacturing")));
 builder.Services.AddSingleton(new BlobServiceClient(
-	builder.Configuration["Blob:BlobStorage"]
+	builder.Configuration["AzureConnections:AzureBlobStorage"]
 ));
 
 builder.Services.AddKeycloakWebApiAuthentication(c.GetSection("KeycloakSettings"));
