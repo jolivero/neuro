@@ -18,7 +18,7 @@ namespace Neuro.AI.Graph
         public async Task<string> UploadFile(Stream fileStream, string fileName, string? contentType)
         {
             
-            var containerClient = _blobServiceClient.GetBlobContainerClient(_config["AzureConnections:AzureContainerName"]);
+            var containerClient = _blobServiceClient.GetBlobContainerClient(_config["Blob:ContainerName"]);
             await containerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
 
             var blobClient = containerClient.GetBlobClient(fileName);
