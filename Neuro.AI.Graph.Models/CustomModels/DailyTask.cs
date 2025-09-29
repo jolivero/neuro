@@ -24,6 +24,8 @@ namespace Neuro.AI.Graph.Models.CustomModels
     {
         public int Total { get; set; }
         public decimal Progress { get; set; }
+        public TimeOnly BeginTime { get; set; }
+        public TimeOnly EndTime { get; set; }
     }
     
 }
