@@ -30,8 +30,18 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_companies(companyDto);
         }
 
-        public async Task<string> repo_update_companies(CompanyRepository repository, string companyId, CompanyDto companyDto)
+        public async Task<string> repo_update_companies(CompanyRepository repository, string companyId, CompanyDto companyDto, IFile? companyLogo)
         {
+            string companyLogoUrl = string.Empty;
+
+            if (companyLogo != null)
+            {
+                using var fileStream = companyLogo.OpenReadStream();
+                companyLogoUrl = await _azureBlobStorageService.UploadFile(fileStream, companyLogo.Name, companyLogo.ContentType);
+            }
+
+            companyDto.CompanyLogo = companyLogo != null ? companyLogoUrl : companyDto.CompanyLogo;
+
             return await repository.Update_companies(companyId, companyDto);
         }
 
