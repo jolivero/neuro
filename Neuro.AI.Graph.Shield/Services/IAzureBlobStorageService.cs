@@ -2,6 +2,6 @@ namespace Neuro.AI.Graph
 {
     public interface IAzureBlobStorageService
     {
-        Task<string> UploadFile(Stream fileStream, string fileName);
+        Task<string> UploadFile(Stream fileStream, string fileName, string? contentType);
     }
 }

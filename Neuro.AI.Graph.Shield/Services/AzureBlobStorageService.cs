@@ -15,7 +15,7 @@ namespace Neuro.AI.Graph
             _config = config;
         }
 
-        public async Task<string> UploadFile(Stream fileStream, string fileName)
+        public async Task<string> UploadFile(Stream fileStream, string fileName, string? contentType)
         {
             
             var containerClient = _blobServiceClient.GetBlobContainerClient(_config["AzureConnections:AzureContainerName"]);
@@ -23,7 +23,13 @@ namespace Neuro.AI.Graph
 
             var blobClient = containerClient.GetBlobClient(fileName);
 
-            await blobClient.UploadAsync(fileStream, overwrite: true);
+            await blobClient.UploadAsync(fileStream, new BlobUploadOptions
+            {
+                HttpHeaders = new BlobHttpHeaders
+                {
+                    ContentType = contentType
+                }
+            });
 
             return blobClient.Uri.ToString();
         }

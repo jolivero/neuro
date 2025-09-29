@@ -22,7 +22,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             if (companyLogo != null)
             {
                 using var fileStream = companyLogo.OpenReadStream();
-                companyLogoUrl = await _azureBlobStorageService.UploadFile(fileStream, companyLogo.Name);
+                companyLogoUrl = await _azureBlobStorageService.UploadFile(fileStream, companyLogo.Name, companyLogo.ContentType);
             }
 
             companyDto.CompanyLogo = companyLogoUrl;
