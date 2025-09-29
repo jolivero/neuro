@@ -6,7 +6,7 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string UserId { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public string CurrentTime { get; set; } = string.Empty;
-        public bool IsCut { get; set; }
+        public bool IsCut { get; set; } = false;
         public ProducedPart? ProducedPart { get; set; }
         public List<ProducedPart>? NcProducedPart { get; set; }
     }
