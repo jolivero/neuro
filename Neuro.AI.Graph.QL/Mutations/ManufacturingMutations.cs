@@ -5,10 +5,28 @@ namespace Neuro.AI.Graph.QL.Mutations
 {
     public class ManufacturingMutations
     {
+
+        private readonly IAzureBlobStorageService _azureBlobStorageService; 
+
+        public ManufacturingMutations(IAzureBlobStorageService azureBlobStorageService)
+        {
+            _azureBlobStorageService = azureBlobStorageService;
+        }
+
         #region Compañias
 
-        public async Task<string> repo_create_companies(CompanyRepository repository, CompanyDto companyDto)
+        public async Task<string> repo_create_companies(CompanyRepository repository, CompanyDto companyDto, IFile companyLogo)
         {
+            string companyLogoUrl = string.Empty;
+
+            if (companyLogo != null)
+            {
+                using var fileStream = companyLogo.OpenReadStream();
+                companyLogoUrl = await _azureBlobStorageService.UploadFile(fileStream, companyLogo.Name, companyLogo.ContentType);
+            }
+
+            companyDto.CompanyLogo = companyLogoUrl;
+
             return await repository.Create_companies(companyDto);
         }
 
