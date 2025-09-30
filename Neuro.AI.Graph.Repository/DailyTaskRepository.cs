@@ -95,11 +95,60 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
+        public async Task<IEnumerable<DailyTask>> Select_dailyTask_operator_history(string taskId, string userId)
+        {
+            var sp = "sp_select_dailyTask_operator_history";
+            var p = new DynamicParameters();
+            p.Add("@TaskId", taskId);
+            p.Add("@UserId", userId);
+
+            var dailyTaskDict = new Dictionary<string, DailyTask>();
+
+            try
+            {
+                await _db.QueryAsync<DailyTask, DailyPlanning, User, ProductionRecord, DailyTask>(
+                    sp,
+                    (dt, dp, u, pr) =>
+                    {
+                        if (!dailyTaskDict.TryGetValue(dt.TaskId.ToString(), out var dailyTaskdata))
+                        {
+                            dailyTaskdata = dt;
+                            dailyTaskdata.Day = dp;
+                            dailyTaskdata.User = u;
+                            dailyTaskdata.ProductionRecords = [];
+
+                            dailyTaskDict.Add(dt.TaskId.ToString(), dailyTaskdata);
+                        }
+
+                        var prData = dailyTaskdata.ProductionRecords.FirstOrDefault(p => p.ProductionId == pr.ProductionId);
+                        if (prData == null)
+                        {
+                            prData = pr;
+                            dailyTaskdata.ProductionRecords.Add(prData);
+                        }
+
+                        return dailyTaskdata;
+                    },
+                    p,
+                    splitOn: "DayId, UserId, ProductionId",
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return dailyTaskDict.Values;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+
+        }
+
         #endregion
 
         #region Mutations
 
-         public async Task<IEnumerable<ExtraTimeResponse>> Select_extraTime_operator(CheckOperatorExtraTimeDto operatorExtraTimeDto)
+        public async Task<IEnumerable<ExtraTimeResponse>> Select_extraTime_operator(CheckOperatorExtraTimeDto operatorExtraTimeDto)
         {
             var sp = "sp_select_operator_extraTime";
             var p = new DynamicParameters();

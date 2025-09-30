@@ -142,6 +142,11 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_dailyTask_by_userId(currentDate, userId, taskId)).AsQueryable();
         }
 
+        public async Task<IEnumerable<DailyTask>> repo_dailyTask_operator_history(DailyTaskRepository repository, string taskId, string userId)
+        {
+            return (await repository.Select_dailyTask_operator_history(taskId, userId)).AsQueryable();
+        }
+
         #endregion
 
         #region Control de estado
