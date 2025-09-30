@@ -13,8 +13,6 @@ public partial class ProductionRecord
 
     public TimeOnly? EndTime { get; set; }
 
-    public decimal? Duration { get; set; }
-
     public int? IsCut { get; set; }
 
     public DateTime? CreatedAt { get; set; }
@@ -24,6 +22,8 @@ public partial class ProductionRecord
     public Guid? TaskId { get; set; }
 
     public Guid? CreatedBy { get; set; }
+
+    public TimeOnly? Duration { get; set; }
 
     public virtual User? CreatedByNavigation { get; set; }
 

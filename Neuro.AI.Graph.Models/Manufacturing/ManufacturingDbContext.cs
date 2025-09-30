@@ -566,7 +566,6 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Duration).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.IsCut).HasDefaultValue(1);
             entity.Property(e => e.Status).HasMaxLength(255);
             entity.Property(e => e.UpdatedAt)
