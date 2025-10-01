@@ -190,6 +190,28 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
+        public async Task<IEnumerable<MonthlyPlanningStepStatus>> Select_planning_step_status(string monthId, string lineId)
+        {
+            var sp = "sp_select_planning_status";
+            var p = new DynamicParameters();
+            p.Add("@MonthId", monthId);
+            p.Add("@LineId", lineId);
+
+            try
+            {
+                return await _db.QueryAsync<MonthlyPlanningStepStatus>(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Estatus de planificación: {ex.Message}");
+                throw new Exception(ex.Message);
+            }
+        }
+
         #endregion
 
         #region Mutations
