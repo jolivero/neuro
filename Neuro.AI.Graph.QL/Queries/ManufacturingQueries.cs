@@ -109,6 +109,11 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_station_with_machine_planification(monthId, stationId, machineId)).AsQueryable();
         }
 
+        public async Task<IQueryable<MonthlyPlanningStepStatus>> repo_planning_step_status(MonthlyPlanningRepository repository, string monthId, string lineId)
+        {
+            return (await repository.Select_planning_step_status(monthId, lineId)).AsQueryable();
+        }
+
         #endregion
 
         #region Planificación diaria

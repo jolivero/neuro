@@ -35,5 +35,13 @@ namespace Neuro.AI.Graph.Models.CustomModels
         public int CurrentProgress { get; set; }
         public decimal Progress { get; set; }
     }
+
+    public class MonthlyPlanningStepStatus
+    {
+        public Guid MonthId { get; set; }
+        public Guid StationId { get; set; }
+        public Guid MachineId { get; set; }
+        public int Status { get; set; }
+    }
     
 }
