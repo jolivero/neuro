@@ -14,6 +14,9 @@ namespace Neuro.AI.Graph.Models.CustomModels
     public class MonthlyPlanningProgress
     {
         public string Operator { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public TimeOnly BeginTime { get; set; }
+        public TimeOnly EndTime { get; set; }
         public DateOnly ProductionDate { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
