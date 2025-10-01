@@ -38,9 +38,9 @@ namespace Neuro.AI.Graph.Models.CustomModels
 
     public class MonthlyPlanningStepStatus
     {
-        public Guid MonthId { get; set; }
-        public Guid StationId { get; set; }
-        public Guid MachineId { get; set; }
+        public string? MonthId { get; set; }
+        public string StationId { get; set; } = string.Empty;
+        public string MachineId { get; set; } = string.Empty;
         public int Status { get; set; }
     }
     
