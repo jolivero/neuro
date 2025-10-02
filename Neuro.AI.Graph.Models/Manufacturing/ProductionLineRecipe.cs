@@ -23,6 +23,8 @@ public partial class ProductionLineRecipe
 
     public DateTime? CreatedAt { get; set; }
 
+    public int? StepOrder { get; set; }
+
     public virtual Group? Group { get; set; }
 
     public virtual ProductionLine? Line { get; set; }
