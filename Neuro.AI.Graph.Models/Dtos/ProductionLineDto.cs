@@ -21,6 +21,7 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string PartId { get; set; } = string.Empty;
         public string PrevPartId { get; set; } = string.Empty;
         public decimal RequiredQuantity { get; set; } = 0;
+        public int StepOrder { get; set; }
     }
 
     public class ProductionLineHandleStepDto

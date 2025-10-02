@@ -187,17 +187,17 @@ namespace Neuro.AI.Graph.Repository
             var sp = "sp_create_update_productionLine_steps";
             var p = new DynamicParameters();
             p.Add("@LineId", plConfigDto.LineId);
+            p.Add("@GroupId", plConfigDto.Steps.GroupId);
+            p.Add("@StationId", plConfigDto.Steps.StationId);
+            p.Add("@MachineId", plConfigDto.Steps.MachineId);
+            p.Add("@PartId", plConfigDto.Steps.PartId);
+            p.Add("@PrevPartId", plConfigDto.Steps.PrevPartId);
+            p.Add("@Quantity", plConfigDto.Steps.RequiredQuantity);
+            p.Add("@StepOrder", plConfigDto.Steps.StepOrder);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {
-                p.Add("@GroupId", plConfigDto.Steps.GroupId);
-                p.Add("@StationId", plConfigDto.Steps.StationId);
-                p.Add("@MachineId", plConfigDto.Steps.MachineId);
-                p.Add("@PartId", plConfigDto.Steps.PartId);
-                p.Add("@PrevPartId", plConfigDto.Steps.PrevPartId);
-                p.Add("@Quantity", plConfigDto.Steps.RequiredQuantity);
-
                 await _db.ExecuteAsync(
                     sp,
                     p,
@@ -224,6 +224,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@PartId", plUpdateDto.Steps.PartId);
             p.Add("@PrevPartId", plUpdateDto.Steps.PrevPartId);
             p.Add("@Quantity", plUpdateDto.Steps.RequiredQuantity);
+             p.Add("@StepOrder", plUpdateDto.Steps.StepOrder);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
