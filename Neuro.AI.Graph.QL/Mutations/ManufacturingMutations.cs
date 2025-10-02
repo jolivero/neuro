@@ -6,7 +6,7 @@ namespace Neuro.AI.Graph.QL.Mutations
     public class ManufacturingMutations
     {
 
-        private readonly IAzureBlobStorageService _azureBlobStorageService; 
+        private readonly IAzureBlobStorageService _azureBlobStorageService;
 
         public ManufacturingMutations(IAzureBlobStorageService azureBlobStorageService)
         {
@@ -285,6 +285,15 @@ namespace Neuro.AI.Graph.QL.Mutations
         public async Task<string> repo_create_qualityRecord(QualityRecordRepository repository, QualityRecordDto qrDto)
         {
             return await repository.Create_qualityRecord(qrDto);
+        }
+
+        #endregion
+
+        #region Logs
+
+        public async Task<string> repo_create_log(LogRepository repository, LogDto lgDto)
+        {
+            return await repository.Register_user_log(lgDto);
         }
 
         #endregion
