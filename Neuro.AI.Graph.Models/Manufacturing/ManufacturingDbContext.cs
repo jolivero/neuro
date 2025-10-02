@@ -27,6 +27,8 @@ public partial class ManufacturingDbContext : DbContext
 
     public virtual DbSet<Inventory> Inventories { get; set; }
 
+    public virtual DbSet<Log> Logs { get; set; }
+
     public virtual DbSet<Machine> Machines { get; set; }
 
     public virtual DbSet<MachineReport> MachineReports { get; set; }
@@ -284,6 +286,34 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasOne(d => d.Part).WithOne(p => p.Inventory)
                 .HasForeignKey<Inventory>(d => d.PartId)
                 .HasConstraintName("FK__Inventory__PartI__3BA0BFE9");
+        });
+
+        modelBuilder.Entity<Log>(entity =>
+        {
+            entity.HasKey(e => e.LogId).HasName("PK__logs__5E548648E7143A5A");
+
+            entity.ToTable("logs");
+
+            entity.Property(e => e.LogId).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Action).HasMaxLength(255);
+            entity.Property(e => e.Area).HasMaxLength(255);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Desc0)
+                .HasMaxLength(255)
+                .HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Desc1)
+                .HasMaxLength(255)
+                .HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Desc2)
+                .HasMaxLength(255)
+                .HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Desc3)
+                .HasMaxLength(255)
+                .HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Rol).HasMaxLength(255);
+            entity.Property(e => e.UserName).HasMaxLength(255);
         });
 
         modelBuilder.Entity<Machine>(entity =>
