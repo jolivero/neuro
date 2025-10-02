@@ -292,6 +292,13 @@ public class EntitiesQueries
                                                                                             .OrderBy(pr => pr.CreatedAt);
 
 
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Log> GetLogs(ManufacturingDbContext context) => context.Logs
+                                                                    .OrderBy(l => l.CreatedAt);
+
+
     #endregion
 
 }

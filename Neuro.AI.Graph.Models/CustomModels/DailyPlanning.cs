@@ -17,6 +17,8 @@ namespace Neuro.AI.Graph.Models.CustomModels
         public string Station { get; set; } = string.Empty;
         public Guid MachineId { get; set; }
         public string Machine { get; set; } = string.Empty;
+        public Guid PartId { get; set; }
+        public string Part { get; set; } = string.Empty;
         public Guid TaskId { get; set; }
         public string MachineStatus { get; set; } = string.Empty;
         public Guid UserId { get; set; }
