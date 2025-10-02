@@ -57,6 +57,7 @@ builder.Services.AddScoped<ChangeRequestRepository>();
 builder.Services.AddScoped<ProductionRecordRepository>();
 builder.Services.AddScoped<StatusControlRepository>();
 builder.Services.AddScoped<QualityRecordRepository>();
+builder.Services.AddScoped<LogRepository>();
 
 //Servicios
 builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
