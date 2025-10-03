@@ -83,6 +83,21 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #endregion
 
+        #region Dashborad
+
+        public async Task<IQueryable<ProductionLineSummary>> repo_dashboard_productionLine_summary(DashboardRepository repository, int month, int year)
+        {
+            return (await repository.Select_productionLine_summary(month, year)).AsQueryable();
+        }
+
+        public async Task<IQueryable<ProductionLineOperatorSummary>> repo_dashboard_productionLine_operators_summary(DashboardRepository repository, string lineId, int month, int year)
+        {
+            return (await repository.Select_productionLine_operators_summary(lineId, month, year)).AsQueryable();
+        }
+
+        #endregion
+
+
         #region Planificación anual
 
         public async Task<AnnualPlannigInfo> repo_annual_plannification_info(MonthlyPlanningRepository repository, int year)
