@@ -83,6 +83,11 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Update_productionLine_steps(plUpdateDto);
         }
 
+        public async Task<string> repo_update_productionLine_stepOrder(ProductionLineRepository repository, List<RecipeStepOrderDto> soDto)
+        {
+            return await repository.Update_productionLine_stepOrder(soDto);
+        }
+
         public async Task<string> repo_delete_productionLine_steps(ProductionLineRepository repository, ProductionLineHandleStepDto plDeleteDto)
         {
             return await repository.Delete_productionLine_steps(plDeleteDto);
