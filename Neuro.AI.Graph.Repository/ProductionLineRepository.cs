@@ -242,6 +242,36 @@ namespace Neuro.AI.Graph.Repository
                 return ex.Message;
             }
         }
+
+        public async Task<string> Update_productionLine_stepOrder(List<RecipeStepOrderDto> stepOrderDto)
+        {
+            var sp = "sp_update_productionLineRecipe_stepOrder";
+            var p = new DynamicParameters();
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+
+                foreach (var stepOrder in stepOrderDto)
+                {
+                    p.Add("@RecipeId", stepOrder.RecipeId);
+                    p.Add("@StepOrder", stepOrder.StepOrder);
+
+                    await _db.ExecuteAsync(
+                        sp,
+                        p,
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+
+                return p.Get<string>("@Message");
+
+            }
+            catch (Exception ex)
+            {
+                return $"Error en orden de paso {ex.Message}";
+            }
+        }
         
         public async Task<string> Delete_productionLine_steps(ProductionLineHandleStepDto plDeleteDto)
         {
