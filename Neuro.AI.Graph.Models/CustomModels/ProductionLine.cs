@@ -3,6 +3,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
     public class ProductionLineBasicInfo
     {
         public Guid RecipeId { get; set; }
+        public int StepOrder { get; set; }
         public Guid LineId { get; set; }
         public string LineName { get; set; } = string.Empty;
         public Guid GroupId { get; set; }
