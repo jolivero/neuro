@@ -19,13 +19,13 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<IEnumerable<string>> Select_statusControl_options()
+        public async Task<IEnumerable<OptionsResponse>> Select_statusControl_options()
         {
             var sp = "sp_select_status_options";
 
             try
             {
-                return await _db.QueryAsync<string>(
+                return await _db.QueryAsync<OptionsResponse>(
                     sp,
                     commandType: CommandType.StoredProcedure
                 );

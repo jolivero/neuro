@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Neuro.AI.Graph.Connectors;
+using Neuro.AI.Graph.Models.CustomModels;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
 
@@ -21,13 +22,13 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<IEnumerable<string>> Select_specialMissions_options()
+        public async Task<IEnumerable<OptionsResponse>> Select_specialMissions_options()
         {
             var sp = "sp_select_specialMissions_options";
 
             try
             {
-                return await _db.QueryAsync<string>(
+                return await _db.QueryAsync<OptionsResponse>(
                     sp,
                     commandType: CommandType.StoredProcedure
                 );
