@@ -171,7 +171,7 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Control de estado
 
-        public async Task<IQueryable<string>> repo_statusControl_options(StatusControlRepository repository)
+        public async Task<IQueryable<OptionsResponse>> repo_statusControl_options(StatusControlRepository repository)
         {
             return (await repository.Select_statusControl_options()).AsQueryable();
         }
@@ -185,7 +185,7 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Control de cambios
 
-        public async Task<IQueryable<string>> repo_specialMissions_options(ChangeRequestRepository repository)
+        public async Task<IQueryable<OptionsResponse>> repo_specialMissions_options(ChangeRequestRepository repository)
         {
             return (await repository.Select_specialMissions_options()).AsQueryable();
         }
