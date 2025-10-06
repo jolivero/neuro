@@ -245,6 +245,26 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
+        public async Task Revert_dailyTask_Plannification(string requestId)
+        {
+            var sp = "sp_update_revertPlannificationChange";
+            var p = new DynamicParameters();
+            p.Add("@RequestId", requestId);
+
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         #endregion
     }
 }
