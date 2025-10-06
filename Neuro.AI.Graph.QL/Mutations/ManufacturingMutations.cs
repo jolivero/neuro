@@ -231,9 +231,9 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Update_dailyTask(dtTaskDto);
         }
 
-        public async Task repo_update_dailyTasks_plannification(DailyTaskRepository repository, string requestId)
+        public async Task<string> repo_update_dailyTasks_plannification(DailyTaskRepository repository, string requestId)
         {
-            await repository.Revert_dailyTask_Plannification(requestId);
+            return await repository.Revert_dailyTask_Plannification(requestId);
         }
 
         #endregion
