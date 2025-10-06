@@ -79,10 +79,16 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.CurrentTime)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.CurrentValue)
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.Description).HasMaxLength(255);
+            entity.Property(e => e.NewTime)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.NewValue)
                 .HasMaxLength(255)
                 .IsUnicode(false);
