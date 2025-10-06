@@ -51,6 +51,10 @@ public partial class ChangeRequestDetail
 
     public Guid? NewLineId { get; set; }
 
+    public string? CurrentTime { get; set; }
+
+    public string? NewTime { get; set; }
+
     public virtual Group? CurrentGroup { get; set; }
 
     public virtual ProductionLine? CurrentLine { get; set; }
