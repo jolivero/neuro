@@ -226,6 +226,16 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_dailyTask(dtTaskDto);
         }
 
+        public async Task<string> repo_update_dailyTasks(DailyTaskRepository repository, DailyTaskDto dtTaskDto)
+        {
+            return await repository.Update_dailyTask(dtTaskDto);
+        }
+
+        public async Task repo_update_dailyTasks_plannification(DailyTaskRepository repository, string requestId)
+        {
+            await repository.Revert_dailyTask_Plannification(requestId);
+        }
+
         #endregion
 
         #region Solicitud de cambios
