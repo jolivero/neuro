@@ -15,34 +15,18 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Compañias
 
-        public async Task<string> repo_create_companies(CompanyRepository repository, CompanyDto companyDto, IFile companyLogo)
+        public async Task<string> repo_create_companies(CompanyRepository repository, CompanyDto companyDto, IFile? companyLogo)
         {
             string companyLogoUrl = string.Empty;
 
             if (companyLogo != null)
             {
-                using var fileStream = companyLogo.OpenReadStream();
-                companyLogoUrl = await _azureBlobStorageService.UploadFile(fileStream, companyLogo.Name, companyLogo.ContentType);
-            }
-
-            companyDto.CompanyLogo = companyLogoUrl;
-
-            return await repository.Create_companies(companyDto);
-        }
-
-        public async Task<string> repo_update_companies(CompanyRepository repository, string companyId, CompanyDto companyDto, IFile? companyLogo)
-        {
-            string companyLogoUrl = string.Empty;
-
-            if (companyLogo != null)
-            {
-                using var fileStream = companyLogo.OpenReadStream();
-                companyLogoUrl = await _azureBlobStorageService.UploadFile(fileStream, companyLogo.Name, companyLogo.ContentType);
+                companyLogoUrl = await _azureBlobStorageService.UploadFile(companyLogo.OpenReadStream(), companyLogo.Name, companyLogo.ContentType);
             }
 
             companyDto.CompanyLogo = companyLogo != null ? companyLogoUrl : companyDto.CompanyLogo;
 
-            return await repository.Update_companies(companyId, companyDto);
+            return await repository.Create_Update_companies(companyDto);
         }
 
         #endregion
@@ -163,14 +147,9 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Turnos-Detalles
 
-        public async Task<string> repo_create_turn_with_details(TurnRepository repository, TurnDto turnDto)
+        public async Task<string> repo_create_update_turn_with_details(TurnRepository repository, TurnDto turnDto)
         {
             return await repository.Create_Update_turns(turnDto);
-        }
-
-        public async Task<string> repo_update_turn_with_details(TurnRepository repository, TurnDto turnDto, string turnId)
-        {
-            return await repository.Create_Update_turns(turnDto, turnId);
         }
 
         public async Task<string> repo_delete_turn_with_details(TurnRepository repository, string turnId)
