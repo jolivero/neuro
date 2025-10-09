@@ -304,6 +304,8 @@ namespace Neuro.AI.Graph.Repository
             var p = new DynamicParameters();
             p.Add("@RequestId", usRequestDto.RequestId);
             p.Add("@ApprovalUserId", usRequestDto.ApprovalUserId);
+            p.Add("@CategoryId", usRequestDto.CategoryId);
+            p.Add("@TaskId", usRequestDto.TaskId ?? null);
             p.Add("@Response", usRequestDto.Response);
             p.Add("@Status", usRequestDto.Status ? "A" : "R");
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
