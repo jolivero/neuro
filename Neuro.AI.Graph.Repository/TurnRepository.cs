@@ -51,24 +51,24 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<string> Create_Update_turns(TurnDto turnDto, string? turnId = null)
+        public async Task<string> Create_Update_turns(TurnDto turnDto)
         {
             var sp = "sp_create_update_turn_details";
             var p = new DynamicParameters();
-            p.Add("@TurnId", turnId ?? Guid.NewGuid().ToString());
+            p.Add("@TurnId", turnDto.TurnId ?? Guid.NewGuid().ToString());
             p.Add("@Name", turnDto.Name);
             p.Add("@Duration", TimeSpan.Parse(turnDto.Duration));
             p.Add("@ProductiveTime", TimeSpan.Parse(turnDto.ProductiveTime));
             p.Add("@PauseTime", TimeSpan.Parse(turnDto.PauseTime));
             p.Add("@CreatedBy", turnDto.CreatedBy);
-            p.Add("@Action", string.IsNullOrEmpty(turnId) ? "insertar" : "actualizar");
+            p.Add("@Action", string.IsNullOrEmpty(turnDto.TurnId) ? "insertar" : "actualizar");
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {
                 foreach (var detail in turnDto.Details)
                 {
-                    p.Add("@TurnDetailId", detail.Id ?? null);
+                    p.Add("@TurnDetailId", detail.TurnDetailId ?? null);
                     p.Add("@PeriodType", detail.PeriodType);
                     p.Add("@BeginAt", TimeSpan.Parse(detail.BeginAt));
                     p.Add("@EndAt", TimeSpan.Parse(detail.EndAt));

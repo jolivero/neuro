@@ -2,6 +2,7 @@ namespace Neuro.AI.Graph.Models.Dtos
 {
     public class TurnDto
     {
+        public string? TurnId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Duration { get; set; } = string.Empty;
         public string ProductiveTime { get; set; } = string.Empty;
@@ -12,7 +13,7 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     public class TurnDetails
     {
-        public string? Id { get; set; }
+        public string? TurnDetailId { get; set; }
         public string PeriodType { get; set; } = string.Empty;
         public string BeginAt { get; set; } = string.Empty;
         public string EndAt { get; set; } = string.Empty;
