@@ -77,6 +77,8 @@ namespace Neuro.AI.Graph.Models.Dtos
     {
         public string RequestId { get; set; } = string.Empty;
         public string ApprovalUserId { get; set; } = string.Empty;
+        public string CategoryId { get; set; } = string.Empty;
+        public string? TaskId { get; set; }
         public string? Response { get; set; }
         public bool Status { get; set; }
     }

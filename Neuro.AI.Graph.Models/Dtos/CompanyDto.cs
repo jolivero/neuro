@@ -2,6 +2,7 @@
 {
     public class CompanyDto
     {
+        public string? CompanyId { get; set; }
         public string CompanyName { get; set; } = string.Empty;
         public string CompanyRuc { get; set; } = string.Empty;
         public string CompanyAddress { get; set; } = string.Empty;
