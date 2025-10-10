@@ -64,22 +64,35 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@Action", string.IsNullOrEmpty(turnDto.TurnId) ? "insertar" : "actualizar");
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
+            var turnDetailsTable = new DataTable();
+            turnDetailsTable.Columns.Add("TurnDetailId", typeof(string));
+            turnDetailsTable.Columns.Add("PeriodType", typeof(string));
+            turnDetailsTable.Columns.Add("BeginAt", typeof(string));
+            turnDetailsTable.Columns.Add("EndAt", typeof(string));
+            turnDetailsTable.Columns.Add("DurationDetail", typeof(string));
+            turnDetailsTable.Columns.Add("Available", typeof(int));
+
+            foreach (var detail in turnDto.Details)
+            {
+                turnDetailsTable.Rows.Add(
+                    detail.Id,
+                    detail.PeriodType,
+                    TimeSpan.Parse(detail.BeginAt),
+                    TimeSpan.Parse(detail.EndAt),
+                    detail.DurationDetail,
+                    detail.Available
+                );
+            }
+
+            p.Add("@TurnDetailsTable", turnDetailsTable.AsTableValuedParameter("dbo.Manufacturing_TurnDetailsTableType"));
+
             try
             {
-                foreach (var detail in turnDto.Details)
-                {
-                    p.Add("@TurnDetailId", detail.TurnDetailId ?? null);
-                    p.Add("@PeriodType", detail.PeriodType);
-                    p.Add("@BeginAt", TimeSpan.Parse(detail.BeginAt));
-                    p.Add("@EndAt", TimeSpan.Parse(detail.EndAt));
-                    p.Add("@DurationDetail", TimeSpan.Parse(detail.DurationDetail));
-
-                    await _db.ExecuteAsync(
+                await _db.ExecuteAsync(
                         sp,
                         p,
                         commandType: CommandType.StoredProcedure
                     );
-                }
 
                 return p.Get<string>("@Message");
             }
