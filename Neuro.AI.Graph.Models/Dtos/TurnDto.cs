@@ -13,11 +13,12 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     public class TurnDetails
     {
-        public string? TurnDetailId { get; set; }
+        public string? Id { get; set; }
         public string PeriodType { get; set; } = string.Empty;
         public string BeginAt { get; set; } = string.Empty;
         public string EndAt { get; set; } = string.Empty;
         public string DurationDetail { get; set; } = string.Empty;
+        public int? Available { get; set; }
     }
 
 }
