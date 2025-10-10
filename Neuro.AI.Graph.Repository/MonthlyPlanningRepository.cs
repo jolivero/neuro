@@ -218,7 +218,7 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Create_monthly_schedule(MonthlyPlanningDto msDto)
         {
-            var sp = "sp_create_monthly_schedule";
+            var sp = "sp_create_monthly_planning";
             var p = new DynamicParameters();
             p.Add("@MonthId", Guid.NewGuid().ToString());
             p.Add("@Month", msDto.Month);
@@ -230,20 +230,29 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@PlannedBy", msDto.PlannedBy);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
+            var monthlyDaysPlanningTable = new DataTable();
+            monthlyDaysPlanningTable.Columns.Add("DailyGoal", typeof(int));
+            monthlyDaysPlanningTable.Columns.Add("ProductionDate", typeof(string));
+            monthlyDaysPlanningTable.Columns.Add("DayType", typeof(string));
+
+            foreach (var dailyPlanning in msDto.DailyPlanning)
+            {
+                monthlyDaysPlanningTable.Rows.Add(
+                    dailyPlanning.DailyGoal,
+                    dailyPlanning.ProductionDate,
+                    dailyPlanning.DayType
+                );
+            }
+
+            p.Add("@MonthlyDaysPlanningTable", monthlyDaysPlanningTable.AsTableValuedParameter("dbo.Manufacturing_MonthlyDaysPlanningTableType"));
+
             try
             {
-                foreach (var item in msDto.DailyPlanning)
-                {
-                    p.Add("@DailyGoal", item.DailyGoal);
-                    p.Add("@ProductionDate", item.ProductionDate);
-                    p.Add("@DayType", item.DayType);
-
-                    await _db.ExecuteAsync(
-                        sp,
-                        p,
-                        commandType: CommandType.StoredProcedure
-                    );
-                }
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
 
                 return p.Get<string>("@Message");
             }

@@ -209,7 +209,7 @@ public class EntitiesQueries
         var turns = await context.Turns.Where(t => t.Available == 1).OrderBy(t => t.CreatedAt).Include(t => t.TurnDetails.Where(td => td.Available == 1)).Include(t => t.CreatedByNavigation).ToListAsync();
         foreach (var turn in turns)
         {
-            turn.TurnDetails = turn.TurnDetails.OrderBy(td => td.CreatedAt).ToList();
+            turn.TurnDetails = turn.TurnDetails.OrderBy(td => td.BeginAt).ToList();
         }
 
         return turns.AsQueryable();
