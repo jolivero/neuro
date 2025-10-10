@@ -53,7 +53,7 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<string> Create_Update_turns(TurnDto turnDto)
         {
-            var sp = "sp_create_update_turn_details_v2";
+            var sp = "sp_create_update_turn_details";
             var p = new DynamicParameters();
             p.Add("@TurnId", turnDto.TurnId ?? Guid.NewGuid().ToString());
             p.Add("@Name", turnDto.Name);
