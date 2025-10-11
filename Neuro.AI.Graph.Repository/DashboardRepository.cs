@@ -40,7 +40,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<IEnumerable<ProductionLineOperatorSummary>> Select_productionLine_operators_summary(string lineId, int month, int year)
+        public async Task<IEnumerable<ProductionLineOperatorSummary>> Select_productionLine_operators_summary(int lineId, int month, int year)
         {
 
             var sp = "sp_select_productionLines_operators_summary";

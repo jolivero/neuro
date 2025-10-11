@@ -17,7 +17,7 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<StationConfigInfo?> Select_station_with_configInfo(string recipeId)
+        public async Task<StationConfigInfo?> Select_station_with_configInfo(int recipeId)
         {
             var sp = "sp_select_station_config";
             var p = new DynamicParameters();

@@ -42,7 +42,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<IEnumerable<MonthlyPlanningProductionLines>> Select_annual_planification(int? year, int? month, string? companyId)
+        public async Task<IEnumerable<MonthlyPlanningProductionLines>> Select_annual_planification(int? year, int? month, int? companyId)
         {
             var sp = "sp_select_plannificationByYear";
             var p = new DynamicParameters();
@@ -106,7 +106,7 @@ namespace Neuro.AI.Graph.Repository
 
         }
 
-        public async Task<IEnumerable<MonthlyPlanningProgress>> Select_monthlyPlanning_Progress(string lineId, string currentDay)
+        public async Task<IEnumerable<MonthlyPlanningProgress>> Select_monthlyPlanning_Progress(int lineId, string currentDay)
         {
             var sp = "sp_select_monthlyPlanning_progress";
             var p = new DynamicParameters();
@@ -136,7 +136,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@StationId", stationId);
             p.Add("@MachineId", machineId);
 
-            var stationMachinePlanificationDict = new Dictionary<string, MonthlyPlanning>();
+            var stationMachinePlanificationDict = new Dictionary<int, MonthlyPlanning>();
 
             try
             {
@@ -144,11 +144,11 @@ namespace Neuro.AI.Graph.Repository
                     sp,
                     (ms, ds, dt, u) =>
                     {
-                        if (!stationMachinePlanificationDict.TryGetValue(ms.MonthId.ToString(), out var stationMachinePlanificationData))
+                        if (!stationMachinePlanificationDict.TryGetValue(ms.MonthId, out var stationMachinePlanificationData))
                         {
                             stationMachinePlanificationData = ms;
                             stationMachinePlanificationData.DailyPlannings = [];
-                            stationMachinePlanificationDict.Add(ms.MonthId.ToString(), stationMachinePlanificationData);
+                            stationMachinePlanificationDict.Add(ms.MonthId, stationMachinePlanificationData);
                         }
 
                         var dsData = stationMachinePlanificationData.DailyPlannings.FirstOrDefault(d => d.DayId == ds.DayId);
@@ -370,7 +370,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Delete_monthlyDays_planning(string monthId)
+        public async Task<string> Delete_monthlyDays_planning(int monthId)
         {
             var sp = "sp_delete_monthlyDays";
             var p = new DynamicParameters();
