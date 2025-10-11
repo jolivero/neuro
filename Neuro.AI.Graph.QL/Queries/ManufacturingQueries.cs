@@ -50,7 +50,7 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_productionLine_recipe(taskId, userId)).AsQueryable();
         }
 
-        public async Task<IQueryable<ProductionLineMachineHoursPerCut>> repo_productionLines_with_machineHoursCut(ProductionLineRepository repository, string lineId)
+        public async Task<IQueryable<ProductionLineMachineHoursPerCut>> repo_productionLines_with_machineHoursCut(ProductionLineRepository repository, int lineId)
         {
             return (await repository.Select_productionLines_with_machineHoursPerCut(lineId)).AsQueryable();
         }

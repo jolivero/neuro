@@ -116,9 +116,9 @@ namespace Neuro.AI.Graph.Repository
             return await Select_productionLines_with_details(lineId.ToString());
         }
 
-        public async Task<IEnumerable<ProductionLineMachineHoursPerCut>> Select_productionLines_with_machineHoursPerCut(string lineId)
+        public async Task<IEnumerable<ProductionLineMachineHoursPerCut>> Select_productionLines_with_machineHoursPerCut(int lineId)
         {
-            var sp = "sp_productionLines_with_machineHoursPerCut";
+            var sp = "sp_select_productionLines_with_machineHoursPerCut";
             var p = new DynamicParameters();
             p.Add("@LineId", lineId);
 
