@@ -157,7 +157,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Update_productionLine(string lineId, ProductionLineDto plDto)
+        public async Task<string> Update_productionLine(int lineId, ProductionLineDto plDto)
         {
             var sp = "sp_create_update_productionLine";
             var p = new DynamicParameters();

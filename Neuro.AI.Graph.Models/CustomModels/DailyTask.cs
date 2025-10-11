@@ -4,7 +4,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
 {
     public class DailyTaskOperator : DailyPlanning
     {
-        public Guid TaskId { get; set; }
+        public int TaskId { get; set; }
         public string OperatorStatus { get; set; } = string.Empty;
         public Compliance Compliance { get; set; } = new();
         public User User { get; set; } = new();
@@ -13,7 +13,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
 
     public class DailyTaskStation
     {
-        public Guid StationId { get; set; }
+        public int StationId { get; set; }
         public string Name { get; set; } = string.Empty;
         public Machine Machine { get; set; } = new();
         public Part Part { get; set; } = new();

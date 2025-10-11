@@ -44,7 +44,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Update_groups(string groupId, GroupDto groupDTo)
+        public async Task<string> Update_groups(int groupId, GroupDto groupDTo)
         {
             var sp = "sp_create_update_fields";
             var p = new DynamicParameters();

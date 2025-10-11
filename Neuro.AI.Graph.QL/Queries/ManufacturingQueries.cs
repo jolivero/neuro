@@ -176,9 +176,9 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_statusControl_options()).AsQueryable();
         }
 
-        public async Task<IQueryable<StatusControl>> repo_statusControl(StatusControlRepository repository, string productionDate)
+        public async Task<IQueryable<StatusControl>> repo_statusControl(StatusControlRepository repository, string productionDate, int lineId)
         {
-            return (await repository.Select_statusControl(productionDate)).AsQueryable();
+            return (await repository.Select_statusControl(productionDate, lineId)).AsQueryable();
         }
 
         #endregion

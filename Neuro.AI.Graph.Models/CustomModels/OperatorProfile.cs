@@ -4,7 +4,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
 {
     public class OperatorSelectList
     {
-        public string UserId { get; set; } = string.Empty;
+        public int UserId { get; set; }
         public string Operator { get; set; } = string.Empty;
     }
 
@@ -15,7 +15,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
 
     public class OperatorSkills
     {
-        public Guid? SkillId { get; set; }
+        public int? SkillId { get; set; }
         public string? Name { get; set; }
         public string? SkillLevel { get; set; }
     }

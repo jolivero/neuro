@@ -30,7 +30,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@TaskId", taskId);
             p.Add("@UserId", userId);
 
-            var dailyPlanningDict = new Dictionary<string, DailyTaskOperator>();
+            var dailyPlanningDict = new Dictionary<int, DailyTaskOperator>();
 
             try
             {
@@ -38,7 +38,7 @@ namespace Neuro.AI.Graph.Repository
                     sp_tasks,
                     (dailyPlanning, dailyTask, user, station, part, machine, prevPart) =>
                     {
-                        if (!dailyPlanningDict.TryGetValue(dailyTask.TaskId.ToString(), out var dailyPlanningData))
+                        if (!dailyPlanningDict.TryGetValue(dailyTask.TaskId, out var dailyPlanningData))
                         {
                             dailyPlanningData = new()
                             {
@@ -58,7 +58,7 @@ namespace Neuro.AI.Graph.Repository
                                     PrevPart = [],
                                 },
                             };
-                            dailyPlanningDict.Add(dailyTask.TaskId.ToString(), dailyPlanningData);
+                            dailyPlanningDict.Add(dailyTask.TaskId, dailyPlanningData);
                         }
 
                         if (part != null && dailyPlanningData.Station.Part.PartId == part.PartId) dailyPlanningData.Station.Part = part;

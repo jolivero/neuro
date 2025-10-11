@@ -48,7 +48,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Update_parts(string partId, PartDto partDto)
+        public async Task<string> Update_parts(int partId, PartDto partDto)
         {
             var sp = "sp_create_update_part_inventory";
             var p = new DynamicParameters();

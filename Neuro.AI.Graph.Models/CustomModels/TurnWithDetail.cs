@@ -2,7 +2,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
 {
     public class TurnWithTimeDetail
     {
-        public Guid TurnId { get; set; }
+        public int TurnId { get; set; }
         public string Name { get; set; } = string.Empty;
         public TimeOnly? Duration { get; set; }
         public TimeDetail TimeDetail { get; set; } = new();

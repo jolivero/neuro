@@ -2,7 +2,7 @@
 {
     public class CompanyDto
     {
-        public string? CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public string CompanyName { get; set; } = string.Empty;
         public string CompanyRuc { get; set; } = string.Empty;
         public string CompanyAddress { get; set; } = string.Empty;
@@ -13,6 +13,6 @@
         public string? ContactName { get; set; }
         public string? ContactPhone { get; set; }
         public string? ContactEmail { get; set; }
-        public string? CreatedBy { get; set; }
+        public int? CreatedBy { get; set; }
     }
 }
