@@ -23,7 +23,8 @@ namespace Neuro.AI.Graph.Repository
         {
             var sp = "sp_create_logs";
             var p = new DynamicParameters();
-            p.Add("@UserId", lgDto.UserId);
+            p.Add("@UserId", lgDto.UserId ?? null);
+            p.Add("@UserIdRef", lgDto.UserIdRef);
             p.Add("@Area", lgDto.Area);
             p.Add("@Action", lgDto.Action);
             p.Add("@Payload", lgDto.Payload);
