@@ -5,7 +5,9 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class User
 {
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
+
+    public Guid? UserIdRef { get; set; }
 
     public string FirstName { get; set; } = null!;
 
@@ -16,6 +18,8 @@ public partial class User
     public string UserName { get; set; } = null!;
 
     public string Email { get; set; } = null!;
+
+    public string Rol { get; set; } = null!;
 
     public string? Phone { get; set; }
 
@@ -31,9 +35,7 @@ public partial class User
 
     public int? Available { get; set; }
 
-    public Guid? CompanyId { get; set; }
-
-    public string? Rol { get; set; }
+    public int? CompanyId { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentUsers { get; set; } = new List<ChangeRequestDetail>();
 

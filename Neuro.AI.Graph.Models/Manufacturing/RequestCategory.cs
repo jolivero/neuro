@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class RequestCategory
 {
-    public Guid CategoryId { get; set; }
+    public int CategoryId { get; set; }
 
     public string Name { get; set; } = null!;
 

@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class DailyTask
 {
-    public Guid TaskId { get; set; }
+    public int TaskId { get; set; }
 
     public TimeOnly? BeginAt { get; set; }
 
@@ -15,19 +15,23 @@ public partial class DailyTask
 
     public string? MachineStatus { get; set; }
 
+    public int? TaskGoal { get; set; }
+
+    public int? Available { get; set; }
+
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? DayId { get; set; }
+    public int? DayId { get; set; }
 
-    public Guid? StationId { get; set; }
+    public int? StationId { get; set; }
 
-    public Guid? MachineId { get; set; }
+    public int? MachineId { get; set; }
 
-    public Guid? UserId { get; set; }
+    public int? UserId { get; set; }
 
-    public Guid? TurnId { get; set; }
+    public int? TurnId { get; set; }
 
     public virtual DailyPlanning? Day { get; set; }
 

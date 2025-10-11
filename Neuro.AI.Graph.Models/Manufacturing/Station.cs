@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class Station
 {
-    public Guid StationId { get; set; }
+    public int StationId { get; set; }
 
     public string? Name { get; set; }
 
@@ -13,9 +13,9 @@ public partial class Station
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? GroupId { get; set; }
+    public int? GroupId { get; set; }
 
-    public Guid? CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentStations { get; set; } = new List<ChangeRequestDetail>();
 

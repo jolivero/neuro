@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class ProductionChangeRequest
 {
-    public Guid RequestId { get; set; }
+    public int RequestId { get; set; }
 
     public string Reason { get; set; } = null!;
 
@@ -23,19 +23,19 @@ public partial class ProductionChangeRequest
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? CategoryId { get; set; }
+    public int? CategoryId { get; set; }
 
-    public Guid? RequestingUserId { get; set; }
+    public int? RequestingUserId { get; set; }
 
-    public Guid? ApprovalUserId { get; set; }
+    public int? ApprovalUserId { get; set; }
 
-    public Guid? NcPartId { get; set; }
+    public int? NcPartId { get; set; }
 
-    public Guid? MonthId { get; set; }
+    public int? MonthId { get; set; }
 
-    public Guid? DayId { get; set; }
+    public int? DayId { get; set; }
 
-    public Guid? TaskId { get; set; }
+    public int? TaskId { get; set; }
 
     public virtual User? ApprovalUser { get; set; }
 

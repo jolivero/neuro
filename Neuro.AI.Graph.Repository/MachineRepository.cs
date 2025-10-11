@@ -53,7 +53,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Update_machines(string machineId, MachineDto machineDto)
+        public async Task<string> Update_machines(int machineId, MachineDto machineDto)
         {
             var sp = "sp_create_update_machine";
             var p = new DynamicParameters();
@@ -110,7 +110,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Update_machine_report(string reportId, MachineReportDto machineReportDto)
+        public async Task<string> Update_machine_report(int reportId, MachineReportDto machineReportDto)
         {
             var sp = "sp_create_update_machine_report";
             var p = new DynamicParameters();

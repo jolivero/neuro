@@ -3,31 +3,31 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class ProductionLineDto
     {
         public string Name { get; set; } = string.Empty;
-        public string CompanyId { get; set; } = string.Empty;
+        public int CompanyId { get; set; }
         public string? CreatedBy { get; set; }
     }
 
     public class ProductionLineConfigDto
     {
-        public string LineId { get; set; } = string.Empty;
+        public int LineId { get; set; }
         public Steps Steps { get; set; } = new();
     }
 
     public class Steps
     {
-        public string GroupId { get; set; } = string.Empty;
-        public string StationId { get; set; } = string.Empty;
-        public string MachineId { get; set; } = string.Empty;
-        public string PartId { get; set; } = string.Empty;
-        public string PrevPartId { get; set; } = string.Empty;
+        public int GroupId { get; set; }
+        public int StationId { get; set; }
+        public int MachineId { get; set; }
+        public int PartId { get; set; }
+        public int PrevPartId { get; set; }
         public decimal RequiredQuantity { get; set; } = 0;
         public int StepOrder { get; set; }
     }
 
     public class ProductionLineHandleStepDto
     {
-        public string RecipeId { get; set; } = string.Empty;
-        public string LineId { get; set; } = string.Empty;
+        public int RecipeId { get; set; }
+        public int LineId { get; set; }
         public Steps Steps { get; set; } = new();
     }
 }

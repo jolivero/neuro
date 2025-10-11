@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class Group
 {
-    public Guid GroupId { get; set; }
+    public int GroupId { get; set; }
 
     public string? Name { get; set; }
 
@@ -15,9 +15,9 @@ public partial class Group
 
     public int? Available { get; set; }
 
-    public Guid? LineId { get; set; }
+    public int? LineId { get; set; }
 
-    public Guid? CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentGroups { get; set; } = new List<ChangeRequestDetail>();
 

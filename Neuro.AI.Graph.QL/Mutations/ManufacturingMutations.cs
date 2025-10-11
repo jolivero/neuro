@@ -52,7 +52,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_productionLine(plDto);
         }
 
-        public async Task<string> repo_update_productionLine(ProductionLineRepository repository, string lineId, ProductionLineDto plDto)
+        public async Task<string> repo_update_productionLine(ProductionLineRepository repository, int lineId, ProductionLineDto plDto)
         {
             return await repository.Update_productionLine(lineId, plDto);
         }
@@ -86,7 +86,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_groups(groupDto);
         }
 
-        public async Task<string> repo_update_groups(GroupRepository repository, string groupId, GroupDto groupDto)
+        public async Task<string> repo_update_groups(GroupRepository repository, int groupId, GroupDto groupDto)
         {
             return await repository.Update_groups(groupId, groupDto);
         }
@@ -100,7 +100,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_stations(stationDto);
         }
 
-        public async Task<string> repo_update_stations(StationRepository repository, string stationId, StationDto stationDto)
+        public async Task<string> repo_update_stations(StationRepository repository, int stationId, StationDto stationDto)
         {
             return await repository.Update_stations(stationId, stationDto);
         }
@@ -114,7 +114,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_machines(machineDto);
         }
 
-        public async Task<string> repo_update_machines(MachineRepository repository, string machineId, MachineDto machineDto)
+        public async Task<string> repo_update_machines(MachineRepository repository, int machineId, MachineDto machineDto)
         {
             return await repository.Update_machines(machineId, machineDto);
         }
@@ -124,7 +124,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_machine_report(machineReportDto);
         }
 
-        public async Task<string> repo_update_machine_report(MachineRepository repository, string reportId, MachineReportDto machineReportDto)
+        public async Task<string> repo_update_machine_report(MachineRepository repository, int reportId, MachineReportDto machineReportDto)
         {
             return await repository.Update_machine_report(reportId, machineReportDto);
         }
@@ -138,7 +138,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_parts(partDto);
         }
 
-        public async Task<string> repo_update_parts(PartRepository repository, string partId, PartDto partDto)
+        public async Task<string> repo_update_parts(PartRepository repository, int partId, PartDto partDto)
         {
             return await repository.Update_parts(partId, partDto);
         }

@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class MonthlyPlanning
 {
-    public Guid MonthId { get; set; }
+    public int MonthId { get; set; }
 
     public int Month { get; set; }
 
@@ -23,11 +23,11 @@ public partial class MonthlyPlanning
 
     public int? Available { get; set; }
 
-    public Guid? LineId { get; set; }
-
-    public Guid? PlannedBy { get; set; }
-
     public string? Reason { get; set; }
+
+    public int? LineId { get; set; }
+
+    public int? PlannedBy { get; set; }
 
     public virtual ICollection<DailyPlanning> DailyPlannings { get; set; } = new List<DailyPlanning>();
 

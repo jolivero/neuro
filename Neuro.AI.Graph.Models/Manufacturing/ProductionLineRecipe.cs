@@ -5,25 +5,25 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class ProductionLineRecipe
 {
-    public Guid RecipeId { get; set; }
+    public int RecipeId { get; set; }
 
-    public Guid? LineId { get; set; }
+    public int? LineId { get; set; }
 
-    public Guid? GroupId { get; set; }
+    public int? GroupId { get; set; }
 
-    public Guid? StationId { get; set; }
+    public int? StationId { get; set; }
 
-    public Guid? MachineId { get; set; }
+    public int? MachineId { get; set; }
 
-    public Guid? PartId { get; set; }
+    public int? PartId { get; set; }
 
-    public Guid? PreviousPartId { get; set; }
+    public int? PreviousPartId { get; set; }
 
-    public decimal RequiredQuantity { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
+    public decimal? RequiredQuantity { get; set; }
 
     public int? StepOrder { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
 
     public virtual Group? Group { get; set; }
 

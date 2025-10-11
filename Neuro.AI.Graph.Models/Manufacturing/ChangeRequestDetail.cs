@@ -5,11 +5,15 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class ChangeRequestDetail
 {
-    public Guid DetailId { get; set; }
+    public int DetailId { get; set; }
 
     public string RequestType { get; set; } = null!;
 
     public string? Description { get; set; }
+
+    public string? CurrentValue { get; set; }
+
+    public string? NewValue { get; set; }
 
     public int? HoursQuantity { get; set; }
 
@@ -17,43 +21,39 @@ public partial class ChangeRequestDetail
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? RequestId { get; set; }
+    public int? RequestId { get; set; }
 
-    public string? CurrentValue { get; set; }
+    public int? CurrentLineId { get; set; }
 
-    public string? NewValue { get; set; }
+    public int? NewLineId { get; set; }
 
-    public Guid? CurrentUserId { get; set; }
+    public int? CurrentGroupId { get; set; }
 
-    public Guid? NewUserId { get; set; }
+    public int? NewGroupId { get; set; }
 
-    public Guid? CurrentGroupId { get; set; }
+    public int? CurrentStationId { get; set; }
 
-    public Guid? NewGroupId { get; set; }
+    public int? NewStationId { get; set; }
 
-    public Guid? CurrentStationId { get; set; }
+    public int? CurrentMachineId { get; set; }
 
-    public Guid? NewStationId { get; set; }
+    public int? NewMachineId { get; set; }
 
-    public Guid? CurrentMachineId { get; set; }
+    public int? CurrentUserId { get; set; }
 
-    public Guid? NewMachineId { get; set; }
+    public int? NewUserId { get; set; }
 
-    public Guid? CurrentTurnId { get; set; }
+    public int? CurrentTurnId { get; set; }
 
-    public Guid? NewTurnId { get; set; }
-
-    public Guid? CurrentPartId { get; set; }
-
-    public Guid? NewPartId { get; set; }
-
-    public Guid? CurrentLineId { get; set; }
-
-    public Guid? NewLineId { get; set; }
+    public int? NewTurnId { get; set; }
 
     public string? CurrentTime { get; set; }
 
     public string? NewTime { get; set; }
+
+    public int? CurrentPartId { get; set; }
+
+    public int? NewPartId { get; set; }
 
     public virtual Group? CurrentGroup { get; set; }
 

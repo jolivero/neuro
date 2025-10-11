@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class ProductionLine
 {
-    public Guid LineId { get; set; }
+    public int LineId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -17,9 +17,9 @@ public partial class ProductionLine
 
     public int? Available { get; set; }
 
-    public Guid? CompanyId { get; set; }
+    public int? CompanyId { get; set; }
 
-    public Guid? CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentLines { get; set; } = new List<ChangeRequestDetail>();
 

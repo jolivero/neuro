@@ -5,11 +5,11 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class Part
 {
-    public Guid PartId { get; set; }
-
-    public string Code { get; set; } = null!;
+    public int PartId { get; set; }
 
     public string Name { get; set; } = null!;
+
+    public string Code { get; set; } = null!;
 
     public DateTime? CreatedAt { get; set; }
 
@@ -17,9 +17,9 @@ public partial class Part
 
     public int? Available { get; set; }
 
-    public Guid? StationId { get; set; }
+    public int? StationId { get; set; }
 
-    public Guid? CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentParts { get; set; } = new List<ChangeRequestDetail>();
 

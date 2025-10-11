@@ -70,7 +70,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Update_stations(string stationId, StationDto stationDto)
+        public async Task<string> Update_stations(int stationId, StationDto stationDto)
         {
             var sp = "sp_create_update_fields";
             var p = new DynamicParameters();

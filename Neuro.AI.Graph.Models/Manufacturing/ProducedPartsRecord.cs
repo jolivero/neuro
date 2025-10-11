@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class ProducedPartsRecord
 {
-    public Guid ProducedPartId { get; set; }
+    public int ProducedPartId { get; set; }
 
     public int? Total { get; set; }
 
@@ -13,9 +13,9 @@ public partial class ProducedPartsRecord
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? PartId { get; set; }
+    public int? TaskId { get; set; }
 
-    public Guid? TaskId { get; set; }
+    public int? PartId { get; set; }
 
     public virtual Part? Part { get; set; }
 

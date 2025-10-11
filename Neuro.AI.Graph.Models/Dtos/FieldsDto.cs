@@ -8,19 +8,19 @@
 
     public class GroupDto : Field
     {
-        public string? LineId { get; set; }
+        public int? LineId { get; set; }
     }
 
     public class StationDto : Field
     {
-        public string? GroupId { get; set; }
+        public int? GroupId { get; set; }
     }
 
     public class PartDto : Field
     {
         public string Code { get; set; } = string.Empty;
         public InventoryDto Inventory { get; set; } = new();
-        public string? StationId { get; set; }
+        public int? StationId { get; set; }
     }
 
     public class InventoryDto

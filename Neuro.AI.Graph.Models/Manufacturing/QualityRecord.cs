@@ -5,7 +5,9 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class QualityRecord
 {
-    public Guid QualityId { get; set; }
+    public int QualityId { get; set; }
+
+    public string? Type { get; set; }
 
     public string? Status { get; set; }
 
@@ -13,9 +15,9 @@ public partial class QualityRecord
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? NcPartId { get; set; }
+    public int? NcPartId { get; set; }
 
-    public Guid? CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
     public virtual NonCompliantPartsRecord? NcPart { get; set; }
 

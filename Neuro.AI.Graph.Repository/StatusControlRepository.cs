@@ -37,11 +37,12 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<IEnumerable<StatusControl>> Select_statusControl(string productionDate)
+        public async Task<IEnumerable<StatusControl>> Select_statusControl(string productionDate, int lineId)
         {
             var sp = "sp_select_statusControl";
             var p = new DynamicParameters();
             p.Add("@ProductionDate", productionDate);
+            p.Add("@LineId", lineId);
 
             try
             {
