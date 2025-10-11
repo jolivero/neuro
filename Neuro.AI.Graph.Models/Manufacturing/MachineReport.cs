@@ -5,9 +5,9 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class MachineReport
 {
-    public Guid ReportId { get; set; }
+    public int ReportId { get; set; }
 
-    public string? Type { get; set; }
+    public string Type { get; set; } = null!;
 
     public string? Description { get; set; }
 
@@ -17,13 +17,13 @@ public partial class MachineReport
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? StationId { get; set; }
+    public int? StationId { get; set; }
 
-    public Guid? MachineId { get; set; }
+    public int? MachineId { get; set; }
 
-    public Guid? OperatorId { get; set; }
+    public int? OperatorId { get; set; }
 
-    public Guid? TechnicalId { get; set; }
+    public int? TechnicalId { get; set; }
 
     public virtual Machine? Machine { get; set; }
 

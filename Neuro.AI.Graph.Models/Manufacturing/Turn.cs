@@ -5,9 +5,15 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class Turn
 {
-    public Guid TurnId { get; set; }
+    public int TurnId { get; set; }
 
     public string? Name { get; set; }
+
+    public TimeOnly? Duration { get; set; }
+
+    public TimeOnly? ProductiveTime { get; set; }
+
+    public TimeOnly? PauseTime { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 
@@ -15,13 +21,7 @@ public partial class Turn
 
     public int? Available { get; set; }
 
-    public Guid? CreatedBy { get; set; }
-
-    public TimeOnly? Duration { get; set; }
-
-    public TimeOnly? ProductiveTime { get; set; }
-
-    public TimeOnly? PauseTime { get; set; }
+    public int? CreatedBy { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentTurns { get; set; } = new List<ChangeRequestDetail>();
 

@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class Machine
 {
-    public Guid MachineId { get; set; }
+    public int MachineId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -31,7 +31,7 @@ public partial class Machine
 
     public int? Available { get; set; }
 
-    public Guid? CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentMachines { get; set; } = new List<ChangeRequestDetail>();
 

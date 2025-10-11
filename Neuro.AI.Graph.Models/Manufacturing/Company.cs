@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class Company
 {
-    public Guid CompanyId { get; set; }
+    public int CompanyId { get; set; }
 
     public string CompanyName { get; set; } = null!;
 
@@ -33,7 +33,7 @@ public partial class Company
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
     public virtual User? CreatedByNavigation { get; set; }
 

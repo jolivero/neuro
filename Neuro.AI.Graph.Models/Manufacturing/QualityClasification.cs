@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class QualityClasification
 {
-    public Guid ClasificationId { get; set; }
+    public int ClasificationId { get; set; }
 
     public int MinParts { get; set; }
 
@@ -19,7 +19,7 @@ public partial class QualityClasification
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? QualityId { get; set; }
+    public int? QualityId { get; set; }
 
     public virtual QualityRecord? Quality { get; set; }
 }

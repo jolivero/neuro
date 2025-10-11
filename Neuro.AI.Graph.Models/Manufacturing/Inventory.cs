@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class Inventory
 {
-    public Guid InventoryId { get; set; }
+    public int InventoryId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -15,7 +15,7 @@ public partial class Inventory
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? PartId { get; set; }
+    public int? PartId { get; set; }
 
     public virtual Part? Part { get; set; }
 }

@@ -5,17 +5,17 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class NonCompliantPartsRecord
 {
-    public Guid NcPartId { get; set; }
+    public int NcPartId { get; set; }
 
     public int? Total { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 
-    public Guid? PartId { get; set; }
-
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? TaskId { get; set; }
+    public int? TaskId { get; set; }
+
+    public int? PartId { get; set; }
 
     public virtual Part? Part { get; set; }
 

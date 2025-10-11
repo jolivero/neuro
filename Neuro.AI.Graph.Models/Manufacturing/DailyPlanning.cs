@@ -5,9 +5,15 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class DailyPlanning
 {
-    public Guid DayId { get; set; }
+    public int DayId { get; set; }
 
     public int DailyGoal { get; set; }
+
+    public DateOnly? ProductionDate { get; set; }
+
+    public string? DayType { get; set; }
+
+    public string? Reason { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 
@@ -15,13 +21,7 @@ public partial class DailyPlanning
 
     public int? Available { get; set; }
 
-    public Guid? MonthId { get; set; }
-
-    public DateOnly? ProductionDate { get; set; }
-
-    public string? DayType { get; set; }
-
-    public string? Reason { get; set; }
+    public int? MonthId { get; set; }
 
     public virtual ICollection<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();
 

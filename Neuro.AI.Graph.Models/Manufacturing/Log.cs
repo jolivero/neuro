@@ -5,9 +5,11 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class Log
 {
-    public Guid LogId { get; set; }
+    public int LogId { get; set; }
 
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
+
+    public Guid? UserIdRef { get; set; }
 
     public string UserName { get; set; } = null!;
 
