@@ -40,7 +40,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string?> Select_requestId(string monthId, string requestType)
+        public async Task<string?> Select_requestId(int monthId, string requestType)
         {
             var sp = "sp_select_requestId";
             var p = new DynamicParameters();

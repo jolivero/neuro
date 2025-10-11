@@ -18,7 +18,7 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<IEnumerable<ProductionLineBasicInfo>> Select_productionLines_basic(string lineId)
+        public async Task<IEnumerable<ProductionLineBasicInfo>> Select_productionLines_basic(int lineId)
         {
             var sp = "sp_select_productionLine_basic";
             var p = new DynamicParameters();
@@ -39,13 +39,13 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<IEnumerable<ProductionLine>> Select_productionLines_with_details(string lineId)
+        public async Task<IEnumerable<ProductionLine>> Select_productionLines_with_details(int lineId)
         {
             var sp = "sp_select_productionLine_details";
             var p = new DynamicParameters();
             p.Add("@LineId", lineId);
 
-            var productionLineDict = new Dictionary<string, ProductionLine>();
+            var productionLineDict = new Dictionary<int, ProductionLine>();
 
             try
             {
@@ -53,11 +53,11 @@ namespace Neuro.AI.Graph.Repository
                     sp,
                     (line, group, station, machine, part, inventory) =>
                     {
-                        if (!productionLineDict.TryGetValue(line.LineId.ToString(), out var productionLineData))
+                        if (!productionLineDict.TryGetValue(line.LineId, out var productionLineData))
                         {
                             productionLineData = line;
                             productionLineData.Groups = [];
-                            productionLineDict.Add(line.LineId.ToString(), productionLineData);
+                            productionLineDict.Add(line.LineId, productionLineData);
                         }
 
                         var groupData = productionLineData.Groups.FirstOrDefault(ln => ln.GroupId == group.GroupId);
@@ -100,20 +100,20 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<IEnumerable<ProductionLine>> Select_productionLine_recipe(string taskId, string userId)
+        public async Task<IEnumerable<ProductionLine>> Select_productionLine_recipe(int taskId, int userId)
         {
             var sp_lineId = "sp_select_lineId_from_recipe";
             var p1 = new DynamicParameters();
             p1.Add("@TaskId", taskId);
             p1.Add("@UserId", userId);
 
-            var lineId = await _db.QueryFirstAsync<Guid>(
+            var lineId = await _db.QueryFirstAsync<int>(
                 sp_lineId,
                 p1,
                 commandType: CommandType.StoredProcedure
             );
 
-            return await Select_productionLines_with_details(lineId.ToString());
+            return await Select_productionLines_with_details(lineId);
         }
 
         public async Task<IEnumerable<ProductionLineMachineHoursPerCut>> Select_productionLines_with_machineHoursPerCut(int lineId)

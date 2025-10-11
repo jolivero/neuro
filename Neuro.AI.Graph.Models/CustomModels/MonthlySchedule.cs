@@ -32,7 +32,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
 
     public class AssignedProductionLines
     {
-        public Guid LineId { get; set; }
+        public int LineId { get; set; }
         public string Name { get; set; } = string.Empty;
         public int MonthlyGoal { get; set; }
         public int CurrentProgress { get; set; }
@@ -41,7 +41,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
 
     public class MonthlyPlanningStepStatus
     {
-        public string? MonthId { get; set; }
+        public int? MonthId { get; set; }
         public string StationId { get; set; } = string.Empty;
         public string MachineId { get; set; } = string.Empty;
         public int Status { get; set; }

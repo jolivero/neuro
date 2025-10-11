@@ -13,7 +13,7 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Usuarios
 
-        public async Task<IQueryable<OperatorProfile>> repo_user_with_skills(UserRepository repository, string userId)
+        public async Task<IQueryable<OperatorProfile>> repo_user_with_skills(UserRepository repository, int userId)
         {
             return (await repository.Select_user_with_skills(userId)).AsQueryable();
         }
@@ -36,16 +36,16 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Línea de producción
 
-        public async Task<IQueryable<ProductionLineBasicInfo>> repo_productionLines_basic(ProductionLineRepository repository, string lineId)
+        public async Task<IQueryable<ProductionLineBasicInfo>> repo_productionLines_basic(ProductionLineRepository repository, int lineId)
         {
             return (await repository.Select_productionLines_basic(lineId)).AsQueryable();
         }
-        public async Task<IQueryable<ProductionLine>> repo_productionLines_with_details(ProductionLineRepository repository, string lineId)
+        public async Task<IQueryable<ProductionLine>> repo_productionLines_with_details(ProductionLineRepository repository, int lineId)
         {
             return (await repository.Select_productionLines_with_details(lineId)).AsQueryable();
         }
 
-        public async Task<IQueryable<ProductionLine>> repo_productionLine_recipe(ProductionLineRepository repository, string taskId, string userId)
+        public async Task<IQueryable<ProductionLine>> repo_productionLine_recipe(ProductionLineRepository repository, int taskId, int userId)
         {
             return (await repository.Select_productionLine_recipe(taskId, userId)).AsQueryable();
         }
@@ -64,7 +64,7 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Estaciones [Asignadas a grupos]
 
-        public async Task<StationConfigInfo?> repo_station_with_configInfo(StationRepository repository, string recipeId)
+        public async Task<StationConfigInfo?> repo_station_with_configInfo(StationRepository repository, int recipeId)
         {
             return await repository.Select_station_with_configInfo(recipeId);
         }
@@ -90,13 +90,12 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_productionLine_summary(month, year)).AsQueryable();
         }
 
-        public async Task<IQueryable<ProductionLineOperatorSummary>> repo_dashboard_productionLine_operators_summary(DashboardRepository repository, string lineId, int month, int year)
+        public async Task<IQueryable<ProductionLineOperatorSummary>> repo_dashboard_productionLine_operators_summary(DashboardRepository repository, int lineId, int month, int year)
         {
             return (await repository.Select_productionLine_operators_summary(lineId, month, year)).AsQueryable();
         }
 
         #endregion
-
 
         #region Planificación anual
 
@@ -105,12 +104,12 @@ namespace Neuro.AI.Graph.QL.Queries
             return await repository.Select_annual_plannification_info(year);
         }
 
-        public async Task<IEnumerable<MonthlyPlanningProgress>> repo_monthlyPlanning_progress(MonthlyPlanningRepository repository, string lineId, string currentDay)
+        public async Task<IEnumerable<MonthlyPlanningProgress>> repo_monthlyPlanning_progress(MonthlyPlanningRepository repository, int lineId, string currentDay)
         {
             return (await repository.Select_monthlyPlanning_Progress(lineId, currentDay)).AsQueryable();
         }
 
-        public async Task<IQueryable<MonthlyPlanningProductionLines>> repo_annual_planification(MonthlyPlanningRepository repository, int? year, int? month, string? companyId)
+        public async Task<IQueryable<MonthlyPlanningProductionLines>> repo_annual_planification(MonthlyPlanningRepository repository, int? year, int? month, int? companyId)
         {
             return (await repository.Select_annual_planification(year, month, companyId)).AsQueryable();
         }
