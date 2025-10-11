@@ -33,9 +33,9 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Usuarios
 
-        public async Task<string> repo_create_update_user(UserRepository repository, UserIpcDto userIpcDto)
+        public async Task<string> repo_create_update_user(UserRepository repository, UsersDto usersDto)
         {
-            return await repository.Create_update_user(userIpcDto);
+            return await repository.Create_update_user(usersDto);
         }
 
         public async Task<string> repo_create_update_userSkills(UserRepository repository, UserSkillsDto userSkillsDto)

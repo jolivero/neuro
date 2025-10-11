@@ -18,7 +18,7 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_user_with_skills(userId)).AsQueryable();
         }
 
-        public async Task<IQueryable<User>> repo_users_with_monthlySchedule(UserRepository repository, int month, int year, string? userId)
+        public async Task<IQueryable<User>> repo_users_with_monthlySchedule(UserRepository repository, int month, int year, int? userId)
         {
             return (await repository.Select_users_with_monthlySchedule(month, year, userId)).AsQueryable();
         }

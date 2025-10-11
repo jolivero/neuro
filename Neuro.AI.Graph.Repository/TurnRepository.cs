@@ -55,17 +55,17 @@ namespace Neuro.AI.Graph.Repository
         {
             var sp = "sp_create_update_turn_details";
             var p = new DynamicParameters();
-            p.Add("@TurnId", turnDto.TurnId ?? Guid.NewGuid().ToString());
+            p.Add("@TurnId", turnDto.TurnId ?? null);
             p.Add("@Name", turnDto.Name);
             p.Add("@Duration", TimeSpan.Parse(turnDto.Duration));
             p.Add("@ProductiveTime", TimeSpan.Parse(turnDto.ProductiveTime));
             p.Add("@PauseTime", TimeSpan.Parse(turnDto.PauseTime));
             p.Add("@CreatedBy", turnDto.CreatedBy);
-            p.Add("@Action", string.IsNullOrEmpty(turnDto.TurnId) ? "insertar" : "actualizar");
+            p.Add("@Action", turnDto.TurnId  == null ? "insertar" : "actualizar");
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             var turnDetailsTable = new DataTable();
-            turnDetailsTable.Columns.Add("TurnDetailId", typeof(string));
+            turnDetailsTable.Columns.Add("TurnDetailId", typeof(int));
             turnDetailsTable.Columns.Add("PeriodType", typeof(string));
             turnDetailsTable.Columns.Add("BeginAt", typeof(string));
             turnDetailsTable.Columns.Add("EndAt", typeof(string));

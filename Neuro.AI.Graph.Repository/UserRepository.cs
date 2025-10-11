@@ -84,21 +84,22 @@ public class UserRepository
 					if (!userProfilDict.TryGetValue(user.UserId.ToString(), out var userProfileData))
 					{
                         userProfileData = new()
-                        {
-                            UserId = user.UserId,
-                            FirstName = user.FirstName,
-                            LastName = user.LastName,
+						{
+							UserId = user.UserId,
+							UserIdRef = user.UserIdRef,
+							FirstName = user.FirstName,
+							LastName = user.LastName,
 							DocumentId = user.DocumentId,
 							UserName = user.UserName,
-                            Email = user.Email,
+							Email = user.Email,
 							Phone = user.Phone,
 							Address = user.Address,
 							BloodType = user.BloodType,
 							EmployeeNumber = user.EmployeeNumber,
 							Rol = user.Rol,
 							CompanyId = user.CompanyId,
-                            OperatorSkills = []
-                        };
+							OperatorSkills = []
+						};
 
                         userProfilDict.Add(user.UserId.ToString(), userProfileData);
 					}
@@ -136,7 +137,7 @@ public class UserRepository
 
 	}
 
-	public async Task<IEnumerable<User>> Select_users_with_monthlySchedule(int month, int year, string? userId)
+	public async Task<IEnumerable<User>> Select_users_with_monthlySchedule(int month, int year, int? userId)
 	{
 
 		var sp = "sp_select_operatorScheduleInfoByMonth";
@@ -145,7 +146,7 @@ public class UserRepository
 		p.Add("@Year", year);
 		p.Add("@UserId", userId ?? null);
 
-		var operatorScheduleDict = new Dictionary<string, User>();
+		var operatorScheduleDict = new Dictionary<int, User>();
 
 		try
 		{
@@ -153,11 +154,11 @@ public class UserRepository
 			sp,
 			(user, task, station, machine, dailyPlanning, turn, turnDetail) =>
 			{
-				if (!operatorScheduleDict.TryGetValue(user.UserId.ToString(), out var operatorData))
+				if (!operatorScheduleDict.TryGetValue(user.UserId, out var operatorData))
 				{
 					operatorData = user;
 					operatorData.DailyTasks = [];
-					operatorScheduleDict.Add(user.UserId.ToString(), operatorData);
+					operatorScheduleDict.Add(user.UserId, operatorData);
 				}
 
 				var taskData = operatorData.DailyTasks.FirstOrDefault(t => t.TaskId == task.TaskId);
@@ -203,22 +204,23 @@ public class UserRepository
 
 	#region ManufactoringMutations
 
-	public async Task<string> Create_update_user(UserIpcDto userIpcDto)
+	public async Task<string> Create_update_user(UsersDto usersDto)
 	{
 		var sp = "sp_create_update_user";
 		var p = new DynamicParameters();
-		p.Add("@UserId", userIpcDto.UserId);
-		p.Add("@FirstName", userIpcDto.FirstName);
-		p.Add("@LastName", userIpcDto.LastName);
-		p.Add("@DocumentId", userIpcDto.DocumentId);
-		p.Add("@UserName", userIpcDto.UserName);
-		p.Add("@Email", userIpcDto.Email);
-		p.Add("@Phone", userIpcDto.Phone);
-		p.Add("@Address", userIpcDto.Address);
-		p.Add("@BloodType", userIpcDto.BloodType);
-		p.Add("@EmployeeNumber", userIpcDto.EmployeeNumber);
-		p.Add("@Rol", userIpcDto.Rol);
-		p.Add("@CompanyId", userIpcDto.CompanyId);
+		p.Add("@UserId", usersDto.UserId ?? null);
+		p.Add("@UserIdRef", usersDto.UserIdRef);
+		p.Add("@FirstName", usersDto.FirstName);
+		p.Add("@LastName", usersDto.LastName);
+		p.Add("@DocumentId", usersDto.DocumentId);
+		p.Add("@UserName", usersDto.UserName);
+		p.Add("@Email", usersDto.Email);
+		p.Add("@Phone", usersDto.Phone);
+		p.Add("@Address", usersDto.Address);
+		p.Add("@BloodType", usersDto.BloodType);
+		p.Add("@EmployeeNumber", usersDto.EmployeeNumber);
+		p.Add("@Rol", usersDto.Rol);
+		p.Add("@CompanyId", usersDto.CompanyId);
 		p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
 		try
@@ -242,21 +244,29 @@ public class UserRepository
 		var sp = "sp_update_user_skills";
 		var p = new DynamicParameters();
 		p.Add("@UserId", userSkillsDto.UserId);
+		p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+		var userSkillsTable = new DataTable();
+		userSkillsTable.Columns.Add("SkillId", typeof(int));
+		userSkillsTable.Columns.Add("SkillLevel", typeof(string));
+
+		foreach (var userSkill in userSkillsDto.Skills)
+		{
+			userSkillsTable.Rows.Add(
+				userSkill.SkillId,
+				userSkill.Level
+			);
+		}
+
+		p.Add("@UserSkillsTable", userSkillsTable.AsTableValuedParameter("dbo.Manufacturing_UserSkillsTableType"));
 
 		try
 		{
-			foreach (var userSkill in userSkillsDto.Skills)
-			{
-				p.Add("@SkillId", userSkill.SkillId);
-				p.Add("@SkillLevel", userSkill.Level);
-				p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
-
-				await _db.ExecuteAsync(
-					sp,
-					p,
-					commandType: CommandType.StoredProcedure
-				);
-			}
+			await _db.ExecuteAsync(
+				sp,
+				p,
+				commandType: CommandType.StoredProcedure
+			);
 
 			return p.Get<string>("@Message");
 		}
