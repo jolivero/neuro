@@ -2,9 +2,9 @@ namespace Neuro.AI.Graph.Models.CustomModels
 {
     public class StatusControl
     {
-        public Guid TaskId { get; set; }
+        public int TaskId { get; set; }
         public string Station { get; set; } = string.Empty;
-        public Guid OperatorId { get; set; }
+        public int OperatorId { get; set; }
         public string Operator { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public string ProductiveTime { get; set; } = string.Empty;

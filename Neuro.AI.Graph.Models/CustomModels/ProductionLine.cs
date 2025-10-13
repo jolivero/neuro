@@ -2,22 +2,22 @@ namespace Neuro.AI.Graph.Models.CustomModels
 {
     public class ProductionLineBasicInfo
     {
-        public Guid RecipeId { get; set; }
+        public int RecipeId { get; set; }
         public int StepOrder { get; set; }
-        public Guid LineId { get; set; }
+        public int LineId { get; set; }
         public string LineName { get; set; } = string.Empty;
-        public Guid GroupId { get; set; }
+        public int GroupId { get; set; }
         public string GroupName { get; set; } = string.Empty;
-        public Guid StationId { get; set; }
+        public int StationId { get; set; }
         public string StationName { get; set; } = string.Empty;
-        public Guid MachineId { get; set; }
+        public int MachineId { get; set; }
         public string MachineName { get; set; } = string.Empty;
-        public Guid PartId { get; set; }
+        public int PartId { get; set; }
         public string PartName { get; set; } = string.Empty;
-        public Guid PreviousPartId { get; set; }
+        public int PreviousPartId { get; set; }
         public string PreviousPartName { get; set; } = string.Empty;
         public decimal RequiredQuantity { get; set; }
-        public Guid CreatedById { get; set; }
+        public int CreatedById { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
