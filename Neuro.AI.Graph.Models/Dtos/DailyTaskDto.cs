@@ -3,7 +3,7 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class BaseDailyTaskDto
     {
         public int MonthId { get; set; }
-        public string? TurnId { get; set; }
+        public int? TurnId { get; set; }
     }
 
     public class DailyTaskDto : BaseDailyTaskDto

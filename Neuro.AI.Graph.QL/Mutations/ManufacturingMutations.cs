@@ -171,9 +171,9 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Planeación mensual
 
-        public async Task<string> repo_create_monthlyPlanning(MonthlyPlanningRepository repository, MonthlyPlanningDto msDto)
+        public async Task<string> repo_create_monthlyPlanning(MonthlyPlanningRepository repository, MonthlyPlanningDto mpDto)
         {
-            return await repository.Create_monthly_schedule(msDto);
+            return await repository.Create_monthly_schedule(mpDto);
         }
 
         public async Task<string> repo_update_monthlyGoalPlanning(MonthlyPlanningRepository repository, UpdateMonthlyPlanningDto mgDto)

@@ -216,17 +216,17 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<string> Create_monthly_schedule(MonthlyPlanningDto msDto)
+        public async Task<string> Create_monthly_schedule(MonthlyPlanningDto pmDto)
         {
             var sp = "sp_create_monthly_planning";
             var p = new DynamicParameters();
-            p.Add("@Month", msDto.Month);
-            p.Add("@Year", msDto.Year);
-            p.Add("@MonthlyGoal", msDto.MonthlyGoal);
-            p.Add("@BusinessDays", msDto.BusinessDays);
-            p.Add("@ExtraDays", msDto.ExtraDays);
-            p.Add("@LineId", msDto.LineId);
-            p.Add("@PlannedBy", msDto.PlannedBy);
+            p.Add("@Month", pmDto.Month);
+            p.Add("@Year", pmDto.Year);
+            p.Add("@MonthlyGoal", pmDto.MonthlyGoal);
+            p.Add("@BusinessDays", pmDto.BusinessDays);
+            p.Add("@ExtraDays", pmDto.ExtraDays);
+            p.Add("@LineId", pmDto.LineId);
+            p.Add("@PlannedBy", pmDto.PlannedBy);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             var monthlyDaysPlanningTable = new DataTable();
@@ -234,7 +234,7 @@ namespace Neuro.AI.Graph.Repository
             monthlyDaysPlanningTable.Columns.Add("ProductionDate", typeof(string));
             monthlyDaysPlanningTable.Columns.Add("DayType", typeof(string));
 
-            foreach (var dailyPlanning in msDto.DailyPlanning)
+            foreach (var dailyPlanning in pmDto.DailyPlanning)
             {
                 monthlyDaysPlanningTable.Rows.Add(
                     dailyPlanning.DailyGoal,
