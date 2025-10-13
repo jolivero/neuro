@@ -47,7 +47,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<IEnumerable<DailyPlanningSummary>> Select_dailyPlanning_Summary(string lineId, string productionDate)
+        public async Task<IEnumerable<DailyPlanningSummary>> Select_dailyPlanning_Summary(int lineId, string productionDate)
         {
             var sp = "sp_select_dailyPlanning_Summary";
             var p = new DynamicParameters();
@@ -70,7 +70,7 @@ namespace Neuro.AI.Graph.Repository
 
         }
 
-        public async Task<IEnumerable<DailyPlanningProductionLine>> Select_dailyPlanning_productionLine(string lineId, string productionDate)
+        public async Task<IEnumerable<DailyPlanningProductionLine>> Select_dailyPlanning_productionLine(int lineId, string productionDate)
         {
             var sp = "sp_select_dailyPlanning";
             var p = new DynamicParameters();

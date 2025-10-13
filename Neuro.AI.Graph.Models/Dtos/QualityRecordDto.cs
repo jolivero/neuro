@@ -2,8 +2,8 @@ namespace Neuro.AI.Graph.Models.Dtos
 {
     public class QualityRecordDto
     {
-        public string NcPartId { get; set; } = string.Empty;
-        public string CreatedBy { get; set; } = string.Empty;
+        public int NcPartId { get; set; }
+        public int CreatedBy { get; set; }
         public QualityClasificationDto QualityClasificationDto { get; set; } = new();
     }
 

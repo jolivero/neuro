@@ -27,7 +27,6 @@ namespace Neuro.AI.Graph.Repository
         {
             var sp = "sp_create_qualityRecord";
             var p = new DynamicParameters();
-            p.Add("@QualityId", Guid.NewGuid());
             p.Add("@NcPartId", qrDto.NcPartId);
             p.Add("@CreatedBy", qrDto.CreatedBy);
             p.Add("@MinParts", qrDto.QualityClasificationDto.MinParts);
@@ -68,7 +67,7 @@ namespace Neuro.AI.Graph.Repository
                         NcPartId = qrDto.NcPartId,
                         UserId = qrDto.CreatedBy,
                         CreatedBy = qrDto.CreatedBy,
-                        CategoryId = "679B65D1-0521-4776-AA94-FC8369680DF3",
+                        CategoryId = 6,
                         OriginRequest = "Registro de calidad",
                         RequestType = "Registro de pieza no conforme",
                         CurrentValue = qrDto.QualityClasificationDto.MinParts.ToString(),
