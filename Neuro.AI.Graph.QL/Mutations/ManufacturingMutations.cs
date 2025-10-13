@@ -43,6 +43,11 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Update_user_skills(userSkillsDto);
         }
 
+        public async Task<string> repo_delete_user(UserRepository repository, int userId)
+        {
+            return await repository.Delete_user(userId);
+        }
+
         #endregion
 
         #region Línea de producción
@@ -181,7 +186,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Update_monthlyDays_schedule(mdDto);
         }
 
-        public async Task<string> repo_update_monthlyPlanning_operator(MonthlyPlanningRepository repository, string monthId, string dayId, string userId)
+        public async Task<string> repo_update_monthlyPlanning_operator(MonthlyPlanningRepository repository, int monthId, int dayId, int userId)
         {
             return await repository.Update_monthlyPlanning_operator(monthId, dayId, userId);
         }
@@ -191,7 +196,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Delete_monthlyDays_planning(monthId);
         }
 
-        public async Task<string> repo_delete_monthlyPlannin_operator(MonthlyPlanningRepository repository, string monthId, string dayId, string userId)
+        public async Task<string> repo_delete_monthlyPlannin_operator(MonthlyPlanningRepository repository, int monthId, int dayId, int userId)
         {
             return await repository.Delete_monthlyPlanning_operator(monthId, dayId, userId);
         }
@@ -210,7 +215,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Update_dailyTask(dtTaskDto);
         }
 
-        public async Task<string> repo_update_dailyTasks_plannification(DailyTaskRepository repository, string requestId)
+        public async Task<string> repo_update_dailyTasks_plannification(DailyTaskRepository repository, int requestId)
         {
             return await repository.Revert_dailyTask_Plannification(requestId);
         }
@@ -218,7 +223,6 @@ namespace Neuro.AI.Graph.QL.Mutations
         #endregion
 
         #region Solicitud de cambios
-
         public async Task<string> repo_create_monthly_request(ChangeRequestRepository repository, MonthlyChangeRequestDto mRequestDto)
         {
             return await repository.Create_monthly_request(mRequestDto);
@@ -267,7 +271,7 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Control de estado
 
-        public async Task<string> repo_update_operator_status(StatusControlRepository repository, string taskId, string userId, string status)
+        public async Task<string> repo_update_operator_status(StatusControlRepository repository, int taskId, int userId, string status)
         {
             return await repository.Update_operator_status(taskId, userId, status);
         }
