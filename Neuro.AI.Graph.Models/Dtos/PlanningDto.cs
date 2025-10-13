@@ -29,7 +29,7 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     public class UpdateDailyPlanningDto : DailyPlanningDto
     {
-        public string? DayId { get; set; }
+        public int? DayId { get; set; }
         public int Available { get; set; }
     }
 }
