@@ -2,7 +2,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
 {
     public class DailyPlanningSummary
     {
-        public Guid MonthId { get; set; }
+        public int MonthId { get; set; }
         public int MonthlyGoal { get; set; }
         public int CurrentGoal { get; set; }
         public int ProductiveDays { get; set; }
@@ -11,21 +11,21 @@ namespace Neuro.AI.Graph.Models.CustomModels
 
     public class DailyPlanningProductionLine
     {
-        public Guid GroupId { get; set; }
+        public int GroupId { get; set; }
         public string Group { get; set; } = string.Empty;
-        public Guid StationId { get; set; }
+        public int StationId { get; set; }
         public string Station { get; set; } = string.Empty;
-        public Guid MachineId { get; set; }
+        public int MachineId { get; set; }
         public string Machine { get; set; } = string.Empty;
-        public Guid PartId { get; set; }
+        public int PartId { get; set; }
         public string Part { get; set; } = string.Empty;
-        public Guid TaskId { get; set; }
+        public int TaskId { get; set; }
         public string MachineStatus { get; set; } = string.Empty;
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
         public string Operator { get; set; } = string.Empty;
         public string OperatorStatus { get; set; } = string.Empty;
         public string Schedule { get; set; } = string.Empty;
-        public Guid DayId { get; set; }
+        public int DayId { get; set; }
         public int DailyGoal { get; set; }
         public int Inventory { get; set; }
     }
