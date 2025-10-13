@@ -2,8 +2,8 @@ namespace Neuro.AI.Graph.Models.Dtos
 {
     public class BaseDailyTaskDto
     {
-        public string MonthId { get; set; } = string.Empty;
-        public string? TurnId { get; set; }
+        public int MonthId { get; set; }
+        public int? TurnId { get; set; }
     }
 
     public class DailyTaskDto : BaseDailyTaskDto
@@ -13,21 +13,21 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     public class AssigmentsDto
     {
-        public string DayId { get; set; } = string.Empty;
+        public int DayId { get; set; } 
         public string BeginAt { get; set; } = string.Empty;
         public string EndAt { get; set; } = string.Empty;
-        public string UserId { get; set; } = string.Empty;
-        public string? RemoveUserId { get; set; }
-        public string StationId { get; set; } = string.Empty;
-        public string MachineId { get; set; } = string.Empty;
+        public int UserId { get; set; }
+        public int? RemoveUserId { get; set; }
+        public int StationId { get; set; }
+        public int MachineId { get; set; }
     }
 
     public class CheckOperatorExtraTimeDto
     {
-        public string UserId { get; set; } = string.Empty;
+        public int UserId { get; set; }
         public string ProductiveDate { get; set; } = string.Empty;
-        public string? TaskId { get; set; }
-        public string? TurnId { get; set; }
+        public int? TaskId { get; set; }
+        public int? TurnId { get; set; }
         public string BeginAt { get; set; } = string.Empty;
         public string EndAt { get; set; } = string.Empty;
     }

@@ -2,46 +2,46 @@ namespace Neuro.AI.Graph.Models.Dtos
 {
     public class BaseChangeRequestDto
     {
-        public string RequestingUserId { get; set; } = string.Empty;
+        public int RequestingUserId { get; set; }
         public string RequestType { get; set; } = string.Empty;
         public string? Reason { get; set; }
     }
 
     public class FieldsChangeRequetsDto : BaseChangeRequestDto
     {
-        public string LineId { get; set; } = string.Empty;
-        public string GroupId { get; set; } = string.Empty;
-        public string StationId { get; set; } = string.Empty;
-        public string MachineId { get; set; } = string.Empty;
-        public string PartId { get; set; } = string.Empty;
+        public int LineId { get; set; }
+        public int GroupId { get; set; }
+        public int StationId { get; set; }
+        public int MachineId { get; set; }
+        public int PartId { get; set; }
         
     }
 
     public class MonthlyChangeRequestDto : BaseChangeRequestDto
     {
-        public string MonthId { get; set; } = string.Empty;
+        public int MonthId { get; set; }
         public int CurrentValue { get; set; }
         public int NewValue { get; set; }
     }
 
     public class DailyChangeRequestDto : BaseChangeRequestDto
     {
-        public List<string> DayId { get; set; } = [];
+        public List<int> DayId { get; set; } = [];
         public string CurrentValue { get; set; } = string.Empty;
         public string NewValue { get; set; } = string.Empty;
-        public string CurrentUserId { get; set; } = string.Empty;
-        public string? NewUserId { get; set; }
-        public string CurrentStationId { get; set; }  = string.Empty;
-        public string? StationId { get; set; }
-        public string CurrentMachineId { get; set; } = string.Empty;
-        public string? MachineId { get; set; }
-        public string? CurrentTurnId { get; set; }
-        public string? NewTurnId { get; set; }
+        public int CurrentUserId { get; set; }
+        public int? NewUserId { get; set; }
+        public int CurrentStationId { get; set; }
+        public int? StationId { get; set; }
+        public int CurrentMachineId { get; set; }
+        public int? MachineId { get; set; }
+        public int? CurrentTurnId { get; set; }
+        public int? NewTurnId { get; set; }
     }
 
     public class ChangePlanificationRequestDto : FieldsChangeRequetsDto
     {
-        public string TaskId { get; set; } = string.Empty;
+        public int TaskId { get; set; }
         public string BeginAt { get; set; } = string.Empty;
         public string EndAt { get; set; } = string.Empty;
         public int NewValue { get; set; }
@@ -49,23 +49,23 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     public class CommonRequestDto : BaseChangeRequestDto
     {
-        public string TaskId { get; set; } = string.Empty;
-        public string UserId { get; set; } = string.Empty;
+        public int TaskId { get; set; }
+        public int UserId { get; set; }
     }
 
     public class ExtraTimeRequestDto : FieldsChangeRequetsDto
     {
         public decimal HoursQuantity { get; set; }
-        public List<string> UserIds { get; set; } = [];
+        public List<int> UserIds { get; set; } = [];
     }
 
     public class ChangeRequestDto
     {
-        public string? TaskId { get; set; }
-        public string? NcPartId { get; set; }
-        public string UserId { get; set; } = string.Empty;
-        public string CreatedBy { get; set; } = string.Empty;
-        public string CategoryId { get; set; } = string.Empty;
+        public int? TaskId { get; set; }
+        public int? NcPartId { get; set; }
+        public int UserId { get; set; }
+        public int CreatedBy { get; set; }
+        public int CategoryId { get; set; }
         public string OriginRequest { get; set; } = string.Empty;
         public string RequestType { get; set; } = string.Empty;
         public string? Reason { get; set; }
@@ -75,10 +75,10 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     public class UpdateStatusRequestDto
     {
-        public string RequestId { get; set; } = string.Empty;
-        public string ApprovalUserId { get; set; } = string.Empty;
-        public string CategoryId { get; set; } = string.Empty;
-        public string? TaskId { get; set; }
+        public int RequestId { get; set; }
+        public int ApprovalUserId { get; set; }
+        public int CategoryId { get; set; }
+        public int? TaskId { get; set; }
         public string? Response { get; set; }
         public bool Status { get; set; }
     }

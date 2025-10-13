@@ -118,12 +118,12 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Planificación mensual
 
-        public async Task<IQueryable<MonthlyPlanning>> repo_station_with_machine_planification(MonthlyPlanningRepository repository, string monthId, string stationId, string machineId)
+        public async Task<IQueryable<MonthlyPlanning>> repo_station_with_machine_planning(MonthlyPlanningRepository repository, int monthId, int stationId, int machineId)
         {
-            return (await repository.Select_station_with_machine_planification(monthId, stationId, machineId)).AsQueryable();
+            return (await repository.Select_station_with_machine_planning(monthId, stationId, machineId)).AsQueryable();
         }
 
-        public async Task<IQueryable<MonthlyPlanningStepStatus>> repo_planning_step_status(MonthlyPlanningRepository repository, string monthId, string lineId)
+        public async Task<IQueryable<MonthlyPlanningStepStatus>> repo_planning_step_status(MonthlyPlanningRepository repository, int monthId, int lineId)
         {
             return (await repository.Select_planning_step_status(monthId, lineId)).AsQueryable();
         }
@@ -137,12 +137,12 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_available_operators(days, beginAt, endAt)).AsQueryable();
         }
 
-        public async Task<IQueryable<DailyPlanningSummary>> repo_dailyPlanning_Summary(DailyPlanningRepository repository, string lineId, string productionDate)
+        public async Task<IQueryable<DailyPlanningSummary>> repo_dailyPlanning_Summary(DailyPlanningRepository repository, int lineId, string productionDate)
         {
             return (await repository.Select_dailyPlanning_Summary(lineId, productionDate)).AsQueryable();
         }
 
-        public async Task<IQueryable<DailyPlanningProductionLine>> repo_dailyPlanning_productionLine(DailyPlanningRepository repository, string lineId, string productionDate)
+        public async Task<IQueryable<DailyPlanningProductionLine>> repo_dailyPlanning_productionLine(DailyPlanningRepository repository, int lineId, string productionDate)
         {
             return (await repository.Select_dailyPlanning_productionLine(lineId, productionDate)).AsQueryable();
         }
@@ -156,12 +156,12 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_extraTime_operator(operatorExtraTimeDto)).AsQueryable();
         }
 
-        public async Task<IQueryable<DailyTaskOperator>> repo_dailyTasks_by_userId(DailyTaskRepository repository, string currentDate, string userId, string? taskId = null)
+        public async Task<IQueryable<DailyTaskOperator>> repo_dailyTasks_by_userId(DailyTaskRepository repository, string currentDate, int userId, int? taskId = null)
         {
             return (await repository.Select_dailyTask_by_userId(currentDate, userId, taskId)).AsQueryable();
         }
 
-        public async Task<IEnumerable<DailyTask>> repo_dailyTask_operator_history(DailyTaskRepository repository, string taskId, string userId)
+        public async Task<IEnumerable<DailyTask>> repo_dailyTask_operator_history(DailyTaskRepository repository, int taskId, int userId)
         {
             return (await repository.Select_dailyTask_operator_history(taskId, userId)).AsQueryable();
         }

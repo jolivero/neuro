@@ -276,5 +276,28 @@ public class UserRepository
 		}
 	}
 
+	public async Task<string> Delete_user(int userId)
+    {
+		var sp = "sp_delete_user";
+		var p = new DynamicParameters();
+		p.Add("@UserId", userId);
+		p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+		try
+		{
+			await _db.ExecuteAsync(
+				sp,
+				p,
+				commandType: CommandType.StoredProcedure
+			);
+
+			return p.Get<string>("@Message");
+		}
+		catch (Exception ex)
+		{
+			return ex.Message;
+		}
+    }
+
 	#endregion
 }

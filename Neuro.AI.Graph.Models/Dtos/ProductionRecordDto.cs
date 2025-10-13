@@ -2,8 +2,8 @@ namespace Neuro.AI.Graph.Models.Dtos
 {
     public class ProductionRecordDto
     {
-        public string TaskId { get; set; } = string.Empty;
-        public string UserId { get; set; } = string.Empty;
+        public int TaskId { get; set; }
+        public int UserId { get; set; }
         public string Status { get; set; } = string.Empty;
         public string CurrentTime { get; set; } = string.Empty;
         public bool IsCut { get; set; } = false;
@@ -14,6 +14,6 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class ProducedPart
     {
         public int? Total { get; set; }
-        public string? PartId { get; set; }
+        public int? PartId { get; set; }
     }
 }

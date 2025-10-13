@@ -2,6 +2,7 @@ using System.Data;
 using System.Text.RegularExpressions;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualBasic;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.CustomModels;
 using Neuro.AI.Graph.Models.Dtos;
@@ -40,13 +41,13 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string?> Select_requestId(int monthId, string requestType)
+        public async Task<int?> Select_requestId(int monthId, string requestType)
         {
             var sp = "sp_select_requestId";
             var p = new DynamicParameters();
             p.Add("@MonthId", monthId);
             p.Add("@RequestType", requestType);
-            p.Add("@RequestId", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+            p.Add("@RequestId", dbType: DbType.Int64, direction: ParameterDirection.Output);
 
             try
             {
@@ -56,11 +57,11 @@ namespace Neuro.AI.Graph.Repository
                     commandType: CommandType.StoredProcedure
                 );
 
-                return p.Get<string>("@RequestId");
+                return p.Get<int>("@RequestId");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -210,7 +211,7 @@ namespace Neuro.AI.Graph.Repository
                 TaskId = cRequestDto.TaskId,
                 UserId = cRequestDto.UserId,
                 CreatedBy = cRequestDto.RequestingUserId,
-                CategoryId = _config["RequestCategories:ChangeOperator"]!,
+                CategoryId = 3, //_config["RequestCategories:ChangeOperator"]! -> Modificar,
                 OriginRequest = "Planificacion diaria",
                 RequestType = cRequestDto.RequestType,
                 Reason = cRequestDto.Reason
@@ -234,7 +235,7 @@ namespace Neuro.AI.Graph.Repository
                 TaskId = cRequestDto.TaskId,
                 UserId = cRequestDto.UserId,
                 CreatedBy = cRequestDto.RequestingUserId,
-                CategoryId = _config["RequestCategories:SpecialMissions"]!,
+                CategoryId = 5, ////_config["RequestCategories:ChangeOperator"]! -> Modificar,
                 OriginRequest = "Control de estado",
                 RequestType = cRequestDto.RequestType,
                 Reason = cRequestDto.Reason
