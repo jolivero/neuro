@@ -11,8 +11,8 @@
         public int? MaxOperator { get; set; }
         public int? HoursPerCut { get; set; }
         public string Status { get; set; } = string.Empty;
-        public string? StationId { get; set; }
-        public string? CreatedBy { get; set; }
+        public int? StationId { get; set; }
+        public int? CreatedBy { get; set; }
     }
 
     public class MachineReportDto
@@ -20,9 +20,9 @@
         public string? Type { get; set; }
         public string? Description { get; set; }
         public string? Status { get; set; }
-        public string StationId { get; set; } = string.Empty;
-        public string MachineId { get; set; } = string.Empty;
-        public string OperatorId { get; set; } = string.Empty;
-        public string? TechnicalId { get; set; }
+        public int StationId { get; set; }
+        public int MachineId { get; set; }
+        public int OperatorId { get; set; }
+        public int? TechnicalId { get; set; }
     }
 }

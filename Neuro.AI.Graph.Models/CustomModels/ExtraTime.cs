@@ -2,7 +2,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
 {
     public class ExtraTimeResponse
     {
-        public string UserId { get; set; } = string.Empty;
+        public int UserId { get; set; }
         public decimal ExtraTime { get; set; }
     }
 }
