@@ -2,7 +2,6 @@ namespace Neuro.AI.Graph.Models.Dtos
 {
     public class LogDto
     {
-        public int? UserId { get; set; }
         public Guid UserIdRef { get; set; }
         public string Area { get; set; } = string.Empty;
         public string Action { get; set; } = string.Empty;

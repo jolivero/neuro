@@ -3,7 +3,7 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class ProductionRecordDto
     {
         public int TaskId { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public string Status { get; set; } = string.Empty;
         public string CurrentTime { get; set; } = string.Empty;
         public bool IsCut { get; set; } = false;

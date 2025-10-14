@@ -2,7 +2,7 @@ namespace Neuro.AI.Graph.Models.Dtos
 {
     public class BaseChangeRequestDto
     {
-        public int RequestingUserId { get; set; }
+        public Guid RequestingUserId { get; set; }
         public string RequestType { get; set; } = string.Empty;
         public string? Reason { get; set; }
     }
@@ -31,8 +31,8 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int LineId { get; set; }
         public string CurrentValue { get; set; } = string.Empty;
         public string NewValue { get; set; } = string.Empty;
-        public int CurrentUserId { get; set; }
-        public int? NewUserId { get; set; }
+        public Guid CurrentUserId { get; set; }
+        public Guid NewUserId { get; set; }
         public int CurrentStationId { get; set; }
         public int? StationId { get; set; }
         public int CurrentMachineId { get; set; }
@@ -52,7 +52,7 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class CommonRequestDto : BaseChangeRequestDto
     {
         public int TaskId { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 
     public class ExtraTimeRequestDto : FieldsChangeRequetsDto
@@ -65,7 +65,7 @@ namespace Neuro.AI.Graph.Models.Dtos
     {
         public int? TaskId { get; set; }
         public int? NcPartId { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public int CreatedBy { get; set; }
         public int CategoryId { get; set; }
         public string OriginRequest { get; set; } = string.Empty;
@@ -78,7 +78,7 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class UpdateStatusRequestDto
     {
         public int RequestId { get; set; }
-        public int ApprovalUserId { get; set; }
+        public Guid ApprovalUserId { get; set; }
         public int CategoryId { get; set; }
         public int? TaskId { get; set; }
         public string? Response { get; set; }

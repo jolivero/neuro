@@ -17,7 +17,7 @@ public partial class QualityRecord
 
     public int? NcPartId { get; set; }
 
-    public int? CreatedBy { get; set; }
+    public Guid? CreatedBy { get; set; }
 
     public virtual NonCompliantPartsRecord? NcPart { get; set; }
 

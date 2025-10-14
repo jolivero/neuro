@@ -21,9 +21,9 @@ public partial class MachineReport
 
     public int? MachineId { get; set; }
 
-    public int? OperatorId { get; set; }
+    public Guid? OperatorId { get; set; }
 
-    public int? TechnicalId { get; set; }
+    public Guid? TechnicalId { get; set; }
 
     public virtual Machine? Machine { get; set; }
 

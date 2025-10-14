@@ -3,7 +3,7 @@
     public class Field
     {
         public string Name { get; set; } = string.Empty;
-        public int? CreatedBy { get; set; }
+        public Guid? CreatedBy { get; set; }
     }
 
     public class GroupDto : Field

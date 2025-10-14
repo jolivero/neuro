@@ -12,7 +12,7 @@
         public int? HoursPerCut { get; set; }
         public string Status { get; set; } = string.Empty;
         public int? StationId { get; set; }
-        public int? CreatedBy { get; set; }
+        public Guid? CreatedBy { get; set; }
     }
 
     public class MachineReportDto
@@ -22,7 +22,7 @@
         public string? Status { get; set; }
         public int StationId { get; set; }
         public int MachineId { get; set; }
-        public int OperatorId { get; set; }
-        public int? TechnicalId { get; set; }
+        public Guid OperatorId { get; set; }
+        public Guid? TechnicalId { get; set; }
     }
 }

@@ -27,7 +27,7 @@ public partial class MonthlyPlanning
 
     public int? LineId { get; set; }
 
-    public int? PlannedBy { get; set; }
+    public Guid? PlannedBy { get; set; }
 
     public virtual ICollection<DailyPlanning> DailyPlannings { get; set; } = new List<DailyPlanning>();
 

@@ -13,6 +13,6 @@
         public string? ContactName { get; set; }
         public string? ContactPhone { get; set; }
         public string? ContactEmail { get; set; }
-        public int? CreatedBy { get; set; }
+        public Guid CreatedBy { get; set; }
     }
 }

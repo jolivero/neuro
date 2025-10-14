@@ -73,7 +73,7 @@ public class UserRepository
 		var p = new DynamicParameters();
 		p.Add("@UserId", userId);
 
-		var userProfilDict = new Dictionary<string, OperatorProfile>();
+		var userProfilDict = new Dictionary<Guid, OperatorProfile>();
 
 		try
 		{
@@ -81,12 +81,11 @@ public class UserRepository
 				sp,
 				(user, userSkill, skill, company) =>
 				{
-					if (!userProfilDict.TryGetValue(user.UserId.ToString(), out var userProfileData))
+					if (!userProfilDict.TryGetValue(user.UserId, out var userProfileData))
 					{
                         userProfileData = new()
 						{
 							UserId = user.UserId,
-							UserIdRef = user.UserIdRef,
 							FirstName = user.FirstName,
 							LastName = user.LastName,
 							DocumentId = user.DocumentId,
@@ -101,7 +100,7 @@ public class UserRepository
 							OperatorSkills = []
 						};
 
-                        userProfilDict.Add(user.UserId.ToString(), userProfileData);
+                        userProfilDict.Add(user.UserId, userProfileData);
 					}
 
 					var skillsData = userProfileData.OperatorSkills.FirstOrDefault(s => s.SkillId == skill.SkillId);
@@ -146,7 +145,7 @@ public class UserRepository
 		p.Add("@Year", year);
 		p.Add("@UserId", userId ?? null);
 
-		var operatorScheduleDict = new Dictionary<int, User>();
+		var operatorScheduleDict = new Dictionary<Guid, User>();
 
 		try
 		{
@@ -209,7 +208,6 @@ public class UserRepository
 		var sp = "sp_create_update_user";
 		var p = new DynamicParameters();
 		p.Add("@UserId", usersDto.UserId ?? null);
-		p.Add("@UserIdRef", usersDto.UserIdRef);
 		p.Add("@FirstName", usersDto.FirstName);
 		p.Add("@LastName", usersDto.LastName);
 		p.Add("@DocumentId", usersDto.DocumentId);
@@ -276,7 +274,7 @@ public class UserRepository
 		}
 	}
 
-	public async Task<string> Delete_user(int userId)
+	public async Task<string> Delete_user(Guid userId)
     {
 		var sp = "sp_delete_user";
 		var p = new DynamicParameters();

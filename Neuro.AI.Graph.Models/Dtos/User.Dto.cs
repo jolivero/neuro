@@ -2,8 +2,7 @@ namespace Neuro.AI.Graph.Models.Dtos
 {
     public class UsersDto
     {
-        public int? UserId { get; set; }
-        public Guid UserIdRef { get; set; }
+        public Guid? UserId { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string DocumentId { get; set; } = string.Empty;
@@ -24,7 +23,7 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     public class UserSkillsDto
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public List<SkillsDto> Skills { get; set; } = [];
     }
 

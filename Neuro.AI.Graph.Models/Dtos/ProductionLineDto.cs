@@ -4,7 +4,7 @@ namespace Neuro.AI.Graph.Models.Dtos
     {
         public string Name { get; set; } = string.Empty;
         public int CompanyId { get; set; }
-        public int? CreatedBy { get; set; }
+        public Guid? CreatedBy { get; set; }
     }
 
     public class ProductionLineConfigDto

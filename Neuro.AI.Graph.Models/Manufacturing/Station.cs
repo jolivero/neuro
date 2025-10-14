@@ -15,7 +15,7 @@ public partial class Station
 
     public int? GroupId { get; set; }
 
-    public int? CreatedBy { get; set; }
+    public Guid? CreatedBy { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentStations { get; set; } = new List<ChangeRequestDetail>();
 

@@ -23,6 +23,10 @@ public partial class ChangeRequestDetail
 
     public int? RequestId { get; set; }
 
+    public Guid? CurrentUserId { get; set; }
+
+    public Guid? NewUserId { get; set; }
+
     public int? CurrentLineId { get; set; }
 
     public int? NewLineId { get; set; }
@@ -38,10 +42,6 @@ public partial class ChangeRequestDetail
     public int? CurrentMachineId { get; set; }
 
     public int? NewMachineId { get; set; }
-
-    public int? CurrentUserId { get; set; }
-
-    public int? NewUserId { get; set; }
 
     public int? CurrentTurnId { get; set; }
 
