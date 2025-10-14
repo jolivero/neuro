@@ -41,13 +41,13 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<int?> Select_requestId(int monthId, string requestType)
+        public async Task<int> Select_requestId(int monthId, string requestType)
         {
             var sp = "sp_select_requestId";
             var p = new DynamicParameters();
             p.Add("@MonthId", monthId);
             p.Add("@RequestType", requestType);
-            p.Add("@RequestId", dbType: DbType.Int64, direction: ParameterDirection.Output);
+            p.Add("@RequestId", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
             try
             {
