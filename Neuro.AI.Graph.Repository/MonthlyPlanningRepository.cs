@@ -264,7 +264,7 @@ namespace Neuro.AI.Graph.Repository
         public async Task<string> Update_monthlyGoal_planning(UpdateMonthlyPlanningDto mgDto)
         {
             var requestId = await _changeRequestRepository.Select_requestId(mgDto.MonthId, "Ajuste de meta");
-            if (requestId == null) return "No hay solicitud de cambio disponible para el mes indicado";
+            if (requestId == 0) return "No hay solicitud de cambio disponible para el mes indicado";
 
             var sp = "sp_update_monthlyGoal";
             var p = new DynamicParameters();
@@ -294,7 +294,7 @@ namespace Neuro.AI.Graph.Repository
         public async Task<string> Update_monthlyDays_schedule(UpdateMonthlyPlanningDto mdDto)
         {
             var requestId = await _changeRequestRepository.Select_requestId(mdDto.MonthId, "Ajuste de días");
-            if (requestId == null) return "No hay solicitud de cambio disponible para el mes indicado";
+            if (requestId == 0) return "No hay solicitud de cambio disponible para el mes indicado";
 
             var businessDays = mdDto.UpdateDailyPlanningDto!.Count(d => d.DayType.Equals("laboral", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
             var extraDays = mdDto.UpdateDailyPlanningDto!.Count(d => d.DayType.Equals("extra", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
