@@ -25,9 +25,9 @@ public partial class ProductionChangeRequest
 
     public int? CategoryId { get; set; }
 
-    public int? RequestingUserId { get; set; }
+    public Guid? RequestingUserId { get; set; }
 
-    public int? ApprovalUserId { get; set; }
+    public Guid? ApprovalUserId { get; set; }
 
     public int? NcPartId { get; set; }
 

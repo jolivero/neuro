@@ -19,7 +19,7 @@ public partial class ProductionLine
 
     public int? CompanyId { get; set; }
 
-    public int? CreatedBy { get; set; }
+    public Guid? CreatedBy { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentLines { get; set; } = new List<ChangeRequestDetail>();
 

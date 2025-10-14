@@ -5,9 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class User
 {
-    public int UserId { get; set; }
-
-    public Guid? UserIdRef { get; set; }
+    public Guid UserId { get; set; }
 
     public string FirstName { get; set; } = null!;
 

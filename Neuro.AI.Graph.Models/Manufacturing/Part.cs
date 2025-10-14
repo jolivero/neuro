@@ -19,9 +19,7 @@ public partial class Part
 
     public int? StationId { get; set; }
 
-    public int? CreatedBy { get; set; }
-
-    public int? IsPreviousPart { get; set; }
+    public Guid? CreatedBy { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentParts { get; set; } = new List<ChangeRequestDetail>();
 

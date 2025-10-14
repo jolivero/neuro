@@ -23,7 +23,7 @@ public partial class ProductionRecord
 
     public int? TaskId { get; set; }
 
-    public int? CreatedBy { get; set; }
+    public Guid? CreatedBy { get; set; }
 
     public virtual User? CreatedByNavigation { get; set; }
 

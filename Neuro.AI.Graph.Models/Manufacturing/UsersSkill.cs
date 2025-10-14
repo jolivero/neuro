@@ -5,7 +5,7 @@ namespace Neuro.AI.Graph.Models.Manufacturing;
 
 public partial class UsersSkill
 {
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
 
     public int SkillId { get; set; }
 

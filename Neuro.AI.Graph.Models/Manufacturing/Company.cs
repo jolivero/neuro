@@ -33,7 +33,7 @@ public partial class Company
 
     public DateTime? UpdatedAt { get; set; }
 
-    public int? CreatedBy { get; set; }
+    public Guid? CreatedBy { get; set; }
 
     public virtual User? CreatedByNavigation { get; set; }
 

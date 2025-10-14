@@ -17,7 +17,7 @@ public partial class Group
 
     public int? LineId { get; set; }
 
-    public int? CreatedBy { get; set; }
+    public Guid? CreatedBy { get; set; }
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentGroups { get; set; } = new List<ChangeRequestDetail>();
 

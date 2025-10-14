@@ -29,7 +29,7 @@ public partial class DailyTask
 
     public int? MachineId { get; set; }
 
-    public int? UserId { get; set; }
+    public Guid? UserId { get; set; }
 
     public int? TurnId { get; set; }
 
