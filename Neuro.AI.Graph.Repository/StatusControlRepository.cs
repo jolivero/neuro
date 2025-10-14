@@ -63,7 +63,7 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<string> Update_operator_status(int taskId, int userId, string status)
+        public async Task<string> Update_operator_status(int taskId, Guid userId, string status)
         {
 
             TimeZoneInfo timeZonePanama = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
