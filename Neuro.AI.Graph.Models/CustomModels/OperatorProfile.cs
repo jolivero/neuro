@@ -4,8 +4,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
 {
     public class OperatorSelectList
     {
-        public int UserId { get; set; }
-        public Guid UserIdRef { get; set; }
+        public Guid UserId { get; set; }
         public string Operator { get; set; } = string.Empty;
     }
 
