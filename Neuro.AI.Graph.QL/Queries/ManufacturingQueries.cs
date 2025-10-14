@@ -13,7 +13,7 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Usuarios
 
-        public async Task<IQueryable<OperatorProfile>> repo_user_with_skills(UserRepository repository, int userId)
+        public async Task<IQueryable<OperatorProfile>> repo_user_with_skills(UserRepository repository, Guid userId)
         {
             return (await repository.Select_user_with_skills(userId)).AsQueryable();
         }
@@ -45,7 +45,7 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_productionLines_with_details(lineId)).AsQueryable();
         }
 
-        public async Task<IQueryable<ProductionLine>> repo_productionLine_recipe(ProductionLineRepository repository, int taskId, int userId)
+        public async Task<IQueryable<ProductionLine>> repo_productionLine_recipe(ProductionLineRepository repository, int taskId, Guid userId)
         {
             return (await repository.Select_productionLine_recipe(taskId, userId)).AsQueryable();
         }
@@ -156,12 +156,12 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_extraTime_operator(operatorExtraTimeDto)).AsQueryable();
         }
 
-        public async Task<IQueryable<DailyTaskOperator>> repo_dailyTasks_by_userId(DailyTaskRepository repository, string currentDate, int userId, int? taskId = null)
+        public async Task<IQueryable<DailyTaskOperator>> repo_dailyTasks_by_userId(DailyTaskRepository repository, string currentDate, Guid userId, int? taskId = null)
         {
             return (await repository.Select_dailyTask_by_userId(currentDate, userId, taskId)).AsQueryable();
         }
 
-        public async Task<IEnumerable<DailyTask>> repo_dailyTask_operator_history(DailyTaskRepository repository, int taskId, int userId)
+        public async Task<IEnumerable<DailyTask>> repo_dailyTask_operator_history(DailyTaskRepository repository, int taskId, Guid userId)
         {
             return (await repository.Select_dailyTask_operator_history(taskId, userId)).AsQueryable();
         }

@@ -21,7 +21,7 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<IEnumerable<DailyTaskOperator>> Select_dailyTask_by_userId(string currentDay, int userId, int? taskId = null)
+        public async Task<IEnumerable<DailyTaskOperator>> Select_dailyTask_by_userId(string currentDay, Guid userId, int? taskId = null)
         {
             var sp_tasks = "sp_select_dailyTask_by_userId";
             var sp_progress = "sp_select_operator_progress";
@@ -95,7 +95,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<IEnumerable<DailyTask>> Select_dailyTask_operator_history(int taskId, int userId)
+        public async Task<IEnumerable<DailyTask>> Select_dailyTask_operator_history(int taskId, Guid userId)
         {
             var sp = "sp_select_dailyTask_operator_history";
             var p = new DynamicParameters();
