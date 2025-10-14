@@ -17,7 +17,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
         public int PreviousPartId { get; set; }
         public string PreviousPartName { get; set; } = string.Empty;
         public decimal RequiredQuantity { get; set; }
-        public int CreatedById { get; set; }
+        public Guid CreatedById { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
@@ -29,6 +29,6 @@ namespace Neuro.AI.Graph.Models.CustomModels
         public string StationName { get; set; } = string.Empty;
         public string MachineName { get; set; } = string.Empty;
         public int HoursPerCut { get; set; }
-        public string CreatedBy { get; set; } = string.Empty;
+        public Guid CreatedBy { get; set; }
     }
 }
