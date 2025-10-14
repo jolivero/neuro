@@ -43,7 +43,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Update_user_skills(userSkillsDto);
         }
 
-        public async Task<string> repo_delete_user(UserRepository repository, int userId)
+        public async Task<string> repo_delete_user(UserRepository repository, Guid userId)
         {
             return await repository.Delete_user(userId);
         }
