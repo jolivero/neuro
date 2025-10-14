@@ -107,6 +107,7 @@ namespace Neuro.AI.Graph.Repository
             var sp = "sp_create_monthly_request";
             var p = new DynamicParameters();
             p.Add("@MonthId", mRequestDto.MonthId);
+            p.Add("@LineId", mRequestDto.LineId);
             p.Add("@RequestingUserId", mRequestDto.RequestingUserId);
             p.Add("@RequestType", mRequestDto.RequestType);
             p.Add("@Reason", mRequestDto.Reason);

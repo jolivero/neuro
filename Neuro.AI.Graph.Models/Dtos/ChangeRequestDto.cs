@@ -20,6 +20,7 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class MonthlyChangeRequestDto : BaseChangeRequestDto
     {
         public int MonthId { get; set; }
+        public int LineId { get; set; }
         public int CurrentValue { get; set; }
         public int NewValue { get; set; }
     }
