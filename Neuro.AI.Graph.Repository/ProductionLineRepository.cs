@@ -100,7 +100,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<IEnumerable<ProductionLine>> Select_productionLine_recipe(int taskId, int userId)
+        public async Task<IEnumerable<ProductionLine>> Select_productionLine_recipe(int taskId, Guid userId)
         {
             var sp_lineId = "sp_select_lineId_from_recipe";
             var p1 = new DynamicParameters();

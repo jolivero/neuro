@@ -67,7 +67,7 @@ public class UserRepository
 		);
 	}
 
-	public async Task<IEnumerable<OperatorProfile>> Select_user_with_skills(int userId)
+	public async Task<IEnumerable<OperatorProfile>> Select_user_with_skills(Guid userId)
 	{
 		var sp = "sp_select_userProfile";
 		var p = new DynamicParameters();
