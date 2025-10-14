@@ -31,8 +31,8 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int LineId { get; set; }
         public string CurrentValue { get; set; } = string.Empty;
         public string NewValue { get; set; } = string.Empty;
-        public Guid CurrentUserId { get; set; }
-        public Guid NewUserId { get; set; }
+        public Guid? CurrentUserId { get; set; }
+        public Guid? NewUserId { get; set; }
         public int CurrentStationId { get; set; }
         public int? StationId { get; set; }
         public int CurrentMachineId { get; set; }
@@ -66,7 +66,7 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int? TaskId { get; set; }
         public int? NcPartId { get; set; }
         public Guid UserId { get; set; }
-        public int CreatedBy { get; set; }
+        public Guid CreatedBy { get; set; }
         public int CategoryId { get; set; }
         public string OriginRequest { get; set; } = string.Empty;
         public string RequestType { get; set; } = string.Empty;
