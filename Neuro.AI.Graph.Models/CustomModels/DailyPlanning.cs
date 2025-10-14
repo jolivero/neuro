@@ -21,7 +21,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
         public string Part { get; set; } = string.Empty;
         public int TaskId { get; set; }
         public string MachineStatus { get; set; } = string.Empty;
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public string Operator { get; set; } = string.Empty;
         public string OperatorStatus { get; set; } = string.Empty;
         public string Schedule { get; set; } = string.Empty;

@@ -16,7 +16,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
 
     public class ProductionLineOperatorSummary
     {
-        public int OperatorId { get; set; }
+        public Guid OperatorId { get; set; }
         public string Operator { get; set; } = string.Empty;
         public DateOnly ProductionDate { get; set; }
         public int DailyGoal { get; set; }

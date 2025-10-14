@@ -136,7 +136,7 @@ public class UserRepository
 
 	}
 
-	public async Task<IEnumerable<User>> Select_users_with_monthlySchedule(int month, int year, int? userId)
+	public async Task<IEnumerable<User>> Select_users_with_monthlySchedule(int month, int year, Guid? userId)
 	{
 
 		var sp = "sp_select_operatorScheduleInfoByMonth";

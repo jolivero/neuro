@@ -4,7 +4,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
     {
         public int TaskId { get; set; }
         public string Station { get; set; } = string.Empty;
-        public int OperatorId { get; set; }
+        public Guid OperatorId { get; set; }
         public string Operator { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public string ProductiveTime { get; set; } = string.Empty;
