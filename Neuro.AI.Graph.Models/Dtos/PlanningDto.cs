@@ -22,6 +22,7 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class UpdateMonthlyPlanningDto
     {
         public int MonthId { get; set; }
+        public int LineId { get; set; }
         public int MonthlyGoal { get; set; }
         public string Reason { get; set; } = string.Empty;
         public List<UpdateDailyPlanningDto>? UpdateDailyPlanningDto { get; set; } = [];

@@ -270,6 +270,7 @@ namespace Neuro.AI.Graph.Repository
             var p = new DynamicParameters();
             p.Add("@RequestId", requestId);
             p.Add("@MonthId", mgDto.MonthId);
+            p.Add("@LineId", mgDto.LineId);
             p.Add("@MonthlyGoal", mgDto.MonthlyGoal);
             p.Add("@Reason", mgDto.Reason);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
