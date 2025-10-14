@@ -27,6 +27,7 @@ namespace Neuro.AI.Graph.Repository
             var p = new DynamicParameters();
             p.Add("@PName", partDto.Name);
             p.Add("@Code", partDto.Code);
+            p.Add("@IsPreviousPart", partDto.IsPreviousPart);
             p.Add("@CreatedBy", partDto.CreatedBy);
             p.Add("@IName", partDto.Inventory.Name);
             p.Add("@Quantity", partDto.Inventory.Quantity);

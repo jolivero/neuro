@@ -21,6 +21,8 @@ public partial class Part
 
     public int? CreatedBy { get; set; }
 
+    public int? IsPreviousPart { get; set; }
+
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentParts { get; set; } = new List<ChangeRequestDetail>();
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewParts { get; set; } = new List<ChangeRequestDetail>();

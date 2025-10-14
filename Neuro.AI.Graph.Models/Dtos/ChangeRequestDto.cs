@@ -20,6 +20,7 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class MonthlyChangeRequestDto : BaseChangeRequestDto
     {
         public int MonthId { get; set; }
+        public int LineId { get; set; }
         public int CurrentValue { get; set; }
         public int NewValue { get; set; }
     }
@@ -27,6 +28,7 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class DailyChangeRequestDto : BaseChangeRequestDto
     {
         public List<int> DayId { get; set; } = [];
+        public int LineId { get; set; }
         public string CurrentValue { get; set; } = string.Empty;
         public string NewValue { get; set; } = string.Empty;
         public int CurrentUserId { get; set; }
