@@ -1,4 +1,5 @@
-﻿using Neuro.AI.Graph.Models.Dtos;
+﻿using Neuro.AI.Graph.Models.CustomModels;
+using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Repository;
 
 namespace Neuro.AI.Graph.QL.Mutations
@@ -15,7 +16,7 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Compañias
 
-        public async Task<string> repo_create_companies(CompanyRepository repository, CompanyDto companyDto, IFile? companyLogo)
+        public async Task<MessageResponse> repo_create_companies(CompanyRepository repository, CompanyDto companyDto, IFile? companyLogo)
         {
             string companyLogoUrl = string.Empty;
 
@@ -33,17 +34,17 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Usuarios
 
-        public async Task<string> repo_create_update_user(UserRepository repository, UsersDto usersDto)
+        public async Task<MessageResponse> repo_create_update_user(UserRepository repository, UsersDto usersDto)
         {
             return await repository.Create_update_user(usersDto);
         }
 
-        public async Task<string> repo_create_update_userSkills(UserRepository repository, UserSkillsDto userSkillsDto)
+        public async Task<MessageResponse> repo_create_update_userSkills(UserRepository repository, UserSkillsDto userSkillsDto)
         {
             return await repository.Update_user_skills(userSkillsDto);
         }
 
-        public async Task<string> repo_delete_user(UserRepository repository, Guid userId)
+        public async Task<MessageResponse> repo_delete_user(UserRepository repository, Guid userId)
         {
             return await repository.Delete_user(userId);
         }
@@ -86,12 +87,12 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Grupos
 
-        public async Task<string> repo_create_groups(GroupRepository repository, GroupDto groupDto)
+        public async Task<MessageResponse> repo_create_groups(GroupRepository repository, GroupDto groupDto)
         {
             return await repository.Create_groups(groupDto);
         }
 
-        public async Task<string> repo_update_groups(GroupRepository repository, int groupId, GroupDto groupDto)
+        public async Task<MessageResponse> repo_update_groups(GroupRepository repository, int groupId, GroupDto groupDto)
         {
             return await repository.Update_groups(groupId, groupDto);
         }
@@ -100,12 +101,12 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Estaciones
 
-        public async Task<string> repo_create_stations(StationRepository repository, StationDto stationDto)
+        public async Task<MessageResponse> repo_create_stations(StationRepository repository, StationDto stationDto)
         {
             return await repository.Create_stations(stationDto);
         }
 
-        public async Task<string> repo_update_stations(StationRepository repository, int stationId, StationDto stationDto)
+        public async Task<MessageResponse> repo_update_stations(StationRepository repository, int stationId, StationDto stationDto)
         {
             return await repository.Update_stations(stationId, stationDto);
         }
@@ -114,12 +115,12 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Máquinas
 
-        public async Task<string> repo_create_machines(MachineRepository repository, MachineDto machineDto)
+        public async Task<MessageResponse> repo_create_machines(MachineRepository repository, MachineDto machineDto)
         {
             return await repository.Create_machines(machineDto);
         }
 
-        public async Task<string> repo_update_machines(MachineRepository repository, int machineId, MachineDto machineDto)
+        public async Task<MessageResponse> repo_update_machines(MachineRepository repository, int machineId, MachineDto machineDto)
         {
             return await repository.Update_machines(machineId, machineDto);
         }
@@ -138,12 +139,12 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Piezas
 
-        public async Task<string> repo_create_parts(PartRepository repository, PartDto partDto)
+        public async Task<MessageResponse> repo_create_parts(PartRepository repository, PartDto partDto)
         {
             return await repository.Create_parts(partDto);
         }
 
-        public async Task<string> repo_update_parts(PartRepository repository, int partId, PartDto partDto)
+        public async Task<MessageResponse> repo_update_parts(PartRepository repository, int partId, PartDto partDto)
         {
             return await repository.Update_parts(partId, partDto);
         }
@@ -152,7 +153,7 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Turnos-Detalles
 
-        public async Task<string> repo_create_update_turn_with_details(TurnRepository repository, TurnDto turnDto)
+        public async Task<MessageResponse> repo_create_update_turn_with_details(TurnRepository repository, TurnDto turnDto)
         {
             return await repository.Create_Update_turns(turnDto);
         }
@@ -257,6 +258,11 @@ namespace Neuro.AI.Graph.QL.Mutations
         public async Task<string> repo_update_status_request(ChangeRequestRepository repository, UpdateStatusRequestDto usRequestDto)
         {
             return await repository.Update_status_request(usRequestDto);
+        }
+
+        public async Task<string> repo_update_changeRequest_processed(ChangeRequestRepository repository, int requestId)
+        {
+            return await repository.Update_changeRequest_processedAt(requestId);
         }
 
         #endregion

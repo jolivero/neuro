@@ -329,6 +329,28 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
+        public async Task<string> Update_changeRequest_processedAt(int requestId)
+        {
+            var sp = "sp_update_changeRequest_processed";
+            var p = new DynamicParameters();
+            p.Add("@RequestId", requestId);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+                await _db.ExecuteAsync(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+                return p.Get<string>("@Message");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
         #endregion
 
     }

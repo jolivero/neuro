@@ -4,6 +4,7 @@ using Neuro.AI.Graph.Models.Manufacturing;
 using System.Data;
 using Dapper;
 using Neuro.AI.Graph.Models.Dtos;
+using Neuro.AI.Graph.Models.CustomModels;
 
 namespace Neuro.AI.Graph.Repository
 {
@@ -45,53 +46,55 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<string> Create_stations(StationDto stationDto)
+        public async Task<MessageResponse> Create_stations(StationDto stationDto)
         {
             var sp = "sp_create_update_fields";
             var p = new DynamicParameters();
             p.Add("@FieldType", "Estación");
             p.Add("@Name", stationDto.Name);
             p.Add("@CreatedBy", stationDto.CreatedBy);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {
-                await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-    
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
             }
         }
 
-        public async Task<string> Update_stations(int stationId, StationDto stationDto)
+        public async Task<MessageResponse> Update_stations(int stationId, StationDto stationDto)
         {
             var sp = "sp_create_update_fields";
             var p = new DynamicParameters();
             p.Add("@Id", stationId);
             p.Add("@FieldType", "Estación");
             p.Add("@Name", stationDto.Name);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {
-                await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
             }
         }
 

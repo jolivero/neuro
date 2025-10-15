@@ -3,6 +3,7 @@ using System.Data;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.Manufacturing;
 using Neuro.AI.Graph.Models.Dtos;
+using Neuro.AI.Graph.Models.CustomModels;
 
 namespace Neuro.AI.Graph.Repository
 {
@@ -20,7 +21,7 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<string> Create_parts(PartDto partDto)
+        public async Task<MessageResponse> Create_parts(PartDto partDto)
         {
 
             var sp = "sp_create_update_part_inventory";
@@ -31,49 +32,52 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@CreatedBy", partDto.CreatedBy);
             p.Add("@IName", partDto.Inventory.Name);
             p.Add("@Quantity", partDto.Inventory.Quantity);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {
-                await _db.QueryAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-    
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
             }
         }
 
-        public async Task<string> Update_parts(int partId, PartDto partDto)
+        public async Task<MessageResponse> Update_parts(int partId, PartDto partDto)
         {
             var sp = "sp_create_update_part_inventory";
             var p = new DynamicParameters();
             p.Add("@PartId", partId);
             p.Add("@PName", partDto.Name);
             p.Add("@Code", partDto.Code);
+            p.Add("@IsPreviousPart", partDto.IsPreviousPart);
             p.Add("@CreatedBy", null);
             p.Add("@IName", partDto.Inventory.Name);
             p.Add("@Quantity", partDto.Inventory.Quantity);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {
-                await _db.QueryAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                 return new MessageResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
             }
         }
 
