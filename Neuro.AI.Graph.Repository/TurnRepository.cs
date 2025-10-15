@@ -1,6 +1,7 @@
 using System.Data;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
+using Neuro.AI.Graph.Models.CustomModels;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
 
@@ -51,7 +52,7 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<string> Create_Update_turns(TurnDto turnDto)
+        public async Task<MessageResponse> Create_Update_turns(TurnDto turnDto)
         {
             var sp = "sp_create_update_turn_details";
             var p = new DynamicParameters();
@@ -62,7 +63,6 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@PauseTime", TimeSpan.Parse(turnDto.PauseTime));
             p.Add("@CreatedBy", turnDto.CreatedBy);
             p.Add("@Action", turnDto.TurnId  == null ? "insertar" : "actualizar");
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             var turnDetailsTable = new DataTable();
             turnDetailsTable.Columns.Add("TurnDetailId", typeof(int));
@@ -88,17 +88,19 @@ namespace Neuro.AI.Graph.Repository
 
             try
             {
-                await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                         sp,
                         p,
                         commandType: CommandType.StoredProcedure
                     );
-
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
             }
 
         }

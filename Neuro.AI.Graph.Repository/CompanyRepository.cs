@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
+using Neuro.AI.Graph.Models.CustomModels;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
 
@@ -21,7 +22,7 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<string> Create_Update_companies(CompanyDto company)
+        public async Task<MessageResponse> Create_Update_companies(CompanyDto company)
         {
             var sp = "sp_create_update_company";
             var p = new DynamicParameters();
@@ -37,17 +38,18 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@ContactPhone", company.ContactPhone);
             p.Add("@ContactEmail", company.ContactEmail);
             p.Add("@CreatedBy", company.CreatedBy);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {
-                await _db.ExecuteAsync(sp, p);
-    
-                return p.Get<string>("@Message");
+                return await _db.QueryFirstAsync<MessageResponse>(sp, p, commandType: CommandType.StoredProcedure);
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
             }
         }
 

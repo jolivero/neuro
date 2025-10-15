@@ -203,7 +203,7 @@ public class UserRepository
 
 	#region ManufactoringMutations
 
-	public async Task<string> Create_update_user(UsersDto usersDto)
+	public async Task<MessageResponse> Create_update_user(UsersDto usersDto)
 	{
 		var sp = "sp_create_update_user";
 		var p = new DynamicParameters();
@@ -219,25 +219,27 @@ public class UserRepository
 		p.Add("@EmployeeNumber", usersDto.EmployeeNumber);
 		p.Add("@Rol", usersDto.Rol);
 		p.Add("@CompanyId", usersDto.CompanyId);
-		p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
 		try
 		{
-			await _db.ExecuteAsync(
+			return await _db.QueryFirstAsync<MessageResponse>(
 				sp,
 				p,
 				commandType: CommandType.StoredProcedure
 			);
 
-			return p.Get<string>("@Message");
 		}
 		catch (Exception ex)
 		{
-			return ex.Message;
+			return new MessageResponse
+			{
+				Status = "Error",
+				Message = ex.Message
+			};
 		}
 	}
 
-	public async Task<string> Update_user_skills(UserSkillsDto userSkillsDto)
+	public async Task<MessageResponse> Update_user_skills(UserSkillsDto userSkillsDto)
 	{
 		var sp = "sp_update_user_skills";
 		var p = new DynamicParameters();
@@ -260,40 +262,44 @@ public class UserRepository
 
 		try
 		{
-			await _db.ExecuteAsync(
+			return await _db.QueryFirstAsync<MessageResponse>(
 				sp,
 				p,
 				commandType: CommandType.StoredProcedure
 			);
-
-			return p.Get<string>("@Message");
 		}
 		catch (Exception ex)
 		{
-			return ex.Message;
+			return new MessageResponse
+			{
+				Status = "Error",
+				Message = ex.Message
+			};
 		}
 	}
 
-	public async Task<string> Delete_user(Guid userId)
+	public async Task<MessageResponse> Delete_user(Guid userId)
     {
 		var sp = "sp_delete_user";
 		var p = new DynamicParameters();
 		p.Add("@UserId", userId);
-		p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
 		try
 		{
-			await _db.ExecuteAsync(
+			return await _db.QueryFirstAsync<MessageResponse>(
 				sp,
 				p,
 				commandType: CommandType.StoredProcedure
 			);
 
-			return p.Get<string>("@Message");
 		}
 		catch (Exception ex)
 		{
-			return ex.Message;
+			return new MessageResponse
+			{
+				Status = "Error",
+				Message = ex.Message
+			};
 		}
     }
 

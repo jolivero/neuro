@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
+using Neuro.AI.Graph.Models.CustomModels;
 using Neuro.AI.Graph.Models.Dtos;
 using Neuro.AI.Graph.Models.Manufacturing;
 
@@ -21,7 +22,7 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<string> Create_machines(MachineDto machineDto)
+        public async Task<MessageResponse> Create_machines(MachineDto machineDto)
         {
             var sp = "sp_create_update_machine";
             var p = new DynamicParameters();
@@ -35,25 +36,26 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@HoursPerCut", machineDto.HoursPerCut);
             p.Add("@Status", machineDto.Status);
             p.Add("@CreatedBy", machineDto.CreatedBy);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {
-                await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
             }
         }
 
-        public async Task<string> Update_machines(int machineId, MachineDto machineDto)
+        public async Task<MessageResponse> Update_machines(int machineId, MachineDto machineDto)
         {
             var sp = "sp_create_update_machine";
             var p = new DynamicParameters();
@@ -71,17 +73,19 @@ namespace Neuro.AI.Graph.Repository
 
             try
             {
-                await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
             }
         }
 
