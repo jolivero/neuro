@@ -8,7 +8,7 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int BusinessDays { get; set; }
         public int ExtraDays { get; set; }
         public int LineId { get; set; }
-        public int PlannedBy { get; set; }
+        public Guid PlannedBy { get; set; }
         public List<DailyPlanningDto> DailyPlanning { get; set; } = [];
     }
 
