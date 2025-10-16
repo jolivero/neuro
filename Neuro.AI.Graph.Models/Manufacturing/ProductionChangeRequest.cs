@@ -37,6 +37,8 @@ public partial class ProductionChangeRequest
 
     public int? TaskId { get; set; }
 
+    public DateTime? ProcessedAt { get; set; }
+
     public virtual User? ApprovalUser { get; set; }
 
     public virtual RequestCategory? Category { get; set; }
