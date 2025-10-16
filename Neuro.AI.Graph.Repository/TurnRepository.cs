@@ -105,49 +105,51 @@ namespace Neuro.AI.Graph.Repository
 
         }
         
-        public async Task<string> Delete_turn_details(string turnId)
+        public async Task<MessageResponse> Delete_turn_details(int turnId)
         {
             var sp = "sp_delete_turn_details";
             var p = new DynamicParameters();
             p.Add("@TurnId", turnId);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {
-                await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message,
+                };
             }
         } 
 
-        public async Task<string> Delete_turnDetail_Id(string turnDetailId)
+        public async Task<MessageResponse> Delete_turnDetail_Id(int turnDetailId)
         {
             var sp = "sp_delete_turnDetail_id";
             var p = new DynamicParameters();
             p.Add("@TurnDetailId", turnDetailId);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {
-                await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message,
+                };
             }
         }
 
