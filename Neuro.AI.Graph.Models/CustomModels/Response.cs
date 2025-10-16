@@ -11,4 +11,9 @@ namespace Neuro.AI.Graph.Models.CustomModels
         public string Status { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
     }
+
+    public class ChangePlanningRequestMessageResponse : MessageResponse
+    {
+        public int RequestId { get; set; }
+    }
 }

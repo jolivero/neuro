@@ -216,9 +216,9 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Update_dailyTask(dtTaskDto);
         }
 
-        public async Task<string> repo_update_dailyTasks_plannification(DailyTaskRepository repository, int requestId)
+        public async Task<string> repo_update_revert_dailyTask_planning(DailyTaskRepository repository, int requestId, int taskId, Guid userId)
         {
-            return await repository.Revert_dailyTask_Plannification(requestId);
+            return await repository.Revert_dailyTask_Planning(requestId, taskId, userId);
         }
 
         #endregion
@@ -235,9 +235,9 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_daily_request(dRequestDto);
         }
 
-        public async Task<string> repo_create_changePlannification_request(ChangeRequestRepository repository, ChangePlanificationRequestDto cpRequestDto)
+        public async Task<ChangePlanningRequestMessageResponse> repo_create_changePlanning_request(ChangeRequestRepository repository, ChangePlanificationRequestDto cpRequestDto)
         {
-            return await repository.Create_changePlannification_request(cpRequestDto);
+            return await repository.Create_changePlanning_request(cpRequestDto);
         }
 
         public async Task<string> repo_create_changeOperator_request(ChangeRequestRepository repository, CommonRequestDto cRequestDto)

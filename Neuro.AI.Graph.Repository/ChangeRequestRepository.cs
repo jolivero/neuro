@@ -173,9 +173,9 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Create_changePlannification_request(ChangePlanificationRequestDto cpRequestDto)
+        public async Task<ChangePlanningRequestMessageResponse> Create_changePlanning_request(ChangePlanificationRequestDto cpRequestDto)
         {
-            var sp = "sp_create_changePlannification_request";
+            var sp = "sp_create_changePlanning_request";
             var p = new DynamicParameters();
             p.Add("@TaskId", cpRequestDto.TaskId);
             p.Add("@RequestingUserId", cpRequestDto.RequestingUserId);
@@ -185,24 +185,26 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@StationId", cpRequestDto.StationId);
             p.Add("@MachineId", cpRequestDto.MachineId);
             p.Add("@PartId", cpRequestDto.PartId);
-            p.Add("@BeginAt", TimeSpan.Parse(cpRequestDto.BeginAt));
-            p.Add("@EndAt", TimeSpan.Parse(cpRequestDto.EndAt));
-            p.Add("@NewValue", cpRequestDto.NewValue);
-            p.Add("@Message", dbType: DbType.String, size: 255, direction: ParameterDirection.Output);
+            // p.Add("@BeginAt", TimeSpan.Parse(cpRequestDto.BeginAt));
+            // p.Add("@EndAt", TimeSpan.Parse(cpRequestDto.EndAt));
+            // p.Add("@NewValue", cpRequestDto.NewValue);
 
             try
             {
-                await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<ChangePlanningRequestMessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new ChangePlanningRequestMessageResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message,
+                    RequestId = 0
+                };
             }
         }
 

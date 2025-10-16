@@ -277,7 +277,7 @@ public partial class ManufacturingDbContext : DbContext
 
         modelBuilder.Entity<Log>(entity =>
         {
-            entity.HasKey(e => e.LogId).HasName("PK__logs__5E548648D1B9D9E2");
+            entity.HasKey(e => e.LogId).HasName("PK__logs__5E5486483631C66E");
 
             entity.ToTable("logs");
 
@@ -298,7 +298,6 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.Desc3)
                 .HasMaxLength(255)
                 .HasDefaultValueSql("(NULL)");
-            entity.Property(e => e.Payload).HasMaxLength(255);
             entity.Property(e => e.Rol).HasMaxLength(255);
             entity.Property(e => e.UserName).HasMaxLength(255);
         });
@@ -452,6 +451,7 @@ public partial class ManufacturingDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.OriginRequest).HasMaxLength(255);
+            entity.Property(e => e.ProcessedAt).HasColumnType("datetime");
             entity.Property(e => e.Reason).HasMaxLength(255);
             entity.Property(e => e.RequestedAt)
                 .HasDefaultValueSql("(getdate())")

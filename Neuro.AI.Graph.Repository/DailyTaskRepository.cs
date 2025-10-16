@@ -245,12 +245,14 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-    public async Task<string> Revert_dailyTask_Plannification(int requestId)
+        public async Task<string> Revert_dailyTask_Planning(int requestId, int taskId, Guid userId)
         {
-            var sp = "sp_update_revertPlannificationChange";
+            var sp = "sp_update_revertPlanningChange";
             var p = new DynamicParameters();
             p.Add("@RequestId", requestId);
-            p.Add("@Message",dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+            p.Add("@TaskId", taskId);
+            p.Add("@UserId", userId);
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {

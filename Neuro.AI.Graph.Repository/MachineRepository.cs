@@ -69,7 +69,6 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@MaxOperator", machineDto.MaxOperator);
             p.Add("@HoursPerCut", machineDto.HoursPerCut);
             p.Add("@Status", machineDto.Status);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {

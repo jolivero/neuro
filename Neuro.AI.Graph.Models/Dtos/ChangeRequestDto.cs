@@ -44,9 +44,9 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class ChangePlanificationRequestDto : FieldsChangeRequetsDto
     {
         public int TaskId { get; set; }
-        public string BeginAt { get; set; } = string.Empty;
-        public string EndAt { get; set; } = string.Empty;
-        public int NewValue { get; set; }
+        // public string BeginAt { get; set; } = string.Empty;
+        // public string EndAt { get; set; } = string.Empty;
+        // public int NewValue { get; set; }
     }
 
     public class CommonRequestDto : BaseChangeRequestDto
