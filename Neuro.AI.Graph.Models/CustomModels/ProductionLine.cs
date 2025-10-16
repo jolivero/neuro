@@ -29,6 +29,6 @@ namespace Neuro.AI.Graph.Models.CustomModels
         public string StationName { get; set; } = string.Empty;
         public string MachineName { get; set; } = string.Empty;
         public int HoursPerCut { get; set; }
-        public Guid CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = string.Empty;
     }
 }

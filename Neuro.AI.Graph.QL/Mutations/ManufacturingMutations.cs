@@ -158,12 +158,12 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_Update_turns(turnDto);
         }
 
-        public async Task<string> repo_delete_turn_with_details(TurnRepository repository, string turnId)
+        public async Task<MessageResponse> repo_delete_turn_with_details(TurnRepository repository, int turnId)
         {
             return await repository.Delete_turn_details(turnId);
         }
 
-        public async Task<string> repo_delete_turnDetail(TurnRepository repository, string turnDetailId)
+        public async Task<MessageResponse> repo_delete_turnDetail(TurnRepository repository, int turnDetailId)
         {
             return await repository.Delete_turnDetail_Id(turnDetailId);
         }
