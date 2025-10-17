@@ -136,7 +136,7 @@ public class UserRepository
 
 	}
 
-	public async Task<IEnumerable<User>> Select_users_with_monthlySchedule(int month, int year, Guid? userId)
+	public async Task<IEnumerable<User>> Select_users_with_monthlyPlanning(int month, int year, Guid? userId)
 	{
 
 		var sp = "sp_select_operatorScheduleInfoByMonth";
@@ -145,7 +145,7 @@ public class UserRepository
 		p.Add("@Year", year);
 		p.Add("@UserId", userId ?? null);
 
-		var operatorScheduleDict = new Dictionary<Guid, User>();
+		var operatorPlanningDict = new Dictionary<Guid, User>();
 
 		try
 		{
@@ -153,11 +153,11 @@ public class UserRepository
 			sp,
 			(user, task, station, machine, dailyPlanning, turn, turnDetail) =>
 			{
-				if (!operatorScheduleDict.TryGetValue(user.UserId, out var operatorData))
+				if (!operatorPlanningDict.TryGetValue(user.UserId, out var operatorData))
 				{
 					operatorData = user;
 					operatorData.DailyTasks = [];
-					operatorScheduleDict.Add(user.UserId, operatorData);
+					operatorPlanningDict.Add(user.UserId, operatorData);
 				}
 
 				var taskData = operatorData.DailyTasks.FirstOrDefault(t => t.TaskId == task.TaskId);
@@ -181,7 +181,6 @@ public class UserRepository
 					taskData.Turn?.TurnDetails.Add(turnDetailData);
 				}
 
-
 				return operatorData;
 			},
 			p,
@@ -189,7 +188,7 @@ public class UserRepository
 			commandType: CommandType.StoredProcedure
 		);
 
-			return operatorScheduleDict.Values;
+			return operatorPlanningDict.Values;
 		}
 		catch (Exception ex)
 		{
