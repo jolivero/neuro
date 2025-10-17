@@ -51,53 +51,69 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@Month", month ?? null);
             p.Add("@CompanyId", companyId ?? null);
 
-            var planificationDict = new Dictionary<int, MonthlyPlanningProductionLines>();
+            var planningDict = new Dictionary<int, MonthlyPlanningProductionLines>();
 
             try
             {
-                await _db.QueryAsync<MonthlyPlanning, AssignedProductionLines, MonthlyPlanning>(
+                await _db.QueryAsync<MonthlyPlanning, AssignedProductionLines, DailyPlanning, DailyTask, MonthlyPlanning>(
                     sp,
-                    (ms, apl) =>
+                    (mp, apl, dp, dt) =>
                     {
-                        if (!planificationDict.TryGetValue(ms.Month, out var planificationData))
+                        if (!planningDict.TryGetValue(mp.Month, out var planningData))
                         {
-                            planificationData = new()
+                            planningData = new()
                             {
-                                MonthId = ms.MonthId,
-                                Month = ms.Month,
-                                Year = ms.Year,
-                                BusinessDays = ms.BusinessDays,
-                                ExtraDays = ms.ExtraDays,
-                                LineId = ms.LineId,
+                                MonthId = mp.MonthId,
+                                Month = mp.Month,
+                                Year = mp.Year,
+                                BusinessDays = mp.BusinessDays,
+                                ExtraDays = mp.ExtraDays,
+                                LineId = mp.LineId,
+                                //DailyPlannings = [],
                                 AssignedProductionLines = []
                             };
 
-                            planificationDict.Add(ms.Month, planificationData);
+                            planningDict.Add(mp.Month, planningData);
                         }
 
-                        var plData = planificationData.AssignedProductionLines.FirstOrDefault(mp => mp.LineId == apl.LineId);
+                        var dpData = planningData.DailyPlannings.FirstOrDefault(d => d.DayId == dp.DayId);
+                        if (dpData == null)
+                        {
+                            dpData = dp;
+                            dpData.DailyTasks = [];
+                            planningData.DailyPlannings.Add(dpData);
+                        }
+
+                        var dtData = dpData.DailyTasks.FirstOrDefault(t => t.TaskId == dt.TaskId);
+                        if(dtData == null)
+                        {
+                            dtData = dt;
+                            dpData.DailyTasks.Add(dtData);
+                        }
+
+                        var plData = planningData.AssignedProductionLines.FirstOrDefault(mp => mp.LineId == apl.LineId);
                         if (plData == null)
                         {
                             plData = new()
                             {
                                 LineId = apl.LineId,
                                 Name = apl.Name,
-                                MonthlyGoal = ms.MonthlyGoal,
+                                MonthlyGoal = mp.MonthlyGoal,
                                 CurrentProgress = apl.CurrentProgress,
                                 Progress = apl.Progress
                             };
 
-                            planificationData.AssignedProductionLines.Add(plData);
+                            planningData.AssignedProductionLines.Add(plData);
                         }
 
-                        return planificationData;
+                        return planningData;
                     },
                     p,
-                    splitOn: "LineId",
+                    splitOn: "LineId, DayId, TaskId",
                     commandType: CommandType.StoredProcedure
                 );
 
-                return planificationDict.Values;
+                return planningDict.Values;
             }
             catch (Exception ex)
             {
