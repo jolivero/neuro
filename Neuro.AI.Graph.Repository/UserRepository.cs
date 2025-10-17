@@ -136,55 +136,62 @@ public class UserRepository
 
 	}
 
-	public async Task<IEnumerable<User>> Select_users_with_monthlyPlanning(int month, int year, Guid? userId)
+	public async Task<IEnumerable<OperatorMonthlyPlanning>> Select_operators_with_monthlyPlanning(int month, int year, Guid? userId)
 	{
 
-		var sp = "sp_select_operatorScheduleInfoByMonth";
+		var sp = "sp_select_operators_monthlyPlanning_info";
 		var p = new DynamicParameters();
 		p.Add("@Month", month);
 		p.Add("@Year", year);
 		p.Add("@UserId", userId ?? null);
 
-		var operatorPlanningDict = new Dictionary<Guid, User>();
+		var operatorPlanningDict = new Dictionary<Guid, OperatorMonthlyPlanning>();
 
 		try
 		{
-			await _db.QueryAsync<User, DailyTask, Station, Machine, DailyPlanning, Turn, TurnDetail, User>(
+			await _db.QueryAsync<User, DailyTask, Station, Machine, DailyPlanning, ProductionLine, OperatorCompliance, User>(
 			sp,
-			(user, task, station, machine, dailyPlanning, turn, turnDetail) =>
+			(user, task, station, machine, dailyPlanning, productionLine, operatorCompliance) =>
 			{
 				if (!operatorPlanningDict.TryGetValue(user.UserId, out var operatorData))
 				{
-					operatorData = user;
-					operatorData.DailyTasks = [];
-					operatorPlanningDict.Add(user.UserId, operatorData);
+					operatorData = new()
+					{
+						UserId = user.UserId,
+						FirstName = user.FirstName,
+						LastName = user.LastName,
+						OperatorDailyTasks = []
+					};
+
+                    operatorPlanningDict.Add(user.UserId, operatorData);
 				}
 
-				var taskData = operatorData.DailyTasks.FirstOrDefault(t => t.TaskId == task.TaskId);
+				var taskData = operatorData.OperatorDailyTasks.FirstOrDefault(t => t.TaskId == task.TaskId);
 				if (taskData == null)
 				{
-					taskData = task;
-					taskData.Station = station;
-					taskData.Machine = machine;
-					taskData.Day = dailyPlanning;
-					taskData.Turn = turn;
-					taskData.Turn.TurnDetails = [];
+					var operatorDailyTasks = new OperatorDailyTasks()
+					{
+						TaskId = task.TaskId,
+						OperatorStatus = task.OperatorStatus,
+						BeginAt = task.BeginAt,
+						EndAt = task.EndAt,
+						Day = dailyPlanning,
+						ProductionLine = productionLine,
+						Station = station,
+						Machine = machine,
+						OperatorCompliance = new(),
+					};
 
-					operatorData.DailyTasks.Add(taskData);
-				}
 
+					if (operatorCompliance != null && operatorDailyTasks.TaskId == operatorCompliance.TaskId) operatorDailyTasks.OperatorCompliance = operatorCompliance;
 
-				var turnDetailData = taskData.Turn?.TurnDetails.FirstOrDefault(td => td.TurnDetailId == turnDetail.TurnDetailId);
-				if (turnDetailData == null)
-				{
-					turnDetailData = turnDetail;
-					taskData.Turn?.TurnDetails.Add(turnDetailData);
+					operatorData.OperatorDailyTasks.Add(operatorDailyTasks);
 				}
 
 				return operatorData;
 			},
 			p,
-			splitOn: "TaskId, StationId, MachineId, DayId, TurnId, TurnDetailId",
+			splitOn: "TaskId, StationId, MachineId, DayId, LineId, ProducedPartId",
 			commandType: CommandType.StoredProcedure
 		);
 
@@ -192,7 +199,7 @@ public class UserRepository
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex.Message);
+			Console.WriteLine($"Error Select_users_with_monthlyPlanning: {ex.Message}");
 			throw new Exception(ex.Message);
 		}
 
