@@ -21,11 +21,12 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<AnnualPlannigInfo> Select_annual_plannification_info(int year)
+        public async Task<AnnualPlannigInfo> Select_annual_planning_info(int year, int? month)
         {
             var sp = "sp_select_annual_planning_info";
             var p = new DynamicParameters();
             p.Add("@Year", year);
+            p.Add("@Month", month ?? null);
 
             try
             {
@@ -42,9 +43,9 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<IEnumerable<MonthlyPlanningProductionLines>> Select_annual_planification(int? year, int? month, int? companyId)
+        public async Task<IEnumerable<MonthlyPlanningProductionLines>> Select_annual_planning(int? year, int? month, int? companyId)
         {
-            var sp = "sp_select_plannificationByYear";
+            var sp = "sp_select_planningByYear";
             var p = new DynamicParameters();
             p.Add("@Year", year ?? DateTime.Now.Year);
             p.Add("@Month", month ?? null);

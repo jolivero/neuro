@@ -20,7 +20,7 @@ namespace Neuro.AI.Graph.QL.Queries
 
         public async Task<IQueryable<User>> repo_users_with_monthlySchedule(UserRepository repository, int month, int year, Guid? userId)
         {
-            return (await repository.Select_users_with_monthlySchedule(month, year, userId)).AsQueryable();
+            return (await repository.Select_users_with_monthlyPlanning(month, year, userId)).AsQueryable();
         }
 
         #endregion
@@ -99,9 +99,9 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Planificación anual
 
-        public async Task<AnnualPlannigInfo> repo_annual_plannification_info(MonthlyPlanningRepository repository, int year)
+        public async Task<AnnualPlannigInfo> repo_annual_planning_info(MonthlyPlanningRepository repository, int year, int? month)
         {
-            return await repository.Select_annual_plannification_info(year);
+            return await repository.Select_annual_planning_info(year, month);
         }
 
         public async Task<IEnumerable<MonthlyPlanningProgress>> repo_monthlyPlanning_progress(MonthlyPlanningRepository repository, int lineId, string currentDay)
@@ -109,9 +109,9 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_monthlyPlanning_Progress(lineId, currentDay)).AsQueryable();
         }
 
-        public async Task<IQueryable<MonthlyPlanningProductionLines>> repo_annual_planification(MonthlyPlanningRepository repository, int? year, int? month, int? companyId)
+        public async Task<IQueryable<MonthlyPlanningProductionLines>> repo_annual_planning(MonthlyPlanningRepository repository, int? year, int? month, int? companyId)
         {
-            return (await repository.Select_annual_planification(year, month, companyId)).AsQueryable();
+            return (await repository.Select_annual_planning(year, month, companyId)).AsQueryable();
         }
 
         #endregion

@@ -215,7 +215,7 @@ namespace Neuro.AI.Graph.Repository
                 TaskId = cRequestDto.TaskId,
                 UserId = cRequestDto.UserId,
                 CreatedBy = cRequestDto.RequestingUserId,
-                CategoryId = 3, //_config["RequestCategories:ChangeOperator"]! -> Modificar,
+                CategoryId = Convert.ToInt32(_config["RequestCategories:ChangeOperator"]), //-> Modificar,
                 OriginRequest = "Planificacion diaria",
                 RequestType = cRequestDto.RequestType,
                 Reason = cRequestDto.Reason
@@ -239,7 +239,7 @@ namespace Neuro.AI.Graph.Repository
                 TaskId = cRequestDto.TaskId,
                 UserId = cRequestDto.UserId,
                 CreatedBy = cRequestDto.RequestingUserId,
-                CategoryId = 5, ////_config["RequestCategories:ChangeOperator"]! -> Modificar,
+                CategoryId = Convert.ToInt32(_config["RequestCategories:SpecialMissions"]), //-> Modificar,
                 OriginRequest = "Control de estado",
                 RequestType = cRequestDto.RequestType,
                 Reason = cRequestDto.Reason
