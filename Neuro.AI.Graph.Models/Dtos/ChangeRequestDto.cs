@@ -55,6 +55,19 @@ namespace Neuro.AI.Graph.Models.Dtos
         public Guid UserId { get; set; }
     }
 
+    public class CommonChangeRequestDto : FieldsChangeRequetsDto
+    {
+        public int MonthId { get; set; }
+        public int DayId { get; set; }
+        public int TaskId { get; set; }
+        public int? TurnId { get; set; }
+        public Guid CurrentUserId { get; set; }
+        public Guid? NewUserId { get; set; }
+        public string CurrentValue { get; set; } = string.Empty;
+        public string NewValue { get; set; } = string.Empty;
+
+    }
+
     public class ExtraTimeRequestDto : FieldsChangeRequetsDto
     {
         public decimal HoursQuantity { get; set; }
@@ -73,6 +86,12 @@ namespace Neuro.AI.Graph.Models.Dtos
         public string? Reason { get; set; }
         public string? CurrentValue { get; set; }
         public string? NewValue { get; set; }
+    }
+
+    public class ChangeRequestDtoV2 : CommonChangeRequestDto
+    {
+        public int CategoryId { get; set; }
+        public string OriginRequest { get; set; } = string.Empty;
     }
 
     public class UpdateStatusRequestDto

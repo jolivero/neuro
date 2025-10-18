@@ -240,7 +240,7 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Create_changePlanning_request(cpRequestDto);
         }
 
-        public async Task<string> repo_create_changeOperator_request(ChangeRequestRepository repository, CommonRequestDto cRequestDto)
+        public async Task<MessageResponse> repo_create_changeOperator_request(ChangeRequestRepository repository, CommonChangeRequestDto cRequestDto)
         {
             return await repository.Create_changeOperator_request(cRequestDto);
         }
