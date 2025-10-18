@@ -99,7 +99,7 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Planificación anual
 
-        public async Task<AnnualPlannigInfo> repo_annual_planning_info(MonthlyPlanningRepository repository, int year, int? month)
+        public async Task<AnnualPlannigInfo> repo_annual_planning_info(MonthlyPlanningRepository repository, int year, List<int>? month)
         {
             return await repository.Select_annual_planning_info(year, month);
         }
