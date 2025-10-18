@@ -21,13 +21,25 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
-        public async Task<AnnualPlannigInfo> Select_annual_planning_info(int year, int? month)
+        public async Task<AnnualPlannigInfo> Select_annual_planning_info(int year, List<int>? months)
         {
             var sp = "sp_select_annual_planning_info";
             var p = new DynamicParameters();
             p.Add("@Year", year);
-            p.Add("@Month", month ?? null);
 
+            if (months != null)
+            {
+                var monthNumberTable = new DataTable();
+                monthNumberTable.Columns.Add("MonthNumber", typeof(int));
+
+                foreach (var monthValue in months)
+                {
+                    monthNumberTable.Rows.Add(monthValue);
+                }
+
+                p.Add("@MonthListTable", monthNumberTable.AsTableValuedParameter("dbo.Manufacturing_MonthListTableType"));
+            }
+            
             try
             {
                 return await _db.QueryFirstAsync<AnnualPlannigInfo>(
