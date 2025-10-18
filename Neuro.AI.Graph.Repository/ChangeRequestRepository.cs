@@ -101,6 +101,47 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
+        public async Task<MessageResponse> Create_change_requestV2(ChangeRequestDtoV2 crDto)
+        {
+            var sp = "sp_create_changeRequestV2";
+            var p = new DynamicParameters();
+            p.Add("@MonthId", crDto.MonthId);
+            p.Add("@DayId", crDto.DayId);
+            p.Add("@TaskId", crDto.TaskId);
+            p.Add("@LineId", crDto.LineId);
+            p.Add("@GroupId", crDto.GroupId);
+            p.Add("@StationId", crDto.StationId);
+            p.Add("@MachineId", crDto.MachineId);
+            p.Add("@PartId", crDto.PartId);
+            p.Add("@TurnId", crDto.TurnId);
+            p.Add("@CurrentUserId", crDto.CurrentUserId);
+            p.Add("@NewUserId", crDto.NewUserId ?? null);
+            p.Add("@CreatedBy", crDto.RequestingUserId);
+            p.Add("@CurrentValue", crDto.CurrentValue);
+            p.Add("@NewValue", crDto.NewValue);
+            p.Add("@CategoryId", crDto.CategoryId);
+            p.Add("@OriginRequest", crDto.OriginRequest);
+            p.Add("@RequestType", crDto.RequestType);
+            p.Add("@Reason", crDto.Reason);
+
+            try
+            {
+                return await _db.QueryFirstAsync<MessageResponse>(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            catch (Exception ex)
+            {
+                return new MessageResponse()
+                {
+                    Status = "Error",
+                    Message = ex.Message,
+                };
+            }
+        }
+
 
         public async Task<string> Create_monthly_request(MonthlyChangeRequestDto mRequestDto)
         {
@@ -208,26 +249,39 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Create_changeOperator_request(CommonRequestDto cRequestDto)
+        public async Task<MessageResponse> Create_changeOperator_request(CommonChangeRequestDto cRequestDto)
         {
-            var changeRequestDto = new ChangeRequestDto()
+            var changeRequestDto = new ChangeRequestDtoV2()
             {
+                MonthId = cRequestDto.MonthId,
+                DayId = cRequestDto.DayId,
                 TaskId = cRequestDto.TaskId,
-                UserId = cRequestDto.UserId,
-                CreatedBy = cRequestDto.RequestingUserId,
+                LineId = cRequestDto.LineId,
+                GroupId = cRequestDto.GroupId,
+                StationId = cRequestDto.StationId,
+                MachineId = cRequestDto.MachineId,
+                PartId = cRequestDto.PartId,
+                TurnId = cRequestDto.TurnId ?? null,
+                CurrentUserId = cRequestDto.CurrentUserId,
+                NewUserId = cRequestDto.NewUserId ?? null,
+                RequestingUserId = cRequestDto.RequestingUserId,
                 CategoryId = Convert.ToInt32(_config["RequestCategories:ChangeOperator"]), //-> Modificar,
-                OriginRequest = "Planificacion diaria",
+                OriginRequest = "Planificación diaria",
                 RequestType = cRequestDto.RequestType,
-                Reason = cRequestDto.Reason
+                Reason = cRequestDto.Reason,
             };
 
             try
             {
-                return await Create_change_request(changeRequestDto);
+                return await Create_change_requestV2(changeRequestDto);
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse()
+                {
+                    Status = "Error",
+                    Message = ex.Message,
+                };
             }
         }
 
@@ -244,15 +298,6 @@ namespace Neuro.AI.Graph.Repository
                 RequestType = cRequestDto.RequestType,
                 Reason = cRequestDto.Reason
             };
-
-            /*var sp = "sp_create_specialMission_request";
-            var p = new DynamicParameters();
-            p.Add("@TaskId", smRequestDto.TaskId);
-            p.Add("@UserId", smRequestDto.UserId);
-            p.Add("@RequestingUserId", smRequestDto.RequestingUserId);
-            p.Add("@RequestType", smRequestDto.RequestType);
-            p.Add("@Reason", smRequestDto.Reason);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);*/
 
             try
             {
