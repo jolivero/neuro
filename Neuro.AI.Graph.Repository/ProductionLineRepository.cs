@@ -100,6 +100,96 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
+        public async Task<IEnumerable<ProductionLineDetail>> Select_productionLines_with_details_organized(int lineId)
+        {
+            var sp = "sp_select_productionLine_details";
+            var p = new DynamicParameters();
+            p.Add("@LineId", lineId);
+
+            var productionLineDict = new Dictionary<int, ProductionLineDetail>();
+
+            try
+            {
+                await _db.QueryAsync<ProductionLineDetail, Group, Station, Machine, Part, Inventory, Part, ProductionLineDetail>(
+                    sp,
+                    (line, group, station, machine, part, inventory, prevPart) =>
+                    {
+                        if (!productionLineDict.TryGetValue(line.LineId, out var productionLineData))
+                        {
+                            productionLineData = new()
+                            {
+                                LineId = line.LineId,
+                                Name = line.Name
+                            };
+                            productionLineData.Groups = [];
+                            productionLineDict.Add(line.LineId, productionLineData);
+                        }
+
+                        var groupData = productionLineData.Groups.FirstOrDefault(ln => ln.GroupId == group.GroupId);
+                        if (groupData == null)
+                        {
+                            groupData = new()
+                            {
+                                GroupId = group.GroupId,
+                                Name = group.Name!,
+                                Station = new()
+                                {
+                                    StationId = station.StationId,
+                                    Name = station.Name!,
+                                    Machine = new()
+                                    {
+                                        MachineId = machine.MachineId,
+                                        Name = machine.Name,
+                                    },
+                                    Part = new()
+                                    {
+                                        PartId = part.PartId,
+                                        Name = part.Name,
+                                        Code = part.Code
+                                    },
+                                },
+                            };
+
+                            groupData.Station.PreviousParts = [];
+                            productionLineData.Groups.Add(groupData);
+                        }
+
+                        if (prevPart != null && !station.Parts.Any(s => s.PartId == prevPart.PartId))
+                        {
+                            if (inventory != null && prevPart.PartId == inventory.PartId)
+                            {
+                                var prevPartData = new ProductionLinePreviousPart()
+                                {
+                                    PreviousPartId = prevPart.PartId,
+                                    Name = prevPart.Name,
+                                    Code = prevPart.Code,
+                                    Inventory = new()
+                                    {
+                                        InventoryId = (int)inventory.PartId,
+                                        Name = inventory.Name,
+                                        Quantity = inventory.Quantity
+                                    }
+                                };
+                                groupData.Station.PreviousParts.Add(prevPartData);
+                            }
+                        }
+
+                        return productionLineData;
+                    },
+                    p,
+                    splitOn: "GroupId, StationId, MachineId, PartId, InventoryId, PartId",
+                    commandType: CommandType.StoredProcedure
+                    );
+
+                return productionLineDict.Values;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return productionLineDict.Values;
+            }
+        }
+
         public async Task<IEnumerable<ProductionLine>> Select_productionLine_recipe(int taskId, Guid userId)
         {
             var sp_lineId = "sp_select_lineId_from_recipe";
@@ -224,7 +314,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@PartId", plUpdateDto.Steps.PartId);
             p.Add("@PrevPartId", plUpdateDto.Steps.PrevPartId);
             p.Add("@Quantity", plUpdateDto.Steps.RequiredQuantity);
-             p.Add("@StepOrder", plUpdateDto.Steps.StepOrder);
+            p.Add("@StepOrder", plUpdateDto.Steps.StepOrder);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
@@ -272,7 +362,7 @@ namespace Neuro.AI.Graph.Repository
                 return $"Error en orden de paso {ex.Message}";
             }
         }
-        
+
         public async Task<string> Delete_productionLine_steps(ProductionLineHandleStepDto plDeleteDto)
         {
             var sp = "sp_delete_productionLine_step";
