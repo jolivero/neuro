@@ -140,7 +140,7 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<User> GetUsersInfo(ManufacturingDbContext context) => context.Users;
+    public IQueryable<User> GetUsersInfo(ManufacturingDbContext context) => context.Users.Where(u => u.Available == 1);
 
     [UseProjection]
     [UseFiltering]
@@ -177,6 +177,7 @@ public class EntitiesQueries
             .Include(m => m.Stations)
             .Include(m => m.MachineReports).ThenInclude(mr => mr.Operator)
             .Include(m => m.MachineReports).ThenInclude(mr => mr.Technical)
+            .Where(m => m.Available == 1)
             .OrderByDescending(m => m.CreatedAt)
             .ToListAsync();
         foreach (var machine in machines)
@@ -199,7 +200,7 @@ public class EntitiesQueries
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<Part> GetPartsWithInventory(ManufacturingDbContext context) => context.Parts.Include(p => p.Inventory).OrderByDescending(p => p.CreatedAt);
+    public IQueryable<Part> GetPartsWithInventory(ManufacturingDbContext context) => context.Parts.Include(p => p.Inventory).Where(p => p.Available == 1).OrderByDescending(p => p.CreatedAt);
 
     [UseProjection]
     [UseFiltering]
@@ -248,9 +249,9 @@ public class EntitiesQueries
         var planningList = await context.MonthlyPlannings
             .OrderBy(mp => mp.CreatedAt)
             .Include(mp => mp.Line).Where(mp => mp.Line!.Available == 1)
-            .Include(mp => mp.DailyPlannings.Where(ds => ds.Available == 1)).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.User)
-            .Include(mp => mp.DailyPlannings).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Station)
-            .Include(mp => mp.DailyPlannings).ThenInclude(ds => ds.DailyTasks).ThenInclude(dt => dt.Machine).ToListAsync();
+            .Include(mp => mp.DailyPlannings.Where(ds => ds.Available == 1)).ThenInclude(ds => ds.DailyTasks.Where(dt => dt.Available == 1)).ThenInclude(dt => dt.User)
+            .Include(mp => mp.DailyPlannings).ThenInclude(ds => ds.DailyTasks.Where(dt => dt.Available == 1)).ThenInclude(dt => dt.Station)
+            .Include(mp => mp.DailyPlannings).ThenInclude(ds => ds.DailyTasks.Where(dt => dt.Available == 1)).ThenInclude(dt => dt.Machine).ToListAsync();
         foreach (var planning in planningList)
         {
             planning.DailyPlannings = planning.DailyPlannings.OrderBy(ds => ds.ProductionDate).ToList();
@@ -266,7 +267,8 @@ public class EntitiesQueries
                                                                                         .Include(dt => dt.User)
                                                                                         .Include(dt => dt.Station)
                                                                                         .Include(dt => dt.Machine)
-                                                                                        .Include(dt => dt.Day).Where(dt => dt.Day!.Available == 1);
+                                                                                        .Include(dt => dt.Day).Where(dp => dp.Day!.Available == 1)
+                                                                                        .Where(dt => dt.Available == 1);
 
     [UseProjection]
     [UseFiltering]
