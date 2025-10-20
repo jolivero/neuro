@@ -30,8 +30,8 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@Code", partDto.Code);
             p.Add("@IsPreviousPart", partDto.IsPreviousPart);
             p.Add("@CreatedBy", partDto.CreatedBy);
-            p.Add("@IName", partDto.Inventory.Name);
-            p.Add("@Quantity", partDto.Inventory.Quantity);
+            p.Add("@IName", partDto.Inventory?.Name);
+            p.Add("@Quantity", partDto.Inventory?.Quantity);
 
             try
             {
@@ -59,9 +59,9 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@PName", partDto.Name);
             p.Add("@Code", partDto.Code);
             p.Add("@IsPreviousPart", partDto.IsPreviousPart);
-            p.Add("@CreatedBy", null);
-            p.Add("@IName", partDto.Inventory.Name);
-            p.Add("@Quantity", partDto.Inventory.Quantity);
+            p.Add("@CreatedBy", partDto.CreatedBy);
+            p.Add("@IName", partDto.Inventory?.Name);
+            p.Add("@Quantity", partDto.Inventory?.Quantity);
 
             try
             {
@@ -73,7 +73,7 @@ namespace Neuro.AI.Graph.Repository
             }
             catch (Exception ex)
             {
-                 return new MessageResponse
+                return new MessageResponse
                 {
                     Status = "Error",
                     Message = ex.Message
