@@ -51,11 +51,6 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.Select_productionLines_with_details(lineId)).AsQueryable();
         }
 
-        public async Task<IQueryable<ProductionLineDetail>> repo_productionLines_with_details_organized(ProductionLineRepository repository, int lineId)
-        {
-            return (await repository.Select_productionLines_with_details_organized(lineId)).AsQueryable();
-        }
-
         public async Task<IQueryable<ProductionLine>> repo_productionLine_recipe(ProductionLineRepository repository, int taskId, Guid userId)
         {
             return (await repository.Select_productionLine_recipe(taskId, userId)).AsQueryable();

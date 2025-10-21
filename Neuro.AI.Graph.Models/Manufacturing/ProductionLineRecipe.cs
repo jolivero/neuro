@@ -17,10 +17,6 @@ public partial class ProductionLineRecipe
 
     public int? PartId { get; set; }
 
-    public int? PreviousPartId { get; set; }
-
-    public decimal? RequiredQuantity { get; set; }
-
     public int? StepOrder { get; set; }
 
     public DateTime? CreatedAt { get; set; }
@@ -32,8 +28,6 @@ public partial class ProductionLineRecipe
     public virtual Machine? Machine { get; set; }
 
     public virtual Part? Part { get; set; }
-
-    public virtual Part? PreviousPart { get; set; }
 
     public virtual ICollection<ProductionLineRecipeMaterial> ProductionLineRecipeMaterials { get; set; } = new List<ProductionLineRecipeMaterial>();
 

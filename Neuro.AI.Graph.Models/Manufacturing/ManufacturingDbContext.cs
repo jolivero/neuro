@@ -541,8 +541,6 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.PreviousPartId).HasColumnName("previousPartId");
-            entity.Property(e => e.RequiredQuantity).HasColumnType("decimal(10, 3)");
 
             entity.HasOne(d => d.Group).WithMany(p => p.ProductionLineRecipes)
                 .HasForeignKey(d => d.GroupId)
@@ -556,13 +554,9 @@ public partial class ManufacturingDbContext : DbContext
                 .HasForeignKey(d => d.MachineId)
                 .HasConstraintName("FK__Productio__Machi__6C63F2D5");
 
-            entity.HasOne(d => d.Part).WithMany(p => p.ProductionLineRecipeParts)
+            entity.HasOne(d => d.Part).WithMany(p => p.ProductionLineRecipes)
                 .HasForeignKey(d => d.PartId)
                 .HasConstraintName("FK__Productio__PartI__6D58170E");
-
-            entity.HasOne(d => d.PreviousPart).WithMany(p => p.ProductionLineRecipePreviousParts)
-                .HasForeignKey(d => d.PreviousPartId)
-                .HasConstraintName("FK__Productio__previ__6E4C3B47");
 
             entity.HasOne(d => d.Station).WithMany(p => p.ProductionLineRecipes)
                 .HasForeignKey(d => d.StationId)
