@@ -147,96 +147,6 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<IEnumerable<ProductionLineDetail>> Select_productionLines_with_details_organized(int lineId)
-        {
-            var sp = "sp_select_productionLine_details";
-            var p = new DynamicParameters();
-            p.Add("@LineId", lineId);
-
-            var productionLineDict = new Dictionary<int, ProductionLineDetail>();
-
-            try
-            {
-                await _db.QueryAsync<ProductionLineDetail, Group, Station, Machine, Part, Inventory, Part, ProductionLineDetail>(
-                    sp,
-                    (line, group, station, machine, part, inventory, prevPart) =>
-                    {
-                        if (!productionLineDict.TryGetValue(line.LineId, out var productionLineData))
-                        {
-                            productionLineData = new()
-                            {
-                                LineId = line.LineId,
-                                Name = line.Name
-                            };
-                            productionLineData.Groups = [];
-                            productionLineDict.Add(line.LineId, productionLineData);
-                        }
-
-                        var groupData = productionLineData.Groups.FirstOrDefault(ln => ln.GroupId == group.GroupId);
-                        if (groupData == null)
-                        {
-                            groupData = new()
-                            {
-                                GroupId = group.GroupId,
-                                Name = group.Name!,
-                                Station = new()
-                                {
-                                    StationId = station.StationId,
-                                    Name = station.Name!,
-                                    Machine = new()
-                                    {
-                                        MachineId = machine.MachineId,
-                                        Name = machine.Name,
-                                    },
-                                    Part = new()
-                                    {
-                                        PartId = part.PartId,
-                                        Name = part.Name,
-                                        Code = part.Code
-                                    },
-                                },
-                            };
-
-                            groupData.Station.PreviousParts = [];
-                            productionLineData.Groups.Add(groupData);
-                        }
-
-                        if (prevPart != null && !station.Parts.Any(s => s.PartId == prevPart.PartId))
-                        {
-                            if (inventory != null && prevPart.PartId == inventory.PartId)
-                            {
-                                var prevPartData = new ProductionLinePreviousPart()
-                                {
-                                    PreviousPartId = prevPart.PartId,
-                                    Name = prevPart.Name,
-                                    Code = prevPart.Code,
-                                    Inventory = new()
-                                    {
-                                        InventoryId = (int)inventory.PartId,
-                                        Name = inventory.Name,
-                                        Quantity = inventory.Quantity
-                                    }
-                                };
-                                groupData.Station.PreviousParts.Add(prevPartData);
-                            }
-                        }
-
-                        return productionLineData;
-                    },
-                    p,
-                    splitOn: "GroupId, StationId, MachineId, PartId, InventoryId, PartId",
-                    commandType: CommandType.StoredProcedure
-                    );
-
-                return productionLineDict.Values;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return productionLineDict.Values;
-            }
-        }
-
         public async Task<IEnumerable<ProductionLine>> Select_productionLine_recipe(int taskId, Guid userId)
         {
             var sp_lineId = "sp_select_lineId_from_recipe";
@@ -395,63 +305,43 @@ namespace Neuro.AI.Graph.Repository
             }
         }*/
 
-        public async Task<string> Update_productionLine_stepOrder(List<RecipeStepOrderDto> stepOrderDto)
+        public async Task<MessageResponse> Update_productionLine_order(bool steps, List<OrderStepDto> orderStepsDto)
         {
-            var sp = "sp_update_productionLineRecipe_stepOrder";
+            var sp = "sp_update_stepOrder";
             var p = new DynamicParameters();
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+            p.Add("@ContentType", steps ? 1 : 2);
+
+            var orderStepTable = new DataTable();
+            orderStepTable.Columns.Add("Id", typeof(int));
+            orderStepTable.Columns.Add("Step", typeof(int));
+
+            foreach (var orderStep in orderStepsDto)
+            {
+                orderStepTable.Rows.Add(
+                    orderStep.Id,
+                    orderStep.Step
+                );
+            }
+
+            p.Add("@OrderStepsTable", orderStepTable.AsTableValuedParameter("dbo.Manufacturing_OrderStepTableType"));
 
             try
             {
 
-                foreach (var stepOrder in stepOrderDto)
-                {
-                    p.Add("@RecipeId", stepOrder.RecipeId);
-                    p.Add("@StepOrder", stepOrder.StepOrder);
-
-                    await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                         sp,
                         p,
                         commandType: CommandType.StoredProcedure
                     );
-                }
-
-                return p.Get<string>("@Message");
 
             }
             catch (Exception ex)
             {
-                return $"Error en orden de paso {ex.Message}";
-            }
-        }
-
-        public async Task<string> Update_productionLine_materialOrder(List<MaterialStepOrderDto> materialOrderDto)
-        {
-            var sp = "sp_update_productionLineRecipeMaterials_materialOrder";
-            var p = new DynamicParameters();
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
-
-            try
-            {
-
-                foreach (var materialOrder in materialOrderDto)
+                return new MessageResponse()
                 {
-                    p.Add("@MaterialId", materialOrder.MaterialId);
-                    p.Add("@MaterialOrder", materialOrder.MaterialOrder);
-
-                    await _db.ExecuteAsync(
-                        sp,
-                        p,
-                        commandType: CommandType.StoredProcedure
-                    );
-                }
-
-                return p.Get<string>("@Message");
-
-            }
-            catch (Exception ex)
-            {
-                return $"Error en orden de materiales {ex.Message}";
+                    Status = "Error",
+                    Message = ex.Message,
+                };
             }
         }
 
