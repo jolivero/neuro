@@ -35,5 +35,7 @@ public partial class ProductionLineRecipe
 
     public virtual Part? PreviousPart { get; set; }
 
+    public virtual ICollection<ProductioLineRecipeMaterial> ProductioLineRecipeMaterials { get; set; } = new List<ProductioLineRecipeMaterial>();
+
     public virtual Station? Station { get; set; }
 }
