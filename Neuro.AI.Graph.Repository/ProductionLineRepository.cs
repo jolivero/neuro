@@ -39,6 +39,53 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
+        public async Task<IEnumerable<ProductionLineWithMaterial>> Select_productionLines_with_materials(int lineId)
+        {
+            var sp = "sp_select_productionLine_with_material";
+            var p = new DynamicParameters();
+            p.Add("@LineId", lineId);
+
+            var productionLineDict = new Dictionary<int, ProductionLineWithMaterial>();
+
+            try
+            {
+                await _db.QueryAsync<ProductionLineWithMaterial, ProductionLineMaterials, Part, Inventory, ProductionLineWithMaterial>(
+                    sp,
+                    (plMaterial, material, part, inventory) =>
+                    {
+                        if (!productionLineDict.TryGetValue(plMaterial.RecipeId, out var productionLineData))
+                        {
+                            productionLineData = plMaterial;
+                            productionLineData.ProductionLineMaterials = [];
+                            productionLineDict.Add(plMaterial.RecipeId, productionLineData);
+                        }
+
+                        var plMaterialData = productionLineData.ProductionLineMaterials.FirstOrDefault(m => m.MaterialId == material.MaterialId);
+                        if (plMaterialData == null)
+                        {
+                            plMaterialData = material;
+                            plMaterialData.MaterialInfo = part;
+                            plMaterialData.MaterialInfo.Inventory = inventory;
+                            productionLineData.ProductionLineMaterials.Add(plMaterialData);
+                        }
+
+                        return productionLineData;
+                    },
+                    p,
+                    splitOn: "MaterialId, PartId, InventoryId",
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return productionLineDict.Values;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting production line with materials: {ex.Message}");
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<IEnumerable<ProductionLine>> Select_productionLines_with_details(int lineId)
         {
             var sp = "sp_select_productionLine_details";
@@ -360,6 +407,36 @@ namespace Neuro.AI.Graph.Repository
             catch (Exception ex)
             {
                 return $"Error en orden de paso {ex.Message}";
+            }
+        }
+
+        public async Task<string> Update_productionLine_materialOrder(List<MaterialStepOrderDto> materialOrderDto)
+        {
+            var sp = "sp_update_productionLineRecipeMaterials_materialOrder";
+            var p = new DynamicParameters();
+            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            try
+            {
+
+                foreach (var materialOrder in materialOrderDto)
+                {
+                    p.Add("@MaterialId", materialOrder.MaterialId);
+                    p.Add("@MaterialOrder", materialOrder.MaterialOrder);
+
+                    await _db.ExecuteAsync(
+                        sp,
+                        p,
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+
+                return p.Get<string>("@Message");
+
+            }
+            catch (Exception ex)
+            {
+                return $"Error en orden de materiales {ex.Message}";
             }
         }
 
