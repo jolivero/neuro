@@ -41,13 +41,13 @@ public partial class ManufacturingDbContext : DbContext
 
     public virtual DbSet<ProducedPartsRecord> ProducedPartsRecords { get; set; }
 
-    public virtual DbSet<ProductioLineRecipeMaterial> ProductioLineRecipeMaterials { get; set; }
-
     public virtual DbSet<ProductionChangeRequest> ProductionChangeRequests { get; set; }
 
     public virtual DbSet<ProductionLine> ProductionLines { get; set; }
 
     public virtual DbSet<ProductionLineRecipe> ProductionLineRecipes { get; set; }
+
+    public virtual DbSet<ProductionLineRecipeMaterial> ProductionLineRecipeMaterials { get; set; }
 
     public virtual DbSet<ProductionRecord> ProductionRecords { get; set; }
 
@@ -443,24 +443,6 @@ public partial class ManufacturingDbContext : DbContext
                 .HasConstraintName("FK__ProducedP__TaskI__3F914C5E");
         });
 
-        modelBuilder.Entity<ProductioLineRecipeMaterial>(entity =>
-        {
-            entity.HasKey(e => e.MaterialId).HasName("PK__Producti__C50610F79245AC12");
-
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.RequiredQuantity).HasColumnType("decimal(10, 2)");
-
-            entity.HasOne(d => d.PreviousPart).WithMany(p => p.ProductioLineRecipeMaterials)
-                .HasForeignKey(d => d.PreviousPartId)
-                .HasConstraintName("FK__Productio__Previ__0347582D");
-
-            entity.HasOne(d => d.Recipe).WithMany(p => p.ProductioLineRecipeMaterials)
-                .HasForeignKey(d => d.RecipeId)
-                .HasConstraintName("FK__Productio__Recip__025333F4");
-        });
-
         modelBuilder.Entity<ProductionChangeRequest>(entity =>
         {
             entity.HasKey(e => e.RequestId).HasName("PK__Producti__33A8517A3C247BEE");
@@ -585,6 +567,24 @@ public partial class ManufacturingDbContext : DbContext
             entity.HasOne(d => d.Station).WithMany(p => p.ProductionLineRecipes)
                 .HasForeignKey(d => d.StationId)
                 .HasConstraintName("FK__Productio__Stati__6B6FCE9C");
+        });
+
+        modelBuilder.Entity<ProductionLineRecipeMaterial>(entity =>
+        {
+            entity.HasKey(e => e.MaterialId).HasName("PK__Producti__C50610F79245AC12");
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.RequiredQuantity).HasColumnType("decimal(10, 2)");
+
+            entity.HasOne(d => d.PreviousPart).WithMany(p => p.ProductionLineRecipeMaterials)
+                .HasForeignKey(d => d.PreviousPartId)
+                .HasConstraintName("FK__Productio__Previ__0347582D");
+
+            entity.HasOne(d => d.Recipe).WithMany(p => p.ProductionLineRecipeMaterials)
+                .HasForeignKey(d => d.RecipeId)
+                .HasConstraintName("FK__Productio__Recip__025333F4");
         });
 
         modelBuilder.Entity<ProductionRecord>(entity =>

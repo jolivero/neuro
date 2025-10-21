@@ -19,9 +19,15 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int StationId { get; set; }
         public int MachineId { get; set; }
         public int PartId { get; set; }
-        public int PrevPartId { get; set; }
-        public decimal RequiredQuantity { get; set; } = 0;
         public int StepOrder { get; set; }
+        public List<Materials> Materials { get; set; } = [];
+    }
+
+    public class Materials
+    {
+        public int PreviousPartId { get; set; }
+        public decimal RequiredQuantity { get; set; }
+        public int MaterialOrder { get; set; }
     }
 
     public class ProductionLineHandleStepDto

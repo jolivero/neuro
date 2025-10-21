@@ -319,7 +319,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Create_productionLine_steps(ProductionLineConfigDto plConfigDto)
+        public async Task<MessageResponse> Create_productionLine_steps(ProductionLineConfigDto plConfigDto)
         {
             var sp = "sp_create_update_productionLine_steps";
             var p = new DynamicParameters();
@@ -328,28 +328,43 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@StationId", plConfigDto.Steps.StationId);
             p.Add("@MachineId", plConfigDto.Steps.MachineId);
             p.Add("@PartId", plConfigDto.Steps.PartId);
-            p.Add("@PrevPartId", plConfigDto.Steps.PrevPartId);
-            p.Add("@Quantity", plConfigDto.Steps.RequiredQuantity);
             p.Add("@StepOrder", plConfigDto.Steps.StepOrder);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            var materialsTable = new DataTable();
+            materialsTable.Columns.Add("PreviousPartId", typeof(int));
+            materialsTable.Columns.Add("RequiredQuantity", typeof(decimal));
+            materialsTable.Columns.Add("MaterialOrder", typeof(int));
+
+            foreach (var material in plConfigDto.Steps.Materials)
+            {
+                materialsTable.Rows.Add(
+                    material.PreviousPartId,
+                    material.RequiredQuantity,
+                    material.MaterialOrder
+                );
+            }
+
+            p.Add("@MaterialsTable", materialsTable.AsTableValuedParameter("dbo.Manufacturing_ProductionLineRecipeMaterialsTableType"));
 
             try
             {
-                await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse()
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
             }
         }
 
-        public async Task<string> Update_productionLine_steps(ProductionLineHandleStepDto plUpdateDto)
+        /*public async Task<string> Update_productionLine_steps(ProductionLineHandleStepDto plUpdateDto)
         {
             var sp = "sp_create_update_productionLine_steps";
             var p = new DynamicParameters();
@@ -359,8 +374,8 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@StationId", plUpdateDto.Steps.StationId);
             p.Add("@MachineId", plUpdateDto.Steps.MachineId);
             p.Add("@PartId", plUpdateDto.Steps.PartId);
-            p.Add("@PrevPartId", plUpdateDto.Steps.PrevPartId);
-            p.Add("@Quantity", plUpdateDto.Steps.RequiredQuantity);
+            // p.Add("@PrevPartId", plUpdateDto.Steps.PrevPartId);
+            // p.Add("@Quantity", plUpdateDto.Steps.RequiredQuantity);
             p.Add("@StepOrder", plUpdateDto.Steps.StepOrder);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
@@ -378,7 +393,7 @@ namespace Neuro.AI.Graph.Repository
             {
                 return ex.Message;
             }
-        }
+        }*/
 
         public async Task<string> Update_productionLine_stepOrder(List<RecipeStepOrderDto> stepOrderDto)
         {
@@ -450,7 +465,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@StationId", plDeleteDto.Steps.StationId);
             p.Add("@MachineId", plDeleteDto.Steps.MachineId);
             p.Add("@PartId", plDeleteDto.Steps.PartId);
-            p.Add("@PrevPartId", plDeleteDto.Steps.PrevPartId);
+            // p.Add("@PrevPartId", plDeleteDto.Steps.PrevPartId);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
