@@ -24,24 +24,37 @@ namespace Neuro.AI.Graph.Repository
             var p = new DynamicParameters();
             p.Add("@RecipeId", recipeId);
 
-            var response = await _db.QueryAsync<StationConfigInfo, MachineDto, PartDto, InventoryDto, StationConfigInfo>(
-                sp,
-                (s, m, p, i) =>
-                {
-                    s.Machine = m;
-                    s.Part = p;
-                    s.Part.Inventory = i;
+            var stationConfigDict = new Dictionary<int, StationConfigInfo>();
 
-                    return s;
+            await _db.QueryAsync<StationConfigInfo, Machine, Part, Part, Inventory, StationConfigInfo>(
+                sp,
+                (stationConfig, machine, part, prevPart, inventory) =>
+                {
+                    if (!stationConfigDict.TryGetValue(recipeId, out var stationConfigData))
+                    {
+                        stationConfigData = stationConfig;
+                        stationConfigData.Machine = machine;
+                        stationConfigData.Part = part;
+                        stationConfigData.PreviousPart = [];
+                        stationConfigDict.Add(recipeId, stationConfigData);
+                    }
+
+                    if (prevPart != null && !stationConfigData.PreviousPart.Any(pp => pp.PartId == prevPart.PartId))
+                    {
+                        if (inventory != null && inventory.PartId == prevPart.PartId) prevPart.Inventory = inventory;
+                        stationConfigData.PreviousPart.Add(prevPart);
+                    }
+
+                    return stationConfigData;
                 },
                 p,
-                splitOn: "MachineId, PartId, InventoryId",
+                splitOn: "MachineId, PartId, PreviousPartId, InventoryId",
                 commandType: CommandType.StoredProcedure
             );
 
-            return response.FirstOrDefault();
+            return stationConfigDict.Values.FirstOrDefault();
         }
-    
+
         #endregion
 
         #region Mutations
