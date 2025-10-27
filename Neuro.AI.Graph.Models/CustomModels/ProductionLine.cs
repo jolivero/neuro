@@ -29,6 +29,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
     {
         public int RecipeId { get; set; }
         public int StepOrder { get; set; }
+        public int AssemblyStep { get; set; }
         public int LineId { get; set; }
         public string LineName { get; set; } = string.Empty;
         public int GroupId { get; set; }
