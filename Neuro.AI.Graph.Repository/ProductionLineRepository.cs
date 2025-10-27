@@ -239,6 +239,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@MachineId", plConfigDto.Steps.MachineId);
             p.Add("@PartId", plConfigDto.Steps.PartId);
             p.Add("@StepOrder", plConfigDto.Steps.StepOrder);
+            p.Add("@AssemblyStep", plConfigDto.Steps.AssemblyStep);
 
             var materialsTable = new DataTable();
             materialsTable.Columns.Add("PreviousPartId", typeof(int));
@@ -273,37 +274,6 @@ namespace Neuro.AI.Graph.Repository
                 };
             }
         }
-
-        /*public async Task<string> Update_productionLine_steps(ProductionLineHandleStepDto plUpdateDto)
-        {
-            var sp = "sp_create_update_productionLine_steps";
-            var p = new DynamicParameters();
-            p.Add("@RecipeId", plUpdateDto.RecipeId);
-            p.Add("@LineId", plUpdateDto.LineId);
-            p.Add("@GroupId", plUpdateDto.Steps.GroupId);
-            p.Add("@StationId", plUpdateDto.Steps.StationId);
-            p.Add("@MachineId", plUpdateDto.Steps.MachineId);
-            p.Add("@PartId", plUpdateDto.Steps.PartId);
-            // p.Add("@PrevPartId", plUpdateDto.Steps.PrevPartId);
-            // p.Add("@Quantity", plUpdateDto.Steps.RequiredQuantity);
-            p.Add("@StepOrder", plUpdateDto.Steps.StepOrder);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
-
-            try
-            {
-                await _db.ExecuteAsync(
-                    sp,
-                    p,
-                    commandType: CommandType.StoredProcedure
-                );
-
-                return p.Get<string>("@Message");
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }*/
 
         public async Task<MessageResponse> Update_productionLine_order(bool steps, List<OrderStepDto> orderStepsDto)
         {
@@ -355,7 +325,6 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@StationId", plDeleteDto.Steps.StationId);
             p.Add("@MachineId", plDeleteDto.Steps.MachineId);
             p.Add("@PartId", plDeleteDto.Steps.PartId);
-            // p.Add("@PrevPartId", plDeleteDto.Steps.PrevPartId);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
