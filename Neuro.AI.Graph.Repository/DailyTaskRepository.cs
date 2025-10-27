@@ -62,7 +62,7 @@ namespace Neuro.AI.Graph.Repository
                         }
 
                         if (part != null && dailyPlanningData.Station.Part.PartId == part.PartId) dailyPlanningData.Station.Part = part;
-                        if (prevPart != null && dailyPlanningData.Station.StationId == prevPart.StationId) dailyPlanningData.Station.PrevPart.Add(prevPart);
+                        if (prevPart != null && !dailyPlanningData.Station.PrevPart.Any(pp => pp.PartId == prevPart.PartId)) dailyPlanningData.Station.PrevPart.Add(prevPart);
 
                         return dailyPlanning;
                     },
@@ -144,10 +144,6 @@ namespace Neuro.AI.Graph.Repository
 
         }
 
-        #endregion
-
-        #region Mutations
-
         public async Task<IEnumerable<ExtraTimeResponse>> Select_extraTime_operator(CheckOperatorExtraTimeDto operatorExtraTimeDto)
         {
             var sp = "sp_select_operator_extraTime";
@@ -173,6 +169,10 @@ namespace Neuro.AI.Graph.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        #endregion
+
+        #region Mutations
 
         public async Task<string> Create_dailyTask(DailyTaskDto dtDto)
         {

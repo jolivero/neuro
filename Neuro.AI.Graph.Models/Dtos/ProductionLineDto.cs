@@ -20,6 +20,7 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int MachineId { get; set; }
         public int PartId { get; set; }
         public int StepOrder { get; set; }
+        public int AssemblyStep { get; set; }
         public List<Materials> Materials { get; set; } = [];
     }
 
