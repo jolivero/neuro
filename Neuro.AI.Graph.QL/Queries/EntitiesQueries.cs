@@ -229,6 +229,8 @@ public class EntitiesQueries
                 TurnId = t.TurnId,
                 Name = t.Name!,
                 Duration = t.Duration,
+                ProductiveTime = t.ProductiveTime,
+                PauseTime = t.PauseTime,
                 TimeDetail = new()
                 {
                     BeginAt = t.TurnDetails.Min(td => td.BeginAt),

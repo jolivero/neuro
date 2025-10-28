@@ -5,6 +5,8 @@ namespace Neuro.AI.Graph.Models.CustomModels
         public int TurnId { get; set; }
         public string Name { get; set; } = string.Empty;
         public TimeOnly? Duration { get; set; }
+        public TimeOnly? ProductiveTime { get; set; }
+        public TimeOnly? PauseTime { get; set; }
         public TimeDetail TimeDetail { get; set; } = new();
     }
 
