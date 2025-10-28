@@ -24,10 +24,11 @@ namespace Neuro.AI.Graph.Models.CustomModels
         public Guid UserId { get; set; }
         public string Operator { get; set; } = string.Empty;
         public string OperatorStatus { get; set; } = string.Empty;
+        public TimeOnly LastUpdate { get; set; }
         public string Schedule { get; set; } = string.Empty;
         public int DayId { get; set; }
         public int DailyGoal { get; set; }
         public int Inventory { get; set; }
     }
-    
+
 }
