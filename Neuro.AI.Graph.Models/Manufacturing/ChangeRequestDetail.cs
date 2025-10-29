@@ -15,8 +15,6 @@ public partial class ChangeRequestDetail
 
     public string? NewValue { get; set; }
 
-    public int? HoursQuantity { get; set; }
-
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
@@ -54,6 +52,8 @@ public partial class ChangeRequestDetail
     public int? CurrentPartId { get; set; }
 
     public int? NewPartId { get; set; }
+
+    public TimeOnly? HoursQuantity { get; set; }
 
     public virtual Group? CurrentGroup { get; set; }
 

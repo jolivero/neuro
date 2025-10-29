@@ -313,7 +313,7 @@ namespace Neuro.AI.Graph.Repository
         {
             var sp = "sp_create_extraTime_request";
             var p = new DynamicParameters();
-            p.Add("@RequestId", Guid.NewGuid());
+            //p.Add("@RequestId", Guid.NewGuid());
             p.Add("@CurrentDate", currentDate);
             p.Add("@LineId", etRequestDto.LineId);
             p.Add("@GroupId", etRequestDto.GroupId);
@@ -322,7 +322,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@PartId", etRequestDto.PartId);
             p.Add("@RequestingUserId", etRequestDto.RequestingUserId);
             p.Add("@RequestType", etRequestDto.RequestType);
-            p.Add("@HoursQuantity", etRequestDto.HoursQuantity);
+            p.Add("@HoursQuantity", TimeSpan.Parse(etRequestDto.HoursQuantity));
             p.Add("@Reason", etRequestDto.Reason);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
