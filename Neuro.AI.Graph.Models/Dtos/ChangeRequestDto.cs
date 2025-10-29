@@ -14,7 +14,6 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int StationId { get; set; }
         public int MachineId { get; set; }
         public int PartId { get; set; }
-        
     }
 
     public class MonthlyChangeRequestDto : BaseChangeRequestDto
@@ -70,8 +69,8 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     public class ExtraTimeRequestDto : FieldsChangeRequetsDto
     {
-        public decimal HoursQuantity { get; set; }
-        public List<int> UserIds { get; set; } = [];
+        public string HoursQuantity { get; set; } = string.Empty;
+        public List<Guid> UserIds { get; set; } = [];
     }
 
     public class ChangeRequestDto

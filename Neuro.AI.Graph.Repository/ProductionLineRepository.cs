@@ -239,7 +239,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@MachineId", plConfigDto.Steps.MachineId);
             p.Add("@PartId", plConfigDto.Steps.PartId);
             p.Add("@StepOrder", plConfigDto.Steps.StepOrder);
-            p.Add("@AssemblyStep", plConfigDto.Steps.AssemblyStep);
+            p.Add("@AssemblyStep", plConfigDto.Steps.AssemblyStep ? 1 : 0);
 
             var materialsTable = new DataTable();
             materialsTable.Columns.Add("PreviousPartId", typeof(int));

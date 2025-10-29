@@ -39,7 +39,7 @@ namespace Neuro.AI.Graph.Repository
 
                 p.Add("@MonthListTable", monthNumberTable.AsTableValuedParameter("dbo.Manufacturing_MonthListTableType"));
             }
-            
+
             try
             {
                 return await _db.QueryFirstAsync<AnnualPlannigInfo>(
@@ -97,7 +97,7 @@ namespace Neuro.AI.Graph.Repository
                         }
 
                         var dtData = dpData.DailyTasks.FirstOrDefault(t => t.TaskId == dt.TaskId);
-                        if(dtData == null)
+                        if (dtData == null)
                         {
                             dtData = dt;
                             dpData.DailyTasks.Add(dtData);
