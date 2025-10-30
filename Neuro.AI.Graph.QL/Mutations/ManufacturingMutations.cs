@@ -225,14 +225,9 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #region Solicitud de cambios
 
-        public async Task<string> repo_create_monthly_request(ChangeRequestRepository repository, MonthlyChangeRequestDto mRequestDto)
+        public async Task<MessageResponse> repo_create_changeMonthlyPlanning_request(ChangeRequestRepository repository, ChangeMonthlyPlanningRequestDto mpRequestDto)
         {
-            return await repository.Create_monthly_request(mRequestDto);
-        }
-
-        public async Task<string> repo_create_daily_request(ChangeRequestRepository repository, DailyChangeRequestDto dRequestDto)
-        {
-            return await repository.Create_daily_request(dRequestDto);
+            return await repository.Create_changeMonthlyPlanning_request(mpRequestDto);
         }
 
         public async Task<ChangePlanningRequestMessageResponse> repo_create_changePlanning_request(ChangeRequestRepository repository, ChangePlanificationRequestDto cpRequestDto)

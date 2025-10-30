@@ -282,6 +282,7 @@ public class EntitiesQueries
     [UseSorting]
     public IQueryable<ProductionChangeRequest> GetChangeRequests(ManufacturingDbContext context) => context.ProductionChangeRequests
                                                                                                 .Include(pc => pc.Month)
+                                                                                                .Include(pc => pc.ChangePlanningDays)
                                                                                                 .Include(pc => pc.ChangeRequestDetails)
                                                                                                 .Include(pc => pc.RequestingUser)
                                                                                                 .Include(pc => pc.ApprovalUser)

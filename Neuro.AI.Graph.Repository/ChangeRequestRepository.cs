@@ -142,75 +142,56 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-
-        public async Task<string> Create_monthly_request(MonthlyChangeRequestDto mRequestDto)
+        public async Task<MessageResponse> Create_changeMonthlyPlanning_request(ChangeMonthlyPlanningRequestDto mpRequestDto)
         {
-            var sp = "sp_create_monthly_request";
+            var sp = "sp_create_changeDailyPlanning_request";
             var p = new DynamicParameters();
-            p.Add("@MonthId", mRequestDto.MonthId);
-            p.Add("@LineId", mRequestDto.LineId);
-            p.Add("@RequestingUserId", mRequestDto.RequestingUserId);
-            p.Add("@RequestType", mRequestDto.RequestType);
-            p.Add("@Reason", mRequestDto.Reason);
-            p.Add("@CurrentValue", mRequestDto.CurrentValue);
-            p.Add("@NewValue", mRequestDto.NewValue);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+            p.Add("@MonthId", mpRequestDto.MonthId);
+            p.Add("@LineId", mpRequestDto.LineId);
+            p.Add("@RequestingUserId", mpRequestDto.RequestingUserId);
+            p.Add("@RequestType", mpRequestDto.UpdateDailyPlanningDto == null ? "Ajuste de meta" : "Ajuste de días");
+            p.Add("@Reason", mpRequestDto.Reason);
+            p.Add("@CurrentValue", mpRequestDto.CurrentValue);
+            p.Add("@NewValue", mpRequestDto.NewValue);
+
+            if (mpRequestDto.UpdateDailyPlanningDto != null)
+            {
+                var changePlanningDaysTable = new DataTable();
+                changePlanningDaysTable.Columns.Add("DayId", typeof(int));
+                changePlanningDaysTable.Columns.Add("DailyGoal", typeof(int));
+                changePlanningDaysTable.Columns.Add("ProductionDate", typeof(DateOnly));
+                changePlanningDaysTable.Columns.Add("Available", typeof(int));
+                changePlanningDaysTable.Columns.Add("DayType", typeof(string));
+
+                foreach (var day in mpRequestDto.UpdateDailyPlanningDto)
+                {
+                    changePlanningDaysTable.Rows.Add(
+                        day.DayId,
+                        day.DailyGoal,
+                        DateOnly.Parse(day.ProductionDate),
+                        day.Available,
+                        day.DayType
+                    );
+                }
+
+                p.Add("@ChangePlanningDaysTable", changePlanningDaysTable.AsTableValuedParameter("dbo.Manufacturing_ChangePlanningDaysTableType"));
+            }
 
             try
             {
-                await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
-            }
-        }
-
-        public async Task<string> Create_daily_request(DailyChangeRequestDto dRequestDto)
-        {
-            var sp = "sp_create_monthly_request";
-            var p = new DynamicParameters();
-            p.Add("@RequestingUserId", dRequestDto.RequestingUserId);
-            p.Add("@LineId", dRequestDto.LineId);
-            p.Add("@Reason", dRequestDto.Reason);
-            p.Add("@RequestType", dRequestDto.RequestType);
-            p.Add("@CurrentValue", dRequestDto.CurrentValue);
-            p.Add("@NewValue", dRequestDto.NewValue);
-            p.Add("@CurrentUserId", dRequestDto.CurrentUserId);
-            p.Add("@NewUserId", dRequestDto.NewUserId ?? null);
-            p.Add("@CurrentStationId", dRequestDto.CurrentStationId);
-            p.Add("@StationId", dRequestDto.StationId ?? null);
-            p.Add("@CurrentMachineId", dRequestDto.CurrentMachineId);
-            p.Add("@MachineId", dRequestDto.MachineId ?? null);
-            p.Add("@CurrentTunId", dRequestDto.CurrentTurnId ?? null);
-            p.Add("@NewTurnId", dRequestDto.NewTurnId ?? null);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
-
-            try
-            {
-                foreach (var day in dRequestDto.DayId)
+                return new MessageResponse()
                 {
-                    p.Add("@DayId", day);
-
-                    await _db.ExecuteAsync(
-                        sp,
-                        p,
-                        commandType: CommandType.StoredProcedure
-                    );
-                }
-
-                return p.Get<string>("@Message");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
+                    Status = "Error",
+                    Message = ex.Message
+                };
             }
         }
 

@@ -15,6 +15,8 @@ public partial class ManufacturingDbContext : DbContext
     {
     }
 
+    public virtual DbSet<ChangePlanningDay> ChangePlanningDays { get; set; }
+
     public virtual DbSet<ChangeRequestDetail> ChangeRequestDetails { get; set; }
 
     public virtual DbSet<Company> Companies { get; set; }
@@ -71,6 +73,17 @@ public partial class ManufacturingDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<ChangePlanningDay>(entity =>
+        {
+            entity.HasKey(e => e.ChangeDayId).HasName("PK__ChangePl__E57216E74BC29F08");
+
+            entity.Property(e => e.DayType).HasMaxLength(255);
+
+            entity.HasOne(d => d.Request).WithMany(p => p.ChangePlanningDays)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("FK__ChangePla__Reque__15660868");
+        });
+
         modelBuilder.Entity<ChangeRequestDetail>(entity =>
         {
             entity.HasKey(e => e.DetailId).HasName("PK__ChangeRe__135C316D5881E622");
