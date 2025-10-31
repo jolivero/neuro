@@ -86,7 +86,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<IEnumerable<ProductionLine>> Select_productionLines_with_details(int lineId)
+        public async Task<IEnumerable<ProductionLine>> Select_productionLine_with_details(int lineId)
         {
             var sp = "sp_select_productionLine_details";
             var p = new DynamicParameters();
@@ -149,18 +149,60 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<IEnumerable<ProductionLine>> Select_productionLine_recipe(int taskId, Guid userId)
         {
-            var sp_lineId = "sp_select_lineId_from_recipe";
-            var p1 = new DynamicParameters();
-            p1.Add("@TaskId", taskId);
-            p1.Add("@UserId", userId);
+            var sp = "sp_select_productionLine_recipe";
+            var p = new DynamicParameters();
+            p.Add("@TaskId", taskId);
+            p.Add("@UserId", userId);
 
-            var lineId = await _db.QueryFirstAsync<int>(
-                sp_lineId,
-                p1,
-                commandType: CommandType.StoredProcedure
-            );
+            var productionLineDict = new Dictionary<int, ProductionLine>();
 
-            return await Select_productionLines_with_details(lineId);
+            try
+            {
+                await _db.QueryAsync<ProductionLine, Group, Station, Machine, Part, ProductionLine>(
+                    sp,
+                    (line, group, station, machine, part) =>
+                    {
+                        if (!productionLineDict.TryGetValue(line.LineId, out var productionLineData))
+                        {
+                            productionLineData = line;
+                            productionLineData.Groups = [];
+                            productionLineDict.Add(line.LineId, productionLineData);
+                        }
+
+                        var groupData = productionLineData.Groups.FirstOrDefault(ln => ln.GroupId == group.GroupId);
+                        if (groupData == null)
+                        {
+                            groupData = group;
+                            groupData.Stations = [];
+                            productionLineData.Groups.Add(groupData);
+                        }
+
+                        var stationData = groupData.Stations.FirstOrDefault(g => g.StationId == station.StationId);
+                        if (stationData == null)
+                        {
+                            stationData = station;
+                            stationData.Machines = [];
+                            stationData.Parts = [];
+                            groupData.Stations.Add(stationData);
+                        }
+
+                        if (machine != null && !stationData.Machines.Any(s => s.MachineId == machine.MachineId)) stationData.Machines.Add(machine);
+                        if (part != null && !stationData.Parts.Any(s => s.PartId == part.PartId)) stationData.Parts.Add(part);
+
+                        return productionLineData;
+                    },
+                    p,
+                    splitOn: "GroupId, StationId, MachineId, PartId",
+                    commandType: CommandType.StoredProcedure
+                    );
+
+                return productionLineDict.Values;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<IEnumerable<ProductionLineMachineHoursPerCut>> Select_productionLines_with_machineHoursPerCut(int lineId)

@@ -33,6 +33,14 @@ public partial class DailyTask
 
     public int? TurnId { get; set; }
 
+    public int? Active { get; set; }
+
+    public string? Desc0 { get; set; }
+
+    public string? Desc1 { get; set; }
+
+    public string? Desc2 { get; set; }
+
     public virtual DailyPlanning? Day { get; set; }
 
     public virtual Machine? Machine { get; set; }
