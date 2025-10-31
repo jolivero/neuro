@@ -48,7 +48,7 @@ namespace Neuro.AI.Graph.QL.Queries
 
         public async Task<IQueryable<ProductionLine>> repo_productionLines_with_details(ProductionLineRepository repository, int lineId)
         {
-            return (await repository.Select_productionLines_with_details(lineId)).AsQueryable();
+            return (await repository.Select_productionLine_with_details(lineId)).AsQueryable();
         }
 
         public async Task<IQueryable<ProductionLine>> repo_productionLine_recipe(ProductionLineRepository repository, int taskId, Guid userId)
