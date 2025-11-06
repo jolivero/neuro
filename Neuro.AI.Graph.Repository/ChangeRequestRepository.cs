@@ -307,26 +307,26 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@RequestType", etRequestDto.RequestType);
             p.Add("@HoursQuantity", TimeSpan.Parse(etRequestDto.HoursQuantity));
             p.Add("@Reason", etRequestDto.Reason);
-            p.Add("@Status", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+            var userIdListTable = new DataTable();
+            userIdListTable.Columns.Add("UserId", typeof(Guid));
+
+            foreach (var userId in etRequestDto.UserIds)
+            {
+                userIdListTable.Rows.Add(
+                    userId
+                );
+            }
+
+            p.Add("@UserIdListTable", userIdListTable.AsTableValuedParameter("dbo.Manufacturing_UserIdListTableType"));
 
             try
             {
-                foreach (var userId in etRequestDto.UserIds)
-                {
-                    p.Add("@UserId", userId);
-                    await _db.ExecuteAsync(
-                        sp,
-                        p,
-                        commandType: CommandType.StoredProcedure
-                    );
-                }
-
-                return new MessageResponse()
-                {
-                    Status = p.Get<string>("@Status"),
-                    Message = p.Get<string>("@Message")
-                };
+                return await _db.QueryFirstAsync<MessageResponse>(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
 
             }
             catch (Exception ex)
