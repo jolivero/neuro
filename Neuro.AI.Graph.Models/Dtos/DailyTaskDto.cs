@@ -13,7 +13,7 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     public class AssigmentsDto
     {
-        public int DayId { get; set; } 
+        public int DayId { get; set; }
         public string BeginAt { get; set; } = string.Empty;
         public string EndAt { get; set; } = string.Empty;
         public Guid UserId { get; set; }
@@ -22,14 +22,20 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int MachineId { get; set; }
     }
 
-    public class CheckOperatorExtraTimeDto
+    public class OperatorExtraTimeDto
     {
         public Guid UserId { get; set; }
-        public string ProductiveDate { get; set; } = string.Empty;
         public int? TaskId { get; set; }
         public int? TurnId { get; set; }
         public string BeginAt { get; set; } = string.Empty;
         public string EndAt { get; set; } = string.Empty;
+    }
+
+    public class CheckOperatorExtraTimeDto
+    {
+        public List<OperatorExtraTimeDto> Operators { get; set; } = [];
+        public string ProductiveDate { get; set; } = string.Empty;
+
     }
 
 }
