@@ -16,6 +16,13 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int PartId { get; set; }
     }
 
+    public class PlanningChangeRequestDto : FieldsChangeRequetsDto
+    {
+        public int MonthId { get; set; }
+        public int DayId { get; set; }
+        public int TaskId { get; set; }
+    }
+
     public class ChangeMonthlyPlanningRequestDto : BaseChangeRequestDto
     {
         public int MonthId { get; set; }
@@ -28,9 +35,6 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class ChangePlanificationRequestDto : FieldsChangeRequetsDto
     {
         public int TaskId { get; set; }
-        // public string BeginAt { get; set; } = string.Empty;
-        // public string EndAt { get; set; } = string.Empty;
-        // public int NewValue { get; set; }
     }
 
     public class CommonRequestDto : BaseChangeRequestDto
@@ -39,11 +43,8 @@ namespace Neuro.AI.Graph.Models.Dtos
         public Guid UserId { get; set; }
     }
 
-    public class CommonChangeRequestDto : FieldsChangeRequetsDto
+    public class CommonChangeRequestDto : PlanningChangeRequestDto
     {
-        public int MonthId { get; set; }
-        public int DayId { get; set; }
-        public int TaskId { get; set; }
         public int? TurnId { get; set; }
         public Guid CurrentUserId { get; set; }
         public Guid? NewUserId { get; set; }
@@ -52,7 +53,7 @@ namespace Neuro.AI.Graph.Models.Dtos
 
     }
 
-    public class ExtraTimeRequestDto : FieldsChangeRequetsDto
+    public class ExtraTimeRequestDto : PlanningChangeRequestDto
     {
         public string HoursQuantity { get; set; } = string.Empty;
         public List<Guid> UserIds { get; set; } = [];
