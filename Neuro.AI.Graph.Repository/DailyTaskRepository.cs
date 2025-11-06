@@ -146,14 +146,30 @@ namespace Neuro.AI.Graph.Repository
 
         public async Task<IEnumerable<ExtraTimeResponse>> Select_extraTime_operator(CheckOperatorExtraTimeDto operatorExtraTimeDto)
         {
-            var sp = "sp_select_operator_extraTime";
+            var sp = "sp_select_operators_extraTime";
             var p = new DynamicParameters();
-            p.Add("@UserId", operatorExtraTimeDto.UserId);
             p.Add("@ProductiveDate", operatorExtraTimeDto.ProductiveDate);
-            p.Add("@TaskId", operatorExtraTimeDto.TaskId ?? null);
-            p.Add("@TurnId", operatorExtraTimeDto.TurnId ?? null);
-            p.Add("@BeginAt", TimeSpan.Parse(operatorExtraTimeDto.BeginAt));
-            p.Add("@EndAt", TimeSpan.Parse(operatorExtraTimeDto.EndAt));
+
+            var peratorActivityListTable = new DataTable();
+            peratorActivityListTable.Columns.Add("UserId", typeof(Guid));
+            peratorActivityListTable.Columns.Add("TaskId", typeof(int));
+            peratorActivityListTable.Columns.Add("TurnId", typeof(int));
+            peratorActivityListTable.Columns.Add("BeginAt", typeof(string));
+            peratorActivityListTable.Columns.Add("EndAt", typeof(string));
+
+            foreach (var operatordata in operatorExtraTimeDto.Operators)
+            {
+                peratorActivityListTable.Rows.Add(
+                    operatordata.UserId,
+                    operatordata.TaskId,
+                    operatordata.TurnId,
+                    TimeSpan.Parse(operatordata.BeginAt),
+                    TimeSpan.Parse(operatordata.EndAt)
+
+                );
+            }
+
+            p.Add("@OperatorActivityListTable", peratorActivityListTable.AsTableValuedParameter("dbo.Manufacturing_OperatorActivityListTableType"));
 
             try
             {

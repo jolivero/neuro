@@ -274,7 +274,7 @@ namespace Neuro.AI.Graph.Repository
                 TaskId = cRequestDto.TaskId,
                 UserId = cRequestDto.UserId,
                 CreatedBy = cRequestDto.RequestingUserId,
-                CategoryId = Convert.ToInt32(_config["RequestCategories:SpecialMissions"]), //-> Modificar,
+                CategoryId = Convert.ToInt32(_config["RequestCategories:SpecialMissions"]),
                 OriginRequest = "Control de estado",
                 RequestType = cRequestDto.RequestType,
                 Reason = cRequestDto.Reason
@@ -290,21 +290,24 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Create_extraTime_request(string currentDate, ExtraTimeRequestDto etRequestDto)
+        public async Task<MessageResponse> Create_extraTime_request(ExtraTimeRequestDto etRequestDto)
         {
             var sp = "sp_create_extraTime_request";
             var p = new DynamicParameters();
-            //p.Add("@RequestId", Guid.NewGuid());
-            p.Add("@CurrentDate", currentDate);
+            p.Add("@MonthId", etRequestDto.MonthId);
+            p.Add("@DayId", etRequestDto.DayId);
+            p.Add("@TaskId", etRequestDto.TaskId);
             p.Add("@LineId", etRequestDto.LineId);
             p.Add("@GroupId", etRequestDto.GroupId);
             p.Add("@StationId", etRequestDto.StationId);
             p.Add("@MachineId", etRequestDto.MachineId);
             p.Add("@PartId", etRequestDto.PartId);
+            p.Add("@CategoryId", Convert.ToInt32(_config["RequestCategories:ExtraTime"]));
             p.Add("@RequestingUserId", etRequestDto.RequestingUserId);
             p.Add("@RequestType", etRequestDto.RequestType);
             p.Add("@HoursQuantity", TimeSpan.Parse(etRequestDto.HoursQuantity));
             p.Add("@Reason", etRequestDto.Reason);
+            p.Add("@Status", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
@@ -319,13 +322,20 @@ namespace Neuro.AI.Graph.Repository
                     );
                 }
 
-                return p.Get<string>("@Message");
+                return new MessageResponse()
+                {
+                    Status = p.Get<string>("@Status"),
+                    Message = p.Get<string>("@Message")
+                };
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw new Exception(ex.Message);
+                return new MessageResponse()
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                };
             }
         }
 
