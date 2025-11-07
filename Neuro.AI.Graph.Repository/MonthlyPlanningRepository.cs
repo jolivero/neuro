@@ -290,10 +290,14 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<string> Update_monthlyGoal_planning(UpdateMonthlyPlanningDto mgDto)
+        public async Task<MessageResponse> Update_monthlyGoal_planning(UpdateMonthlyPlanningDto mgDto)
         {
             var requestId = await _changeRequestRepository.Select_requestId(mgDto.MonthId, "Ajuste de meta");
-            if (requestId == 0) return "No request";
+            if (requestId == 0) return new MessageResponse()
+            {
+                Status = "Error",
+                Message = "No request",
+            };
 
             var sp = "sp_update_monthlyGoal";
             var p = new DynamicParameters();
@@ -306,24 +310,30 @@ namespace Neuro.AI.Graph.Repository
 
             try
             {
-                await _db.ExecuteAsync(
+                return await _db.QueryFirstAsync<MessageResponse>(
                     sp,
                     p,
                     commandType: CommandType.StoredProcedure
                 );
-
-                return p.Get<string>("@Message");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse()
+                {
+                    Status = "Error",
+                    Message = ex.Message,
+                };
             }
         }
 
-        public async Task<string> Update_monthlyDays_schedule(UpdateMonthlyPlanningDto mdDto)
+        public async Task<MessageResponse> Update_monthlyDays_schedule(UpdateMonthlyPlanningDto mdDto)
         {
             var requestId = await _changeRequestRepository.Select_requestId(mdDto.MonthId, "Ajuste de días");
-            if (requestId == 0) return "No request";
+            if (requestId == 0) return new MessageResponse()
+            {
+                Status = "Error",
+                Message = "No request",
+            };
 
             var businessDays = mdDto.UpdateDailyPlanningDto!.Count(d => d.DayType.Equals("laboral", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
             var extraDays = mdDto.UpdateDailyPlanningDto!.Count(d => d.DayType.Equals("extra", StringComparison.CurrentCultureIgnoreCase) && d.Available == 1);
@@ -345,6 +355,26 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@ExtraDays", extraDays);
             p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
+            // var changePlanningDaysTable = new DataTable();
+            // changePlanningDaysTable.Columns.Add("DayId", typeof(int));
+            // changePlanningDaysTable.Columns.Add("DailyGoal", typeof(int));
+            // changePlanningDaysTable.Columns.Add("ProductionDate", typeof(DateOnly));
+            // changePlanningDaysTable.Columns.Add("DayType", typeof(string));
+            // changePlanningDaysTable.Columns.Add("Available", typeof(int));
+
+            // foreach (var item in  daysToUpdate.Concat(daysToRemove))
+            // {
+            //     changePlanningDaysTable.Rows.Add(
+            //         item.DayId,
+            //         item.Available == 1 ? dailyGoal : item.DailyGoal,
+            //         DateOnly.Parse(item.ProductionDate),
+            //         item.DayType,
+            //         item.Available
+            //     );
+            // }
+
+            // p.Add("@ChangePlanningDaysTable", changePlanningDaysTable.AsTableValuedParameter("dbo.Manufacturing_ChangePlanningDaysTableType"));
+
             try
             {
                 foreach (var item in daysToUpdate.Concat(daysToRemove))
@@ -363,11 +393,19 @@ namespace Neuro.AI.Graph.Repository
                     );
                 }
 
-                return p.Get<string>("@Message");
+                return new MessageResponse()
+                {
+                    Status = "Success",
+                    Message = p.Get<string>("@Message")
+                };
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return new MessageResponse()
+                {
+                    Status = "Error",
+                    Message = ex.Message,
+                };
             }
         }
 
