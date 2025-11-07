@@ -16,6 +16,7 @@ namespace Neuro.AI.Graph.Models.Dtos
         public int DayId { get; set; }
         public string BeginAt { get; set; } = string.Empty;
         public string EndAt { get; set; } = string.Empty;
+        public int TaskGoal { get; set; }
         public Guid UserId { get; set; }
         public Guid? RemoveUserId { get; set; }
         public int StationId { get; set; }
