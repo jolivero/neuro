@@ -205,6 +205,7 @@ namespace Neuro.AI.Graph.Repository
                     p.Add("@DayId", assigment.DayId);
                     p.Add("@BeginAt", TimeSpan.Parse(assigment.BeginAt));
                     p.Add("@EndAt", TimeSpan.Parse(assigment.EndAt));
+                    p.Add("@TaskGoal", assigment.TaskGoal);
                     p.Add("@UserId", assigment.UserId);
                     p.Add("@StationId", assigment.StationId);
                     p.Add("@MachineId", assigment.MachineId);
@@ -240,6 +241,7 @@ namespace Neuro.AI.Graph.Repository
                     p.Add("@DayId", assigment.DayId);
                     p.Add("@BeginAt", TimeSpan.Parse(assigment.BeginAt));
                     p.Add("@EndAt", TimeSpan.Parse(assigment.EndAt));
+                     p.Add("@TaskGoal", assigment.TaskGoal);
                     p.Add("@UserId", assigment.UserId);
                     p.Add("@RemoveUserId", assigment.RemoveUserId ?? null);
                     p.Add("@StationId", assigment.StationId);
