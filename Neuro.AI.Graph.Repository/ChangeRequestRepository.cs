@@ -305,6 +305,8 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@CategoryId", Convert.ToInt32(_config["RequestCategories:ExtraTime"]));
             p.Add("@RequestingUserId", etRequestDto.RequestingUserId);
             p.Add("@RequestType", etRequestDto.RequestType);
+            p.Add("@CurrentValue", etRequestDto.CurrentValue);
+            p.Add("@NewValue", etRequestDto.NewValue);
             p.Add("@HoursQuantity", TimeSpan.Parse(etRequestDto.HoursQuantity));
             p.Add("@Reason", etRequestDto.Reason);
 
