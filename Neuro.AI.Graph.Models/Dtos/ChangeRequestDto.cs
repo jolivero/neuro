@@ -46,14 +46,14 @@ namespace Neuro.AI.Graph.Models.Dtos
     public class CommonChangeRequestDto : PlanningChangeRequestDto
     {
         public int? TurnId { get; set; }
-        public Guid CurrentUserId { get; set; }
+        public Guid? CurrentUserId { get; set; }
         public Guid? NewUserId { get; set; }
         public string CurrentValue { get; set; } = string.Empty;
         public string NewValue { get; set; } = string.Empty;
 
     }
 
-    public class ExtraTimeRequestDto : PlanningChangeRequestDto
+    public class ExtraTimeRequestDto : CommonChangeRequestDto
     {
         public string HoursQuantity { get; set; } = string.Empty;
         public List<Guid> UserIds { get; set; } = [];
