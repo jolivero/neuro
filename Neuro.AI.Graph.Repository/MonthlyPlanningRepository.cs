@@ -306,7 +306,6 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@LineId", mgDto.LineId);
             p.Add("@MonthlyGoal", mgDto.MonthlyGoal);
             p.Add("@Reason", mgDto.Reason);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
             try
             {
@@ -326,7 +325,7 @@ namespace Neuro.AI.Graph.Repository
             }
         }
 
-        public async Task<MessageResponse> Update_monthlyDays_schedule(UpdateMonthlyPlanningDto mdDto)
+        public async Task<MessageResponse> Update_monthlyDays_planning(UpdateMonthlyPlanningDto mdDto)
         {
             var requestId = await _changeRequestRepository.Select_requestId(mdDto.MonthId, "Ajuste de días");
             if (requestId == 0) return new MessageResponse()
@@ -351,53 +350,37 @@ namespace Neuro.AI.Graph.Repository
             var p = new DynamicParameters();
             p.Add("@RequestId", requestId);
             p.Add("@MonthId", mdDto.MonthId);
+            p.Add("@LineId", mdDto.LineId);
             p.Add("@BusinessDays", businessDays);
             p.Add("@ExtraDays", extraDays);
-            p.Add("@Message", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
 
-            // var changePlanningDaysTable = new DataTable();
-            // changePlanningDaysTable.Columns.Add("DayId", typeof(int));
-            // changePlanningDaysTable.Columns.Add("DailyGoal", typeof(int));
-            // changePlanningDaysTable.Columns.Add("ProductionDate", typeof(DateOnly));
-            // changePlanningDaysTable.Columns.Add("DayType", typeof(string));
-            // changePlanningDaysTable.Columns.Add("Available", typeof(int));
+            var changePlanningDaysTable = new DataTable();
+            changePlanningDaysTable.Columns.Add("DayId", typeof(int));
+            changePlanningDaysTable.Columns.Add("DailyGoal", typeof(int));
+            changePlanningDaysTable.Columns.Add("ProductionDate", typeof(DateOnly));
+            changePlanningDaysTable.Columns.Add("Available", typeof(int));
+            changePlanningDaysTable.Columns.Add("DayType", typeof(string));
 
-            // foreach (var item in  daysToUpdate.Concat(daysToRemove))
-            // {
-            //     changePlanningDaysTable.Rows.Add(
-            //         item.DayId,
-            //         item.Available == 1 ? dailyGoal : item.DailyGoal,
-            //         DateOnly.Parse(item.ProductionDate),
-            //         item.DayType,
-            //         item.Available
-            //     );
-            // }
+            foreach (var item in  daysToUpdate.Concat(daysToRemove))
+            {
+                changePlanningDaysTable.Rows.Add(
+                    item.DayId,
+                    item.Available == 1 ? dailyGoal : item.DailyGoal,
+                    DateOnly.Parse(item.ProductionDate),
+                    item.Available,
+                    item.DayType
+                );
+            }
 
-            // p.Add("@ChangePlanningDaysTable", changePlanningDaysTable.AsTableValuedParameter("dbo.Manufacturing_ChangePlanningDaysTableType"));
+            p.Add("@ChangePlanningDaysTable", changePlanningDaysTable.AsTableValuedParameter("dbo.Manufacturing_ChangePlanningDaysTableType"));
 
             try
             {
-                foreach (var item in daysToUpdate.Concat(daysToRemove))
-                {
-                    p.Add("@DayId", item.DayId);
-                    p.Add("@DailyGoal", item.Available == 1 ? dailyGoal : item.DailyGoal);
-                    p.Add("@ProductionDate", item.ProductionDate);
-                    p.Add("@DayType", item.DayType);
-                    p.Add("@Available", item.Available);
-                    p.Add("@Reason", mdDto.Reason);
-
-                    await _db.ExecuteAsync(
-                        sp,
-                        p,
-                        commandType: CommandType.StoredProcedure
-                    );
-                }
-
-                return new MessageResponse()
-                {
-                    Status = "Success",
-                    Message = p.Get<string>("@Message")
-                };
+                return await _db.QueryFirstAsync<MessageResponse>(
+                    sp,
+                    p,
+                    commandType: CommandType.StoredProcedure
+                );
             }
             catch (Exception ex)
             {
