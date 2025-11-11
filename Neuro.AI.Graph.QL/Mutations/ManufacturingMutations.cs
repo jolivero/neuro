@@ -120,12 +120,12 @@ namespace Neuro.AI.Graph.QL.Mutations
             return await repository.Update_machines(machineId, machineDto);
         }
 
-        public async Task<string> repo_create_machine_report(MachineRepository repository, MachineReportDto machineReportDto)
+        public async Task<MessageResponse> repo_create_machine_report(MachineRepository repository, MachineReportDto machineReportDto)
         {
             return await repository.Create_machine_report(machineReportDto);
         }
 
-        public async Task<string> repo_update_machine_report(MachineRepository repository, int reportId, MachineReportDto machineReportDto)
+        public async Task<MessageResponse> repo_update_machine_report(MachineRepository repository, int reportId, MachineReportDto machineReportDto)
         {
             return await repository.Update_machine_report(reportId, machineReportDto);
         }
