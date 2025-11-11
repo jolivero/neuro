@@ -354,7 +354,15 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Description).HasMaxLength(255);
+            entity.Property(e => e.Desc0)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Desc1)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Desc2)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.Status).HasMaxLength(255);
             entity.Property(e => e.Type).HasMaxLength(255);
             entity.Property(e => e.UpdatedAt)
