@@ -9,8 +9,6 @@ public partial class MachineReport
 
     public string Type { get; set; } = null!;
 
-    public string? Description { get; set; }
-
     public string? Status { get; set; }
 
     public DateTime? CreatedAt { get; set; }
@@ -24,6 +22,12 @@ public partial class MachineReport
     public Guid? OperatorId { get; set; }
 
     public Guid? TechnicalId { get; set; }
+
+    public string? Desc0 { get; set; }
+
+    public string? Desc1 { get; set; }
+
+    public string? Desc2 { get; set; }
 
     public virtual Machine? Machine { get; set; }
 

@@ -18,7 +18,8 @@
     public class MachineReportDto
     {
         public string? Type { get; set; }
-        public string? Description { get; set; }
+        public string? Desc0 { get; set; }
+        public string? Desc1 { get; set; }
         public string? Status { get; set; }
         public int StationId { get; set; }
         public int MachineId { get; set; }

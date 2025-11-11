@@ -95,6 +95,7 @@ namespace Neuro.AI.Graph.Repository
             p.Add("@StationId", machineReportDto.StationId);
             p.Add("@MachineId", machineReportDto.MachineId);
             p.Add("@OperatorId", machineReportDto.OperatorId);
+            p.Add("@Desc0", machineReportDto.Desc0);
 
             try
             {
@@ -120,7 +121,7 @@ namespace Neuro.AI.Graph.Repository
             var p = new DynamicParameters();
             p.Add("@ReportId", reportId);
             p.Add("@Type", machineReportDto.Type);
-            p.Add("@Description", machineReportDto.Description);
+            p.Add("@Desc1", machineReportDto.Desc1);
             p.Add("@Status", machineReportDto.Status);
             p.Add("@TechnicalId", machineReportDto.TechnicalId);
 
