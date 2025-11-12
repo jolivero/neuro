@@ -28,4 +28,8 @@ public partial class Log
     public string? Desc2 { get; set; }
 
     public string? Desc3 { get; set; }
+
+    public int? BranchId { get; set; }
+
+    public virtual Branch? Branch { get; set; }
 }

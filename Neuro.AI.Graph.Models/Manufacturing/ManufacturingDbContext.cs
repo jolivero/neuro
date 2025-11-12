@@ -15,6 +15,8 @@ public partial class ManufacturingDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Branch> Branches { get; set; }
+
     public virtual DbSet<ChangePlanningDay> ChangePlanningDays { get; set; }
 
     public virtual DbSet<ChangeRequestDetail> ChangeRequestDetails { get; set; }
@@ -73,6 +75,25 @@ public partial class ManufacturingDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Branch>(entity =>
+        {
+            entity.HasKey(e => e.BranchId).HasName("PK__Branches__A1682FC5CF54BB46");
+
+            entity.Property(e => e.Available).HasDefaultValue(1);
+            entity.Property(e => e.BranchAddress).HasMaxLength(255);
+            entity.Property(e => e.BranchName).HasMaxLength(255);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Company).WithMany(p => p.Branches)
+                .HasForeignKey(d => d.CompanyId)
+                .HasConstraintName("FK__Branches__Compan__3C7FD589");
+        });
+
         modelBuilder.Entity<ChangePlanningDay>(entity =>
         {
             entity.HasKey(e => e.ChangeDayId).HasName("PK__ChangePl__E57216E74BC29F08");
@@ -269,6 +290,10 @@ public partial class ManufacturingDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
 
+            entity.HasOne(d => d.Branch).WithMany(p => p.Groups)
+                .HasForeignKey(d => d.BranchId)
+                .HasConstraintName("FK__Groups__BranchId__3E681DFB");
+
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Groups)
                 .HasForeignKey(d => d.CreatedBy)
                 .HasConstraintName("FK__Groups__CreatedB__4CEB477C");
@@ -324,6 +349,10 @@ public partial class ManufacturingDbContext : DbContext
                 .HasDefaultValueSql("(NULL)");
             entity.Property(e => e.Rol).HasMaxLength(255);
             entity.Property(e => e.UserName).HasMaxLength(255);
+
+            entity.HasOne(d => d.Branch).WithMany(p => p.Logs)
+                .HasForeignKey(d => d.BranchId)
+                .HasConstraintName("FK__logs__BranchId__432CD318");
         });
 
         modelBuilder.Entity<Machine>(entity =>
@@ -341,6 +370,10 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Branch).WithMany(p => p.Machines)
+                .HasForeignKey(d => d.BranchId)
+                .HasConstraintName("FK__Machines__Branch__4050666D");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Machines)
                 .HasForeignKey(d => d.CreatedBy)
@@ -443,6 +476,10 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Branch).WithMany(p => p.Parts)
+                .HasForeignKey(d => d.BranchId)
+                .HasConstraintName("FK__Parts__BranchId__41448AA6");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Parts)
                 .HasForeignKey(d => d.CreatedBy)
@@ -554,6 +591,10 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Branch).WithMany(p => p.ProductionLines)
+                .HasForeignKey(d => d.BranchId)
+                .HasConstraintName("FK__Productio__Branc__4420F751");
 
             entity.HasOne(d => d.Company).WithMany(p => p.ProductionLines)
                 .HasForeignKey(d => d.CompanyId)
@@ -706,6 +747,10 @@ public partial class ManufacturingDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
 
+            entity.HasOne(d => d.Branch).WithMany(p => p.Stations)
+                .HasForeignKey(d => d.BranchId)
+                .HasConstraintName("FK__Stations__Branch__3F5C4234");
+
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Stations)
                 .HasForeignKey(d => d.CreatedBy)
                 .HasConstraintName("FK__Stations__Create__4DDF6BB5");
@@ -744,6 +789,10 @@ public partial class ManufacturingDbContext : DbContext
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Branch).WithMany(p => p.Turns)
+                .HasForeignKey(d => d.BranchId)
+                .HasConstraintName("FK__Turns__BranchId__4238AEDF");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Turns)
                 .HasForeignKey(d => d.CreatedBy)
@@ -801,6 +850,10 @@ public partial class ManufacturingDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.UserName).HasMaxLength(255);
+
+            entity.HasOne(d => d.Branch).WithMany(p => p.Users)
+                .HasForeignKey(d => d.BranchId)
+                .HasConstraintName("FK__Users__BranchId__3D73F9C2");
 
             entity.HasOne(d => d.Company).WithMany(p => p.Users)
                 .HasForeignKey(d => d.CompanyId)

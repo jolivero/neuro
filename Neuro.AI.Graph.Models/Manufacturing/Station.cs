@@ -17,6 +17,10 @@ public partial class Station
 
     public Guid? CreatedBy { get; set; }
 
+    public int? BranchId { get; set; }
+
+    public virtual Branch? Branch { get; set; }
+
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentStations { get; set; } = new List<ChangeRequestDetail>();
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewStations { get; set; } = new List<ChangeRequestDetail>();

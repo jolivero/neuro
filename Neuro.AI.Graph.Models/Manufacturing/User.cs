@@ -35,6 +35,10 @@ public partial class User
 
     public int? CompanyId { get; set; }
 
+    public int? BranchId { get; set; }
+
+    public virtual Branch? Branch { get; set; }
+
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentUsers { get; set; } = new List<ChangeRequestDetail>();
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewUsers { get; set; } = new List<ChangeRequestDetail>();
