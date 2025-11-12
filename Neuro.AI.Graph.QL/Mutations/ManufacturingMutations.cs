@@ -32,6 +32,15 @@ namespace Neuro.AI.Graph.QL.Mutations
 
         #endregion
 
+        #region Sucursales
+
+        public async Task<MessageResponse> repo_create_update_branch(BranchRepository repository, BranchDto branchDto)
+        {
+            return await repository.Create_update_branch(branchDto);
+        }
+
+        #endregion
+
         #region Usuarios
 
         public async Task<MessageResponse> repo_create_update_user(UserRepository repository, UsersDto usersDto)

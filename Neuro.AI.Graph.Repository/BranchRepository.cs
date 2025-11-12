@@ -2,6 +2,7 @@ using System.Data;
 using Dapper;
 using Neuro.AI.Graph.Connectors;
 using Neuro.AI.Graph.Models.CustomModels;
+using Neuro.AI.Graph.Models.Dtos;
 
 namespace Neuro.AI.Graph.Repository
 {
@@ -20,10 +21,14 @@ namespace Neuro.AI.Graph.Repository
 
         #region Mutations
 
-        public async Task<MessageResponse> Create_Update_Branch()
+        public async Task<MessageResponse> Create_update_branch(BranchDto branchDto)
         {
             var sp = "sp_create_update_branch";
             var p = new DynamicParameters();
+            p.Add("@BranchId", branchDto.BranchId ?? null);
+            p.Add("@BranchName", branchDto.BranchName);
+            p.Add("@BranchAddress", branchDto.BranchAddress);
+            p.Add("@CompanyId", branchDto.CompanyId);
 
             try
             {
