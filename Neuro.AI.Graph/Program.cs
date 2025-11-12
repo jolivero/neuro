@@ -44,6 +44,7 @@ builder.Services.AddTransient<ManufacturingConnector>();
 //Repositories
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<CompanyRepository>();
+builder.Services.AddScoped<BranchRepository>();
 builder.Services.AddScoped<ProductionLineRepository>();
 builder.Services.AddScoped<GroupRepository>();
 builder.Services.AddScoped<StationRepository>();
