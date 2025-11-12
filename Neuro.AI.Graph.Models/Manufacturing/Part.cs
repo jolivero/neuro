@@ -23,6 +23,10 @@ public partial class Part
 
     public int? IsPreviousPart { get; set; }
 
+    public int? BranchId { get; set; }
+
+    public virtual Branch? Branch { get; set; }
+
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentParts { get; set; } = new List<ChangeRequestDetail>();
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewParts { get; set; } = new List<ChangeRequestDetail>();

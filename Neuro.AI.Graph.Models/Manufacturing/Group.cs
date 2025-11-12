@@ -19,6 +19,10 @@ public partial class Group
 
     public Guid? CreatedBy { get; set; }
 
+    public int? BranchId { get; set; }
+
+    public virtual Branch? Branch { get; set; }
+
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentGroups { get; set; } = new List<ChangeRequestDetail>();
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewGroups { get; set; } = new List<ChangeRequestDetail>();

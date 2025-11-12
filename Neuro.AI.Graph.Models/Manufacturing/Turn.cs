@@ -23,6 +23,10 @@ public partial class Turn
 
     public Guid? CreatedBy { get; set; }
 
+    public int? BranchId { get; set; }
+
+    public virtual Branch? Branch { get; set; }
+
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailCurrentTurns { get; set; } = new List<ChangeRequestDetail>();
 
     public virtual ICollection<ChangeRequestDetail> ChangeRequestDetailNewTurns { get; set; } = new List<ChangeRequestDetail>();
