@@ -79,7 +79,18 @@ namespace Neuro.AI.Graph.QL.Queries
 
         #region Máquinas
 
+        public async Task<IQueryable<OptionsResponse>> repo_machine_report_types(MachineRepository repository)
+        {
+            return (await repository.ReportOptionsTypes()).AsQueryable();
+        }
+
+        public async Task<IQueryable<OptionsResponse>> repo_machine_report_status(MachineRepository repository)
+        {
+            return (await repository.ReportOptionsStatus()).AsQueryable();
+        }
+
         #endregion
+
 
         #region Piezas
 

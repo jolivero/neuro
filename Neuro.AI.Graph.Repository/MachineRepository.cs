@@ -18,6 +18,27 @@ namespace Neuro.AI.Graph.Repository
 
         #region Queries
 
+        public async Task<IEnumerable<OptionsResponse>> ReportOptionsTypes()
+        {
+            var sp = "sp_select_report_types";
+
+            return await _db.QueryAsync<OptionsResponse>(
+                sp,
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        public async Task<IEnumerable<OptionsResponse>> ReportOptionsStatus()
+        {
+            var sp = "sp_select_report_status";
+
+            return await _db.QueryAsync<OptionsResponse>(
+                sp,
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+
         #endregion
 
         #region Mutations
