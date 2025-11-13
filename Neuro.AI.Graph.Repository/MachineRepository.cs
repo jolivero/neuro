@@ -28,11 +28,11 @@ namespace Neuro.AI.Graph.Repository
             );
         }
 
-        public async Task<IEnumerable<OptionsResponse>> ReportOptionsStatus()
+        public async Task<IEnumerable<StatusOptions>> ReportOptionsStatus()
         {
             var sp = "sp_select_report_status";
 
-            return await _db.QueryAsync<OptionsResponse>(
+            return await _db.QueryAsync<StatusOptions>(
                 sp,
                 commandType: CommandType.StoredProcedure
             );

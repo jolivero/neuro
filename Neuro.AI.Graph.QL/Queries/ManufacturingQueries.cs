@@ -84,13 +84,12 @@ namespace Neuro.AI.Graph.QL.Queries
             return (await repository.ReportOptionsTypes()).AsQueryable();
         }
 
-        public async Task<IQueryable<OptionsResponse>> repo_machine_report_status(MachineRepository repository)
+        public async Task<IQueryable<StatusOptions>> repo_machine_report_status(MachineRepository repository)
         {
             return (await repository.ReportOptionsStatus()).AsQueryable();
         }
 
         #endregion
-
 
         #region Piezas
 

@@ -6,6 +6,11 @@ namespace Neuro.AI.Graph.Models.CustomModels
         public string Value { get; set; } = string.Empty;
     }
 
+    public class StatusOptions : OptionsResponse
+    {
+        public string Color { get; set; } = string.Empty;
+    }
+
     public class MessageResponse
     {
         public string Status { get; set; } = string.Empty;
