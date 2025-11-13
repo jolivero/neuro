@@ -159,7 +159,7 @@ public class EntitiesQueries
     [UseFiltering]
     [UseSorting]
     public IQueryable<ProductionLine> GetProductionLines(ManufacturingDbContext context) => context.ProductionLines
-                                                                                            .Include(pl => pl.Branch).ThenInclude(b => b.Company)
+                                                                                            .Include(pl => pl.Branch).ThenInclude(b => b!.Company)
                                                                                             .Where(pl => pl.Available == 1)
                                                                                             .OrderByDescending(pl => pl.CreatedAt);
 
