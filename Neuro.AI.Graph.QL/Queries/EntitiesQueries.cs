@@ -261,20 +261,24 @@ public class EntitiesQueries
     [UseSorting]
     public IQueryable<MonthlyPlanning> GetMonthlyAndDailyPlanning(ManufacturingDbContext context)
     {
-        var planningList = context.MonthlyPlannings
-            .Where(mp => mp.Line!.Available == 1)
-            .Include(mp => mp.Line)
-            .Include(mp => mp.DailyPlannings.Where(ds => ds.Available == 1)).ThenInclude(ds => ds.DailyTasks.Where(dt => dt.Available == 1)).ThenInclude(dt => dt.User)
-            .Include(mp => mp.DailyPlannings).ThenInclude(ds => ds.DailyTasks.Where(dt => dt.Available == 1)).ThenInclude(dt => dt.Station)
-            .Include(mp => mp.DailyPlannings).ThenInclude(ds => ds.DailyTasks.Where(dt => dt.Available == 1)).ThenInclude(dt => dt.Machine)
+        var monthlyPlannings = context.MonthlyPlannings
+            .Include(mp => mp.Line).ThenInclude(pl => pl!.Branch).ThenInclude(b => b!.Company)
+            .Include(mp => mp.DailyPlannings).ThenInclude(dp => dp.DailyTasks).ThenInclude(dt => dt.User)
+            .Include(mp => mp.DailyPlannings).ThenInclude(dp => dp.DailyTasks).ThenInclude(dt => dt.Station)
+            .Include(mp => mp.DailyPlannings).ThenInclude(dp => dp.DailyTasks).ThenInclude(dt => dt.Machine)
+            .Where(mp => mp.DailyPlannings.Any(dp => dp.Available == 1))
             .OrderBy(mp => mp.CreatedAt);
 
-        foreach (var planning in planningList)
+        var monthlyPlanningsList = monthlyPlannings.ToList();
+
+        foreach (var planning in monthlyPlanningsList)
         {
-            planning.DailyPlannings = [.. planning.DailyPlannings.OrderBy(dp => dp.ProductionDate)];
+            planning.DailyPlannings = [.. planning.DailyPlannings.Where(dp => dp.Available == 1).OrderBy(dp => dp.ProductionDate)];
         }
 
-        return planningList;
+        var result = monthlyPlanningsList;
+
+        return result.AsQueryable();
     }
 
     [UseProjection]

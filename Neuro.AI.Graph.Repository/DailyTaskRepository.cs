@@ -48,6 +48,7 @@ namespace Neuro.AI.Graph.Repository
                                 DailyGoal = dailyPlanning.DailyGoal,
                                 TaskId = dailyTask.TaskId,
                                 OperatorStatus = dailyTask.OperatorStatus!,
+                                Active = dailyTask.Active!,
                                 User = user,
                                 Station = new()
                                 {

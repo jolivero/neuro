@@ -237,6 +237,7 @@ public partial class ManufacturingDbContext : DbContext
         {
             entity.HasKey(e => e.TaskId).HasName("PK__DailyTas__7C6949B169740CD5");
 
+            entity.Property(e => e.Active).HasDefaultValue(1);
             entity.Property(e => e.Available).HasDefaultValue(1);
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
