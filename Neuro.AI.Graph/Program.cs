@@ -12,6 +12,9 @@ using Neuro.AI.Graph.Models.Manufacturing;
 using Dapper;
 using Azure.Storage.Blobs;
 using Neuro.AI.Graph;
+using Hangfire;
+using Neuro.AI.Graph.HangFireSeeds;
+using Neuro.AI.Graph.BackgroundJobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +40,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+HangFireSeeds.cnn_hangfire = c.GetConnectionString("Cnn_Hangfire");
+builder.Services.AddHangfire(config => HangFireSeeds.GlobalHangFireServer(config));
+builder.Services.AddHangfireServer(options => HangFireSeeds.SetBackJobServer(options));
 
 //Connectos
 builder.Services.AddTransient<ManufacturingConnector>();
@@ -95,6 +102,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseHangfireDashboard("/hangfire", new DashboardOptions { Authorization = [new HangFireAuthorizeFilter()] });
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -115,5 +123,8 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapGraphQL();
 
+#region (HangFire.Initializer)
+_BackgroundJobs.Loader();
+#endregion
 
 app.Run();
