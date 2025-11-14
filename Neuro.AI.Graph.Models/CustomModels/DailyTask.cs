@@ -6,6 +6,7 @@ namespace Neuro.AI.Graph.Models.CustomModels
     {
         public int TaskId { get; set; }
         public string OperatorStatus { get; set; } = string.Empty;
+        public int? Active { get; set; }
         public Compliance Compliance { get; set; } = new();
         public User User { get; set; } = new();
         public DailyTaskStation Station { get; set; } = new();
